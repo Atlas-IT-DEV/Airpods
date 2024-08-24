@@ -1,0 +1,31 @@
+.containerBasket {
+  width: 100%;
+}
+
+.headerBasket {
+  display: flex;
+  justify-content: space-between;
+}
+.headerBasketText {
+  color: white;
+  font-size: 17px;
+  font-family: SF Pro Display;
+}
+.basketPrice {
+  font-family: SF Pro Display;
+  color: var(--Yellow-gradient, #f5ea99);
+  font-size: 17px;
+}
+
+.productNameText {
+  color: rgba(92, 92, 92, 1);
+  font-size: 17px;
+  font-family: SF Pro Display;
+}
+
+.productMiniContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  gap: 16px;
+}

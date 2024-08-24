@@ -1,0 +1,41 @@
+.sortBar {
+  display: flex;
+  margin: 16px;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.searchBar {
+  padding: 11px 8px 11px 8px;
+  border-radius: 16px;
+  border: 1px solid var(--Yellow-gradient, #f5ea99);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.searchField {
+  color: var(--Yellow-gradient, #f5ea99);
+  background-color: rgba(0, 0, 0, 0);
+  width: 100%;
+  font-family: SF Pro Text;
+  font-size: 17px;
+}
+.sortPrice {
+  width: 100px;
+  border: 2px solid;
+  border-radius: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sortPriceText {
+  font-family: SF Pro Text;
+  font-weight: 600;
+  font-size: 17px;
+  /* color: rgba(92, 92, 92, 1); */
+}
