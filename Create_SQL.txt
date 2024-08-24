@@ -1,0 +1,68 @@
+CREATE TABLE IF NOT EXISTS images (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    url VARCHAR(255) NOT NULL -- Ссылка на картинку
+);
+CREATE TABLE IF NOT EXISTS users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL, -- Имя пользователя
+    telegram_id INT NOT NULL, -- телеграмм ID
+    image_id INT DEFAULT NULL, -- ID ссылка на аватар
+    FOREIGN KEY (image_id) REFERENCES images(id) ON DELETE SET NULL
+);
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL -- Название категории
+);
+CREATE TABLE IF NOT EXISTS companies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL, -- Название бренда-производителя
+    description TEXT DEFAULT NULL -- Описание бренда
+);
+CREATE TABLE IF NOT EXISTS characteristics (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL, -- Название характеристики товара
+    type ENUM('INT', 'VARCHAR', 'BOOLEAN', 'FLOAT', 'TEXT', 'TIMESTAMP', 'DECIMAL', 'JSON') NOT NULL -- Тип характеристики товара
+);
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL, -- Название товара
+    price INT NOT NULL, -- Цена товара
+    company_id INT NOT NULL, -- ID бренда-производителя
+    category_id INT NOT NULL, -- ID категории товара
+    image_id INT DEFAULT NULL, -- ID ссылка на изображение товара
+    FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
+    FOREIGN KEY (image_id) REFERENCES images(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS product_characteristics (
+    id INT AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    characteristic_id INT NOT NULL,
+    value VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id, product_id, characteristic_id),
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (characteristic_id) REFERENCES characteristics(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL, -- ID ссылка на пользователя
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Дата заказа
+    total_price INT NOT NULL, -- Стоимость заказа в рублях
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS order_products (
+    id INT AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    PRIMARY KEY (id, order_id, product_id),
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS product_comments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT NOT NULL, -- ID товара
+    comment TEXT NOT NULL, -- Текст комментария
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Дата и время создания комментария
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE -- При удалении товара, удаляем комментарии
+);

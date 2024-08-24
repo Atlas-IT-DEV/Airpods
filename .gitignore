@@ -1,3 +1,11 @@
+/src/public/
+/venv/
+/setup.log
+/.env
+/.idea
+/logs/
+/Sneakers.sql
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
