@@ -1,4 +1,6 @@
 from src.repository import product_characteristic_repository
+from src.service.product_services import get_product_by_id
+from src.service.characteristic_services import get_characteristic_by_id
 from src.database.models import ProductCharacteristics
 from fastapi import HTTPException, status
 
@@ -23,12 +25,16 @@ def get_product_characteristic_by_user_id(user_id: int):
 
 
 def create_product_characteristic(product_characteristic: ProductCharacteristics):
+    existing_product = get_product_by_id(product_characteristic.ProductID)
+    existing_characteristic = get_characteristic_by_id(product_characteristic.CharacteristicID)
     product_characteristic_id = product_characteristic_repository.create_product_characteristic(product_characteristic)
     return get_product_characteristic_by_id(product_characteristic_id)
 
 
 def update_product_characteristic(product_characteristic_id: int, product_characteristic: ProductCharacteristics):
     existing_product_characteristic = get_product_characteristic_by_id(product_characteristic_id)
+    existing_product = get_product_by_id(product_characteristic.ProductID)
+    existing_characteristic = get_characteristic_by_id(product_characteristic.CharacteristicID)
     product_characteristic_repository.update_product_characteristic(product_characteristic_id, product_characteristic)
     return {"message": "Product characteristic updated successfully"}
 

@@ -2,6 +2,7 @@ from src.repository import user_repository
 from src.database.models import Users
 from fastapi import HTTPException, status
 from src.service.image_services import get_image_by_id
+from src.utils.exam_services import check_for_duplicates, check_if_exists
 
 
 def get_all_users():
@@ -24,14 +25,24 @@ def get_user_by_telegram_id(telegram_id: int):
 
 
 def create_user(user: Users):
-    if not user.IconID is None:
-        existing_image = get_image_by_id(user.IconID)
+    check_if_exists(
+        get_all=get_all_users,
+        attr_name="TelegramID",
+        attr_value=user.TelegramID,
+        exception_detail='TelegramID already exist'
+    )
     user_id = user_repository.create_user(user)
     return get_user_by_id(user_id)
 
 
 def update_user(user_id: int, user: Users):
-    existing_user = get_user_by_id(user_id)
+    check_for_duplicates(
+        get_all=get_all_users,
+        check_id=user_id,
+        attr_name="TelegramID",
+        attr_value=user.TelegramID,
+        exception_detail='TelegramID already exist'
+    )
     user_repository.update_user(user_id, user)
     return {"message": "User updated successfully"}
 

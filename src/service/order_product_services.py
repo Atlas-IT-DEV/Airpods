@@ -1,4 +1,6 @@
 from src.repository import order_product_repository
+from src.service.product_services import get_product_by_id
+from src.service.order_services import get_order_by_id
 from src.database.models import OrderProducts
 from fastapi import HTTPException, status
 
@@ -23,12 +25,16 @@ def get_order_product_by_order_id(order_id: int):
 
 
 def create_order_product(order_product: OrderProducts):
+    existing_product = get_product_by_id(order_product.ProductID)
+    existing_order = get_order_by_id(order_product.OrderID)
     order_product_id = order_product_repository.create_order_product(order_product)
     return get_order_product_by_id(order_product_id)
 
 
 def update_order_product(order_product_id: int, order_product: OrderProducts):
     existing_order_product = get_order_product_by_id(order_product_id)
+    existing_product = get_product_by_id(order_product.ProductID)
+    existing_order = get_order_by_id(order_product.OrderID)
     order_product_repository.update_order_product(order_product_id, order_product)
     return {"message": "Order product updated successfully"}
 

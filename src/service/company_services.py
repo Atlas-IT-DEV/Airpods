@@ -1,6 +1,7 @@
 from src.repository import company_repository
 from src.database.models import Companies
 from fastapi import HTTPException, status
+from src.utils.exam_services import check_for_duplicates, check_if_exists
 
 
 def get_all_companies():
@@ -16,12 +17,24 @@ def get_company_by_id(company_id: int):
 
 
 def create_company(company: Companies):
+    check_if_exists(
+        get_all=get_all_companies,
+        attr_name="Name",
+        attr_value=company.Name,
+        exception_detail='Company already exist'
+    )
     company_id = company_repository.create_company(company)
     return get_company_by_id(company_id)
 
 
 def update_company(company_id: int, company: Companies):
-    existing_company = get_company_by_id(company_id)
+    check_for_duplicates(
+        get_all=get_all_companies,
+        check_id=company_id,
+        attr_name="Name",
+        attr_value=company.Name,
+        exception_detail='Company already exist'
+    )
     company_repository.update_company(company_id, company)
     return {"message": "Company updated successfully"}
 

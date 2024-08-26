@@ -3,11 +3,12 @@ from src.database.my_connector import Database
 from src.service import (category_services, characteristic_services, company_services,
                          image_services, product_comment_services, order_product_services,
                          order_services, product_characteristic_services, product_services,
-                         file_services, user_services)
+                         file_services, user_services, promotion_services, currency_services)
 from typing import Dict
 from fastapi.openapi.models import Tag
 from src.database.models import (Users, Companies, Orders, Images, Categories, ProductsDict, Characteristics,
-                                 OrderProducts, ProductComments, Products, ProductCharacteristics)
+                                 OrderProducts, ProductComments, Products, ProductCharacteristics, Promotions,
+                                 Currencies, ProductImages, CommentImages)
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from src.utils.custom_logging import setup_logging
@@ -28,6 +29,8 @@ app.add_middleware(
 # Определяем теги
 ImageServiceTag = Tag(name="ImageService", description="Upload/download image for object")
 UserTag = Tag(name="User", description="CRUD operations user")
+PromotionTag = Tag(name="Promotion", description="CRUD operations promotion")
+CurrencyTag = Tag(name="Currency", description="CRUD operations currency")
 CategoryTag = Tag(name="Category", description="CRUD operations category")
 CharacteristicTag = Tag(name="Characteristic", description="CRUD operations characteristic")
 CompanyTag = Tag(name="Company", description="CRUD operations company")
@@ -42,6 +45,8 @@ ProductTag = Tag(name="Product", description="CRUD operations product")
 app.openapi_tags = [
     ImageServiceTag.dict(),
     UserTag.dict(),
+    PromotionTag.dict(),
+    CurrencyTag.dict(),
     CategoryTag.dict(),
     CharacteristicTag.dict(),
     CompanyTag.dict(),
@@ -54,43 +59,15 @@ app.openapi_tags = [
 ]
 
 
-@app.post("/image_upload/avatar", response_model=Users, tags=["ImageService"])
-async def image_upload_avatar(file: UploadFile = File(...), user_id: int = Form(...)):
+@app.post("/image_upload/product", response_model=list[ProductImages], tags=["ImageService"])
+async def image_upload_product(files: list[UploadFile] = File(...), product_id: int = Form(...)):
     """
-    Route for upload avatar for user.
-
-    :return: response model user [Users].
-    """
-    try:
-        return await file_services.upload_avatar(file, user_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
-
-
-@app.post("/image_upload/product", response_model=Products, tags=["ImageService"])
-async def image_upload_product(file: UploadFile = File(...), product_id: int = Form(...)):
-    """
-    Route for upload product for user.
+    Route for uploading multiple images for a product.
 
     :return: response model product [Products].
     """
     try:
-        return await file_services.upload_product(file, product_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
-
-
-@app.get("/image_download/avatar", response_model=Dict, tags=["ImageService"])
-async def image_download_avatar(user_id: int):
-    """
-    Route for download avatar into basedata.
-
-    :return: response model file.
-    """
-    try:
-        return file_services.download_avatar(user_id)
+        return await file_services.upload_product(files, product_id)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
@@ -101,10 +78,38 @@ async def image_download_product(product_id: int):
     """
     Route for download product into basedata.
 
-    :return: response model file.
+    :return: response model Dict.
     """
     try:
         return file_services.download_product(product_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.post("/image_upload/comment", response_model=list[CommentImages], tags=["ImageService"])
+async def image_upload_comment(files: list[UploadFile] = File(...), comment_id: int = Form(...)):
+    """
+    Route for uploading multiple images for a comment.
+
+    :return: response model comment [ProductComments].
+    """
+    try:
+        return await file_services.upload_comment(files, comment_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/image_download/comment", response_model=Dict, tags=["ImageService"])
+async def image_download_comment(comment_id: int):
+    """
+    Route for download product into basedata.
+
+    :return: response model Dict.
+    """
+    try:
+        return file_services.download_comment(comment_id)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
@@ -190,20 +195,180 @@ async def update_user(user_id, user: Users):
         raise ex
 
 
-@app.delete("/users/{user_id}", response_model=Dict, tags=["User"])
-async def delete_user(user_id):
+@app.get("/promotions/", response_model=list[Promotions], tags=["Promotion"])
+async def get_all_promotions():
     """
-    Route for delete user from basedata.
+    Route for get all promotions from basedata.
 
-    :param user_id: ID by user. [int]
+    :return: response model List[Promotions].
+    """
+    try:
+        return promotion_services.get_all_promotions()
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/promotions/promotion_id/{promotion_id}", response_model=Promotions, tags=["Promotion"])
+async def get_promotion_by_id(promotion_id: int):
+    """
+    Route for get promotion by PromotionID.
+
+    :param promotion_id: ID by promotion. [int]
+
+    :return: response model Promotions.
+    """
+    try:
+        return promotion_services.get_promotion_by_id(promotion_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/promotions/promotion_name/{promotion_name}", response_model=Promotions, tags=["Promotion"])
+async def get_promotion_by_name(promotion_name: int):
+    """
+    Route for get promotion by PromotionID.
+
+    :param promotion_name: ID by promotion. [int]
+
+    :return: response model Promotions.
+    """
+    try:
+        return promotion_services.get_promotion_by_name(promotion_name)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.post("/promotions/", response_model=Promotions, tags=["Promotion"])
+async def create_promotion(promotion: Promotions):
+    """
+    Route for create promotion in basedata.
+
+    :param promotion: Model promotion. [Promotions]
+
+    :return: response model Promotions.
+    """
+    try:
+        return promotion_services.create_promotion(promotion)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.put("/promotions/{promotion_id}", response_model=Dict, tags=["Promotion"])
+async def update_promotion(promotion_id, promotion: Promotions):
+    """
+    Route for update promotion in basedata.
+
+    :param promotion_id: ID by promotion. [int]
+
+    :param promotion: Model promotion. [Promotions]
 
     :return: response model dict.
     """
     try:
-        return user_services.delete_user(user_id)
+        return promotion_services.update_promotion(promotion_id, promotion)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
+
+
+# @app.delete("/promotions/{promotion_id}", response_model=Dict, tags=["Promotion"])
+# async def delete_promotion(promotion_id):
+    # """
+    # Route for delete promotion from basedata.
+
+    # :param promotion_id: ID by promotion. [int]
+
+    # :return: response model dict.
+    # """
+    # try:
+    #     return promotion_services.delete_promotion(promotion_id)
+    # except HTTPException as ex:
+    #     log.exception(f"Error", exc_info=ex)
+    #     raise ex
+
+
+@app.get("/currencies/", response_model=list[Currencies], tags=["Currency"])
+async def get_all_currencies():
+    """
+    Route for get all currencies from basedata.
+
+    :return: response model List[Currencies].
+    """
+    try:
+        return currency_services.get_all_currencies()
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/currencies/currency_id/{currency_id}", response_model=Currencies, tags=["Currency"])
+async def get_currency_by_id(currency_id: int):
+    """
+    Route for get currency by CurrencyID.
+
+    :param currency_id: ID by currency. [int]
+
+    :return: response model Currency.
+    """
+    try:
+        return currency_services.get_currency_by_id(currency_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.post("/currencies/", response_model=Currencies, tags=["Currency"])
+async def create_currency(currency: Currencies):
+    """
+    Route for create currency in basedata.
+
+    :param currency: Model currency. [Currency]
+
+    :return: response model Currency.
+    """
+    try:
+        return currency_services.create_currency(currency)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.put("/currencies/{currency_id}", response_model=Dict, tags=["Currency"])
+async def update_currency(currency_id, currency: Currencies):
+    """
+    Route for update currency in basedata.
+
+    :param currency_id: ID by currency. [int]
+
+    :param currency: Model currency. [Currencies]
+
+    :return: response model dict.
+    """
+    try:
+        return currency_services.update_currency(currency_id, currency)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+# @app.delete("/currencies/{currency_id}", response_model=Dict, tags=["Currency"])
+# async def delete_currency(currency_id):
+    # """
+    # Route for delete currency from basedata.
+
+    # :param currency_id: ID by currency. [int]
+
+    # :return: response model dict.
+    # """
+    # try:
+    #     return currency.services.delete_currency(currency_id)
+    # except HTTPException as ex:
+    #     log.exception(f"Error", exc_info=ex)
+    #     raise ex
 
 
 @app.get("/images/", response_model=list[Images], tags=["Image"])
@@ -274,20 +439,20 @@ async def update_image(image_id, image: Images):
         raise ex
 
 
-@app.delete("/images/{image_id}", response_model=Dict, tags=["Image"])
-async def delete_image(image_id):
-    """
-    Route for delete image from basedata.
-
-    :param image_id: ID by image. [int]
-
-    :return: response model dict.
-    """
-    try:
-        return image_services.delete_image(image_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/images/{image_id}", response_model=Dict, tags=["Image"])
+# async def delete_image(image_id):
+#     """
+#     Route for delete image from basedata.
+#
+#     :param image_id: ID by image. [int]
+#
+#     :return: response model dict.
+#     """
+#     try:
+#         return image_services.delete_image(image_id)
+#     except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 @app.get("/products/", response_model=list[Products], tags=["Product"])
@@ -354,20 +519,20 @@ async def update_product(product_id: int, product: Products):
         raise ex
 
 
-@app.delete("/products/{product_id}", response_model=Dict, tags=["Product"])
-async def delete_product(product_id: int):
-    """
-    Route for deleting a product from basedata.
-
-    :param product_id: ID of the product. [int]
-
-    :return: response model dict.
-    """
-    try:
-        return product_services.delete_product(product_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/products/{product_id}", response_model=Dict, tags=["Product"])
+# async def delete_product(product_id: int):
+#     """
+#     Route for deleting a product from basedata.
+#
+#     :param product_id: ID of the product. [int]
+#
+#     :return: response model dict.
+#     """
+#     try:
+#         return product_services.delete_product(product_id)
+#     except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 @app.get("/categories/", response_model=list[Categories], tags=["Category"])
@@ -434,20 +599,20 @@ async def update_category(category_id, category: Categories):
         raise ex
 
 
-@app.delete("/categories/{category_id}", response_model=Dict, tags=["Category"])
-async def delete_category(category_id):
-    """
-    Route for delete user from basedata.
-
-    :param category_id: ID by Category. [int]
-
-    :return: response model dict.
-    """
-    try:
-        return category_services.delete_category(category_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/categories/{category_id}", response_model=Dict, tags=["Category"])
+# async def delete_category(category_id):
+#     """
+#     Route for delete user from basedata.
+#
+#     :param category_id: ID by Category. [int]
+#
+#     :return: response model dict.
+#     """
+#     try:
+#         return category_services.delete_category(category_id)
+#     except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 @app.get("/companies/", response_model=list[Companies], tags=["Company"])
@@ -514,20 +679,20 @@ async def update_company(company_id, company: Companies):
         raise ex
 
 
-@app.delete("/companies/{company_id}", response_model=Dict, tags=["Company"])
-async def delete_company(company_id):
-    """
-    Route for delete company from basedata.
-
-    :param company_id: ID by Company. [int]
-
-    :return: response model dict.
-    """
-    try:
-        return company_services.delete_company(company_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/companies/{company_id}", response_model=Dict, tags=["Company"])
+# async def delete_company(company_id):
+#     """
+#     Route for delete company from basedata.
+#
+#     :param company_id: ID by Company. [int]
+#
+#     :return: response model dict.
+#     """
+#     try:
+#         return company_services.delete_company(company_id)
+#     except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 @app.get("/characteristics/", response_model=list[Characteristics], tags=["Characteristic"])
@@ -594,20 +759,20 @@ async def update_characteristic(characteristic_id, characteristic: Characteristi
         raise ex
 
 
-@app.delete("/characteristics/{characteristic_id}", response_model=Dict, tags=["Characteristic"])
-async def delete_characteristic(characteristic_id):
-    """
-    Route for delete characteristic from basedata.
-
-    :param characteristic_id: ID by characteristic. [int]
-
-    :return: response model dict.
-    """
-    try:
-        return characteristic_services.delete_characteristic(characteristic_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/characteristics/{characteristic_id}", response_model=Dict, tags=["Characteristic"])
+# async def delete_characteristic(characteristic_id):
+#     """
+#     Route for delete characteristic from basedata.
+#
+#     :param characteristic_id: ID by characteristic. [int]
+#
+#     :return: response model dict.
+#     """
+#     try:
+#         return characteristic_services.delete_characteristic(characteristic_id)
+#     except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 @app.get("/orders/", response_model=list[Orders], tags=["Order"])
@@ -724,20 +889,20 @@ async def update_order(order_id, order: Orders):
         raise ex
 
 
-@app.delete("/orders/{order_id}", response_model=Dict, tags=["Order"])
-async def delete_order(order_id):
-    """
-    Route for delete order from basedata.
-
-    :param order_id: ID by order. [int]
-
-    :return: response model dict.
-    """
-    try:
-        return order_services.delete_order(order_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/orders/{order_id}", response_model=Dict, tags=["Order"])
+# async def delete_order(order_id):
+#     """
+#     Route for delete order from basedata.
+#
+#     :param order_id: ID by order. [int]
+#
+#     :return: response model dict.
+#     """
+#     try:
+#         return order_services.delete_order(order_id)
+#     except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 @app.get("/orders_products/", response_model=list[OrderProducts], tags=["OrderProduct"])
@@ -805,20 +970,20 @@ async def update_order_product(order_product_id: int, order_product: OrderProduc
         raise ex
 
 
-@app.delete("/orders_products/{order_product_id}", response_model=Dict, tags=["OrderProduct"])
-async def delete_order_product(order_product_id: int):
-    """
-    Route for deleting an order product from basedata.
-
-    :param order_product_id: ID of the order product. [int]
-
-    :return: response model dict.
-    """
-    try:
-        return order_product_services.delete_order_product(order_product_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/orders_products/{order_product_id}", response_model=Dict, tags=["OrderProduct"])
+# async def delete_order_product(order_product_id: int):
+#     """
+#     Route for deleting an order product from basedata.
+#
+#     :param order_product_id: ID of the order product. [int]
+#
+#     :return: response model dict.
+#     """
+#     try:
+#         return order_product_services.delete_order_product(order_product_id)
+#     except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 @app.get("/product_comments/", response_model=list[ProductComments], tags=["ProductComment"])
@@ -886,19 +1051,19 @@ async def update_product_comment(product_comment_id: int, product_comment: Produ
         raise ex
 
 
-@app.delete("/product_comments/{product_comment_id}", response_model=Dict, tags=["ProductComment"])
-async def delete_product_comment(product_comment_id: int):
-    """
-    Route for deleting an product comment from basedata.
-
-    :param product_comment_id: ID of the product comment. [int]
-
-    :return: response model OpenApi"""
-    try:
-        return product_comment_services.delete_product_comment(product_comment_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/product_comments/{product_comment_id}", response_model=Dict, tags=["ProductComment"])
+# async def delete_product_comment(product_comment_id: int):
+#     """
+#     Route for deleting an product comment from basedata.
+#
+#     :param product_comment_id: ID of the product comment. [int]
+#
+#     :return: response model OpenApi"""
+#     try:
+#         return product_comment_services.delete_product_comment(product_comment_id)
+#     except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 @app.get("/product_characteristics/", response_model=list[ProductCharacteristics], tags=["ProductCharacteristic"])
@@ -967,20 +1132,20 @@ async def update_product_characteristic(product_characteristic_id: int, product_
         raise ex
 
 
-@app.delete("/product_characteristics/{product_characteristic_id}", response_model=Dict, tags=["ProductCharacteristic"])
-async def delete_product_characteristic(product_characteristic_id: int):
-    """
-    Route for deleting an product characteristic from basedata.
-
-    :param product characteristic_id: ID of the product characteristic. [int]
-
-    :return: response model dict.
-    """
-    try:
-        return product_characteristic_services.delete_product_characteristic(product_characteristic_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
+# @app.delete("/product_characteristics/{product_characteristic_id}", response_model=Dict, tags=["ProductCharacteristic"])
+# async def delete_product_characteristic(product_characteristic_id: int):
+#     """
+#     Route for deleting an product characteristic from basedata.
+#
+#     :param product characteristic_id: ID of the product characteristic. [int]
+#
+#     :return: response model dict.
+#     """
+#     try:
+#         return product_characteristic_services.delete_product_characteristic(product_characteristic_id)
+#    except HTTPException as ex:
+#         log.exception(f"Error", exc_info=ex)
+#         raise ex
 
 
 def run_server():

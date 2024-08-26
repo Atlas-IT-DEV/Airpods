@@ -1,6 +1,7 @@
 from src.repository import image_repository
 from src.database.models import Images
 from fastapi import HTTPException, status
+from src.utils.exam_services import check_for_duplicates, check_if_exists
 
 
 def get_all_images():
@@ -16,12 +17,24 @@ def get_image_by_id(image_id: int):
 
 
 def create_image(image: Images):
+    check_if_exists(
+        get_all=get_all_images,
+        attr_name="Url",
+        attr_value=image.Url,
+        exception_detail='Image already exist'
+    )
     image_id = image_repository.create_image(image)
     return get_image_by_id(image_id)
 
 
 def update_image(image_id: int, image: Images):
-    existing_image = get_image_by_id(image_id)
+    check_for_duplicates(
+        get_all=get_all_images,
+        check_id=image_id,
+        attr_name="Url",
+        attr_value=image.Url,
+        exception_detail='Image already exist'
+    )
     image_repository.update_image(image_id, image)
     return {"message": "Image updated successfully"}
 

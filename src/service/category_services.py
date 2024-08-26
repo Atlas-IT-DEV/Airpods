@@ -1,6 +1,7 @@
 from src.repository import category_repository
 from src.database.models import Categories
 from fastapi import HTTPException, status
+from src.utils.exam_services import check_for_duplicates, check_if_exists
 
 
 def get_all_categories():
@@ -16,12 +17,24 @@ def get_category_by_id(category_id: int):
 
 
 def create_category(category: Categories):
+    check_if_exists(
+        get_all=get_all_categories,
+        attr_name="Name",
+        attr_value=category.Name,
+        exception_detail='Category already exist'
+    )
     category_id = category_repository.create_category(category)
     return get_category_by_id(category_id)
 
 
 def update_category(category_id: int, category: Categories):
-    existing_category = get_category_by_id(category_id)
+    check_for_duplicates(
+        get_all=get_all_categories,
+        check_id=category_id,
+        attr_name="Name",
+        attr_value=category.Name,
+        exception_detail='Category already exist'
+    )
     category_repository.update_category(category_id, category)
     return {"message": "Category updated successfully"}
 

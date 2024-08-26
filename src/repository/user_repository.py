@@ -19,16 +19,16 @@ def get_user_by_telegram_id(telegram_id: int):
 
 
 def create_user(user: Users):
-    query = ("INSERT INTO users (name, telegram_id, image_id)"
-             " VALUES (%s, %s, %s)")
-    params = (user.Name, user.TelegramID, user.IconID)
+    query = ("INSERT INTO users (name, telegram_id)"
+             " VALUES (%s, %s)")
+    params = (user.Name, user.TelegramID)
     cursor = db.execute_query(query, params)
     return cursor.lastrowid
 
 
 def update_user(user_id: int, user: Users):
-    query = "UPDATE users SET name=%s, telegram_id=%s, image_id=%s WHERE id=%s"
-    params = (user.Name, user.TelegramID, user.IconID, user_id)
+    query = "UPDATE users SET name=%s, telegram_id=%s WHERE id=%s"
+    params = (user.Name, user.TelegramID, user_id)
     db.execute_query(query, params)
 
 
