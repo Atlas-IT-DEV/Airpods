@@ -6,6 +6,7 @@ import TeletypeCarousel from "./../components/teletypeCarousel.jsx";
 import ReviewCarousel from "./../components/reviewCarousel.jsx";
 import AboutOptom from "../components/aboutOptom.jsx";
 import ConnectionManagerButton from "../components/connectionManagerButton.jsx";
+import GetFetches from "../fetches.jsx";
 const HeaderNotification = lazy(() =>
   import("../components/HeaderNotification.jsx")
 );
@@ -69,13 +70,15 @@ function MainPage() {
         <AboutOptom />
       </div>
       <div>
-        <ConnectionManagerButton/>
+        <ConnectionManagerButton />
       </div>
       <Suspense fallback={<div></div>}>
         <QuadroBlocks />
       </Suspense>
       <Products />
       <ReviewCarousel />
+
+      <GetFetches />
     </div>
   );
 }
