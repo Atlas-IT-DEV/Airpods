@@ -12,11 +12,14 @@ from src.database.models import (Users, Companies, Orders, Images, Categories, P
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from src.utils.custom_logging import setup_logging
+from fastapi.staticfiles import StaticFiles
 from config import Config
 
 config = Config()
 log = setup_logging()
 app = FastAPI()
+
+app.mount("/public", StaticFiles(directory="public"), name="public")
 
 app.add_middleware(
     CORSMiddleware,
