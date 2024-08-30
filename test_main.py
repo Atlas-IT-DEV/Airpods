@@ -7,7 +7,7 @@ client = TestClient(app)
 
 
 test_user = {
-    "name": "Иван",
+    "name": "Test1",
     "telegram_id": 12345678
 }
 
@@ -83,8 +83,8 @@ def test_delete_user_success():
 
 
 test_promotion = {
-    "name": "Скидка 10 процентов",
-    "value": 10,
+    "name": "Test2",
+    "value": 1,
     "bool": True
 }
 
@@ -164,10 +164,9 @@ def test_delete_promotion_success():
 
 # Тестовые данные для сущности Currency
 test_currency = {
-    "id": 999999,
-    "ru": 1000,
-    "eu": 30,
-    "br": 30
+    "ru": 999999,
+    "eu": 999999,
+    "br": 999999
 }
 currency_id = []
 
@@ -238,7 +237,7 @@ def test_delete_currency_success():
 
 # Тестовые данные для сущности Category
 test_category = {
-    "name": "Набор22222"
+    "name": "Test3"
 }
 category_id = []
 
@@ -308,8 +307,8 @@ def test_delete_category_success():
 
 # Тестовые данные для сущности Company
 test_company = {
-    "name": "Apple",
-    "description": "Производитель электроники"
+    "name": "Test4",
+    "description": "Test5"
 }
 company_id = []
 
@@ -376,7 +375,7 @@ def test_delete_company_success():
 
 # Тестовые данные для сущности Characteristic
 test_characteristic = {
-    "name": "Размер",
+    "name": "Test6",
     "type": "INT"
 }
 characteristic_id = []
@@ -450,7 +449,7 @@ def test_delete_characteristic_success():
 
 # Тестовые данные для сущности Image
 test_image = {
-    "url": "https://example.com/image1.jpg"
+    "url": "https://example.com/test_image.png"
 }
 image_id = []
 
@@ -497,7 +496,7 @@ def test_update_image_not_found():
 
 def test_update_image_success():
     existing_image = client.get(f"/images/image_id/{image_id[0]}")
-    update_image_data = {"url": "https://example.com/image2.jpg"}
+    update_image_data = {"url": "https://example.com/image999999.jpg"}
     response = client.put(f"/images/{existing_image.json().get('id')}", json=update_image_data)
     assert response.status_code == 200
 
@@ -516,28 +515,28 @@ def test_delete_image_success():
 
 # Тестовые данные для сущности ProductComments
 test_product_comment_user = {
-    "name": "Вова",
-    "telegram_id": 1
+    "name": "Test7",
+    "telegram_id": 999999
 }
 test_product_comment_promotion = {
-    "name": "Акция 10 процентов",
-    "value": 10,
+    "name": "Test8",
+    "value": 999999,
     "bool": True
 }
 test_product_comment_category = {
-    "name": "Набор"
+    "name": "Test9"
 }
 test_product_comment_currency = {
-    "ru": 1000,
-    "eu": 25,
-    "br": 10
+    "ru": 999998,
+    "eu": 999998,
+    "br": 999998
 }
 test_product_comment_company = {
-    "name": "Адидас",
-    "description": "Производитель обуви"
+    "name": "Test10",
+    "description": "Test11"
 }
 test_product_comment_product = {
-    "name": "Тапки",
+    "name": "Test11",
     "promotion_id": client.post("/promotions/", json=test_product_comment_promotion).json().get('id'),
     "currency_id": client.post(f"/currencies/", json=test_product_comment_currency).json().get('id'),
     "company_id": client.post(f"/companies/", json=test_product_comment_company).json().get('id'),
@@ -546,7 +545,7 @@ test_product_comment_product = {
 test_product_comment = {
     "product_id": client.post("/products/", json=test_product_comment_product).json().get('id'),
     "user_id": client.post("/users/", json=test_product_comment_user).json().get('id'),
-    "comment": "Отличный продукт!",
+    "comment": "Test12",
     "created_at": f"{datetime.now()}"
 }
 product_comment_id = []
@@ -628,24 +627,24 @@ def test_delete_product_comment_success():
 
 # Тестовые данные для сущности Product
 test_product_promotion = {
-    "name": "Акция 10 процентовawdawdawdawdawda",
-    "value": 101,
+    "name": "Test12",
+    "value": 999997,
     "bool": True
 }
 test_product_category = {
-    "name": "Наборsadadawd"
+    "name": "Test13"
 }
 test_product_currency = {
-    "ru": 10002,
-    "eu": 25,
-    "br": 10
+    "ru": 999996,
+    "eu": 999996,
+    "br": 999996
 }
 test_product_company = {
-    "name": "Адидасawdawdwad",
-    "description": "Производитель обувиdawawdawd"
+    "name": "Twst13",
+    "description": "Test14"
 }
 test_product = {
-    "name": "Тапкиkmkm",
+    "name": "test15",
     "promotion_id": client.post("/promotions/", json=test_product_promotion).json().get('id'),
     "currency_id": client.post(f"/currencies/", json=test_product_currency).json().get('id'),
     "company_id": client.post(f"/companies/", json=test_product_company).json().get('id'),
@@ -655,7 +654,6 @@ product_id = []
 
 
 def test_create_product_success():
-    print(test_product)
     response = client.post("/products/", json=test_product)
     assert response.status_code == 200
     response_data = response.json()
@@ -726,37 +724,37 @@ def test_delete_product_not_found():
 
 # Пример тестовых данных для сущности OrderProduct
 test_order_product_promotion = {
-    "name": "Акция 10fxfxfxhyg процентовawdawdawdawdawdaawdawd",
-    "value": 10120,
+    "name": "Test15",
+    "value": 999995,
     "bool": True
 }
 test_order_product_category = {
-    "name": "Наборsadadawdawdawd"
+    "name": "Test16"
 }
 test_order_product_currency = {
-    "ru": 100021,
-    "eu": 25,
-    "br": 10
+    "ru": 999995,
+    "eu": 999995,
+    "br": 999995
 }
 test_order_product_company = {
-    "name": "Адидасawdawdwadawdaw",
-    "description": "Производитель обувиdawawdawd"
+    "name": "Test17",
+    "description": "Test18"
 }
 test_order_product_product = {
-    "name": "Тапкиkmkmawdawd",
+    "name": "Test19",
     "promotion_id": client.post("/promotions/", json=test_order_product_promotion).json().get('id'),
     "currency_id": client.post(f"/currencies/", json=test_order_product_currency).json().get('id'),
     "company_id": client.post(f"/companies/", json=test_order_product_company).json().get('id'),
     "category_id": client.post(f"/categories/", json=test_order_product_category).json().get('id')
 }
 test_order_product_user = {
-    "name": "Воваnjk",
-    "telegram_id": 10
+    "name": "Test20",
+    "telegram_id": 999994
 }
 test_order_product_order = {
     "user_id": client.post("/users/", json=test_order_product_user).json().get('id'),
     "date": f"{datetime.now()}",
-    "total_price": 10002
+    "total_price": 999994
 }
 test_order_product = {
     "order_id": client.post("/orders/", json=test_order_product_order).json().get('id'),
@@ -832,13 +830,13 @@ def test_delete_order_product_success():
 
 # Пример тестовых данных для сущности OrderProduct
 test_order_user = {
-    "name": "Воваnwdawdwjk",
-    "telegram_id": 1000
+    "name": "Test21",
+    "telegram_id": 999993
 }
 test_order = {
     "user_id": client.post("/users/", json=test_order_user).json().get('id'),
     "date": f"{datetime.now()}",
-    "total_price": 1848052
+    "total_price": 999992
 }
 order_id = []
 
@@ -904,28 +902,28 @@ def test_delete_order_success():
 
 # Пример тестовых данных для сущности OrderProduct
 test_product_characteristic_promotion = {
-    "name": "Акция 1dadwadawdwadaw0fxfxfxhyg процентовawdawdawdawdawdaawdawd",
-    "value": 102232110,
+    "name": "Test22",
+    "value": 999993,
     "bool": True
 }
 test_product_characteristic_category = {
-    "name": "Набоdwadawрsadadawdawdawd"
+    "name": "Test23"
 }
 test_product_characteristic_currency = {
-    "ru": 100021,
-    "eu": 25111,
-    "br": 10111
+    "ru": 999992,
+    "eu": 999992,
+    "br": 999992
 }
 test_product_characteristic_company = {
-    "name": "Аadwadдидасawdawdwadawdaw",
-    "description": "Проdwadwadизводитель обувиdawawdawd"
+    "name": "Test24",
+    "description": "Test25"
 }
 test_product_characteristic_characteristic = {
-    "name": "Размерadawdawdawda",
+    "name": "Test26",
     "type": "INT"
 }
 test_product_characteristic_product = {
-    "name": "Тапкиdwadwadawkmkmawdawd",
+    "name": "Test27",
     "promotion_id": client.post("/promotions/", json=test_product_characteristic_promotion).json().get('id'),
     "currency_id": client.post(f"/currencies/", json=test_product_characteristic_currency).json().get('id'),
     "company_id": client.post(f"/companies/", json=test_product_characteristic_company).json().get('id'),
@@ -934,7 +932,7 @@ test_product_characteristic_product = {
 test_product_characteristic = {
     "product_id": client.post("/products/", json=test_product_characteristic_product).json().get('id'),
     "characteristic_id": client.post("/characteristics/", json=test_product_characteristic_characteristic).json().get('id'),
-    "value": "35222"
+    "value": "999991"
 }
 product_characteristic_id = []
 

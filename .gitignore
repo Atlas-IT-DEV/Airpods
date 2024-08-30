@@ -170,3 +170,4 @@ cython_debug/
 #.idea/
 /Insert_SQL.txt
 /Create_SQL.txt
+/public/

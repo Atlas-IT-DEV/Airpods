@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 -- Структура таблицы `categories`
 --
 
-CREATE TABLE `categories` (
+CREATE TABLE IF NOT EXISTS `categories` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -36,7 +36,7 @@ CREATE TABLE `categories` (
 -- Дамп данных таблицы `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`) VALUES
+INSERT IGNORE INTO `categories` (`id`, `name`) VALUES
 (1, 'Наушники'),
 (2, 'Часы'),
 (3, 'Наборы'),
@@ -49,7 +49,7 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 -- Структура таблицы `characteristics`
 --
 
-CREATE TABLE `characteristics` (
+CREATE TABLE IF NOT EXISTS `characteristics` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `type` enum('INT','VARCHAR','BOOLEAN','FLOAT','TEXT','TIMESTAMP','DECIMAL','JSON') NOT NULL
@@ -59,7 +59,7 @@ CREATE TABLE `characteristics` (
 -- Дамп данных таблицы `characteristics`
 --
 
-INSERT INTO `characteristics` (`id`, `name`, `type`) VALUES
+INSERT IGNORE INTO `characteristics` (`id`, `name`, `type`) VALUES
 (1, 'Прошивка', 'VARCHAR'),
 (2, 'Цвет', 'VARCHAR'),
 (3, 'Вес', 'FLOAT'),
@@ -72,7 +72,7 @@ INSERT INTO `characteristics` (`id`, `name`, `type`) VALUES
 -- Структура таблицы `comment_images`
 --
 
-CREATE TABLE `comment_images` (
+CREATE TABLE IF NOT EXISTS `comment_images` (
   `id` int NOT NULL,
   `comment_id` int NOT NULL,
   `image_id` int DEFAULT NULL
@@ -84,7 +84,7 @@ CREATE TABLE `comment_images` (
 -- Структура таблицы `companies`
 --
 
-CREATE TABLE `companies` (
+CREATE TABLE IF NOT EXISTS `companies` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text
@@ -94,7 +94,7 @@ CREATE TABLE `companies` (
 -- Дамп данных таблицы `companies`
 --
 
-INSERT INTO `companies` (`id`, `name`, `description`) VALUES
+INSERT IGNORE INTO `companies` (`id`, `name`, `description`) VALUES
 (1, 'Apple', 'Производитель электроники'),
 (2, 'Dyson', 'Производитель бытовой техники');
 
@@ -104,7 +104,7 @@ INSERT INTO `companies` (`id`, `name`, `description`) VALUES
 -- Структура таблицы `currencies`
 --
 
-CREATE TABLE `currencies` (
+CREATE TABLE IF NOT EXISTS `currencies` (
   `id` int NOT NULL,
   `ru` int NOT NULL,
   `eu` int NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE `currencies` (
 -- Дамп данных таблицы `currencies`
 --
 
-INSERT INTO `currencies` (`id`, `ru`, `eu`, `br`) VALUES
+INSERT IGNORE INTO `currencies` (`id`, `ru`, `eu`, `br`) VALUES
 (1, 4250, 30, 20),
 (2, 2000, 50, 30),
 (3, 1500, 40, 25),
@@ -128,7 +128,7 @@ INSERT INTO `currencies` (`id`, `ru`, `eu`, `br`) VALUES
 -- Структура таблицы `images`
 --
 
-CREATE TABLE `images` (
+CREATE TABLE IF NOT EXISTS `images` (
   `id` int NOT NULL,
   `url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -137,7 +137,7 @@ CREATE TABLE `images` (
 -- Дамп данных таблицы `images`
 --
 
-INSERT INTO `images` (`id`, `url`) VALUES
+INSERT IGNORE INTO `images` (`id`, `url`) VALUES
 (1, 'https://example.com/image1.jpg'),
 (2, 'https://example.com/image2.jpg'),
 (3, 'https://example.com/image3.jpg');
@@ -148,7 +148,7 @@ INSERT INTO `images` (`id`, `url`) VALUES
 -- Структура таблицы `orders`
 --
 
-CREATE TABLE `orders` (
+CREATE TABLE IF NOT EXISTS `orders` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -159,7 +159,7 @@ CREATE TABLE `orders` (
 -- Дамп данных таблицы `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `date`, `total_price`) VALUES
+INSERT IGNORE INTO `orders` (`id`, `user_id`, `date`, `total_price`) VALUES
 (1, 1, '2024-08-29 23:41:51', 12000),
 (2, 2, '2024-08-29 23:41:51', 15000),
 (3, 3, '2024-08-29 23:41:51', 10000);
@@ -170,7 +170,7 @@ INSERT INTO `orders` (`id`, `user_id`, `date`, `total_price`) VALUES
 -- Структура таблицы `order_products`
 --
 
-CREATE TABLE `order_products` (
+CREATE TABLE IF NOT EXISTS `order_products` (
   `id` int NOT NULL,
   `order_id` int NOT NULL,
   `product_id` int NOT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE `order_products` (
 -- Дамп данных таблицы `order_products`
 --
 
-INSERT INTO `order_products` (`id`, `order_id`, `product_id`, `quantity`) VALUES
+INSERT IGNORE INTO `order_products` (`id`, `order_id`, `product_id`, `quantity`) VALUES
 (1, 1, 1, 1),
 (2, 1, 2, 1),
 (3, 2, 3, 2);
@@ -192,7 +192,7 @@ INSERT INTO `order_products` (`id`, `order_id`, `product_id`, `quantity`) VALUES
 -- Структура таблицы `products`
 --
 
-CREATE TABLE `products` (
+CREATE TABLE IF NOT EXISTS `products` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `promotion_id` int DEFAULT NULL,
@@ -205,7 +205,7 @@ CREATE TABLE `products` (
 -- Дамп данных таблицы `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `promotion_id`, `currency_id`, `company_id`, `category_id`) VALUES
+INSERT IGNORE INTO `products` (`id`, `name`, `promotion_id`, `currency_id`, `company_id`, `category_id`) VALUES
 (1, 'Airpods 2 FCO+ (B24)', 1, 1, 1, 1),
 (2, 'Watch Series 9 (45mm)', 2, 2, 1, 2),
 (3, 'Airpods 2 FCO + Watch', NULL, 3, 1, 3),
@@ -218,7 +218,7 @@ INSERT INTO `products` (`id`, `name`, `promotion_id`, `currency_id`, `company_id
 -- Структура таблицы `product_characteristics`
 --
 
-CREATE TABLE `product_characteristics` (
+CREATE TABLE IF NOT EXISTS `product_characteristics` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
   `characteristic_id` int NOT NULL,
@@ -229,7 +229,7 @@ CREATE TABLE `product_characteristics` (
 -- Дамп данных таблицы `product_characteristics`
 --
 
-INSERT INTO `product_characteristics` (`id`, `product_id`, `characteristic_id`, `value`) VALUES
+INSERT IGNORE INTO `product_characteristics` (`id`, `product_id`, `characteristic_id`, `value`) VALUES
 (1, 1, 1, 'Мощная'),
 (2, 2, 2, 'Черный'),
 (3, 3, 3, '1.4'),
@@ -242,7 +242,7 @@ INSERT INTO `product_characteristics` (`id`, `product_id`, `characteristic_id`, 
 -- Структура таблицы `product_comments`
 --
 
-CREATE TABLE `product_comments` (
+CREATE TABLE IF NOT EXISTS `product_comments` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
   `user_id` int NOT NULL,
@@ -254,7 +254,7 @@ CREATE TABLE `product_comments` (
 -- Дамп данных таблицы `product_comments`
 --
 
-INSERT INTO `product_comments` (`id`, `product_id`, `user_id`, `comment`, `created_at`) VALUES
+INSERT IGNORE INTO `product_comments` (`id`, `product_id`, `user_id`, `comment`, `created_at`) VALUES
 (1, 1, 1, 'Отличный смартфон, рекомендую!', '2024-08-30 07:00:00'),
 (2, 2, 2, 'Супер ноутбук, идеален для работы.', '2024-08-29 08:00:00'),
 (3, 3, 3, 'Неудобные наушники, вернул обратно.', '2024-08-28 09:00:00');
@@ -265,7 +265,7 @@ INSERT INTO `product_comments` (`id`, `product_id`, `user_id`, `comment`, `creat
 -- Структура таблицы `product_images`
 --
 
-CREATE TABLE `product_images` (
+CREATE TABLE IF NOT EXISTS `product_images` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
   `image_id` int NOT NULL
@@ -275,7 +275,7 @@ CREATE TABLE `product_images` (
 -- Дамп данных таблицы `product_images`
 --
 
-INSERT INTO `product_images` (`id`, `product_id`, `image_id`) VALUES
+INSERT IGNORE INTO `product_images` (`id`, `product_id`, `image_id`) VALUES
 (1, 1, 1),
 (2, 1, 2),
 (4, 1, 1),
@@ -289,7 +289,7 @@ INSERT INTO `product_images` (`id`, `product_id`, `image_id`) VALUES
 -- Структура таблицы `promotions`
 --
 
-CREATE TABLE `promotions` (
+CREATE TABLE IF NOT EXISTS `promotions` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `value` int NOT NULL,
@@ -300,7 +300,7 @@ CREATE TABLE `promotions` (
 -- Дамп данных таблицы `promotions`
 --
 
-INSERT INTO `promotions` (`id`, `name`, `value`, `bool`) VALUES
+INSERT IGNORE INTO `promotions` (`id`, `name`, `value`, `bool`) VALUES
 (1, 'Скидка 10%', 10, 1),
 (2, 'Промо-код ЗИМНИЙ2024', 15, 0),
 (3, 'Акция «Купи один — получи второй бесплатно»', 0, 1);
@@ -311,7 +311,7 @@ INSERT INTO `promotions` (`id`, `name`, `value`, `bool`) VALUES
 -- Структура таблицы `users`
 --
 
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL,
   `telegram_id` int NOT NULL
@@ -321,7 +321,7 @@ CREATE TABLE `users` (
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `telegram_id`) VALUES
+INSERT IGNORE INTO `users` (`id`, `name`, `telegram_id`) VALUES
 (1, 'Иван', 123456789),
 (2, 'Мария', 987654321),
 (3, 'Петр', 111223344);
