@@ -6,7 +6,7 @@ from src.utils.exam_services import check_for_duplicates, check_if_exists
 
 def get_all_characteristics():
     characteristics = characteristic_repository.get_all_characteristics()
-    return [Сharacteristics(**characteristic) for characteristic in characteristics]
+    return [Characteristics(**characteristic) for characteristic in characteristics]
 
 
 def get_characteristic_by_id(characteristic_id: int):

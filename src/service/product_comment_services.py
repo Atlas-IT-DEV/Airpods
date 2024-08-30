@@ -32,7 +32,7 @@ def update_product_comment(product_comment_id: int, product_comment: ProductComm
     return {"message": "Order comment updated successfully"}
 
 
-def delete_order_comment(order_comment_id: int):
-    existing_product_comment = get_product_comment_by_id(order_comment_id)
-    order_comment_repository.delete_order_comment(order_comment_id)
-    return {"message": "Order comment deleted successfully"}
+def delete_product_comment(product_comment_id: int):
+    existing_product_comment = get_product_comment_by_id(product_comment_id)
+    product_comment_repository.delete_product_comment(product_comment_id)
+    return {"message": "Product comment deleted successfully"}

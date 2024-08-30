@@ -1,5 +1,5 @@
 from pydantic import (BaseModel, Field, StrictStr, Json, condecimal,
-                      StrictInt, PrivateAttr, SecretBytes, StrictBytes, StrictBool, root_validator)
+                      StrictInt, PrivateAttr, SecretBytes, StrictBytes, StrictBool, model_validator)
 from enum import Enum
 from typing import Optional, List
 from datetime import datetime
@@ -194,7 +194,7 @@ class Promotions(BaseModel):
                                 examples=[True],
                                 description="Boolean value of promotion category")
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     def convert_bool(cls, values):
         if 'bool' in values and isinstance(values['bool'], int):
             values['bool'] = bool(values['bool'])

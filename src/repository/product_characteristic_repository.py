@@ -33,7 +33,7 @@ def update_product_characteristic(product_characteristic_id: int, product_charac
     db.execute_query(query, params)
 
 
-def delete_order(product_characteristic_id: int):
+def delete_product_characteristic(product_characteristic_id: int):
     query = "DELETE FROM product_characteristics WHERE id=%s"
     db.execute_query(query, (product_characteristic_id,))
 

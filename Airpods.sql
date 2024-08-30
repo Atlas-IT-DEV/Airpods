@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Авг 27 2024 г., 01:07
+-- Время создания: Авг 30 2024 г., 02:42
 -- Версия сервера: 8.0.30
 -- Версия PHP: 7.2.34
 
@@ -29,15 +29,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categories` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `categories`
 --
 
 INSERT INTO `categories` (`id`, `name`) VALUES
-(1, 'Набор');
+(1, 'Наушники'),
+(2, 'Часы'),
+(3, 'Наборы'),
+(4, 'Аксессуары'),
+(5, 'Dyson');
 
 -- --------------------------------------------------------
 
@@ -47,16 +51,20 @@ INSERT INTO `categories` (`id`, `name`) VALUES
 
 CREATE TABLE `characteristics` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `type` enum('INT','VARCHAR','BOOLEAN','FLOAT','TEXT','TIMESTAMP','DECIMAL','JSON') COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `name` varchar(255) NOT NULL,
+  `type` enum('INT','VARCHAR','BOOLEAN','FLOAT','TEXT','TIMESTAMP','DECIMAL','JSON') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `characteristics`
 --
 
 INSERT INTO `characteristics` (`id`, `name`, `type`) VALUES
-(1, 'Размер', 'INT');
+(1, 'Прошивка', 'VARCHAR'),
+(2, 'Цвет', 'VARCHAR'),
+(3, 'Вес', 'FLOAT'),
+(4, 'Автономность', 'INT'),
+(5, 'Громкость', 'INT');
 
 -- --------------------------------------------------------
 
@@ -68,21 +76,7 @@ CREATE TABLE `comment_images` (
   `id` int NOT NULL,
   `comment_id` int NOT NULL,
   `image_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Дамп данных таблицы `comment_images`
---
-
-INSERT INTO `comment_images` (`id`, `comment_id`, `image_id`) VALUES
-(1, 1, 14),
-(2, 1, 15),
-(3, 1, 16),
-(4, 1, 17),
-(5, 1, 18),
-(6, 1, 19),
-(7, 1, 20),
-(8, 1, 21);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -92,16 +86,17 @@ INSERT INTO `comment_images` (`id`, `comment_id`, `image_id`) VALUES
 
 CREATE TABLE `companies` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text COLLATE utf8mb4_general_ci
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `name` varchar(255) NOT NULL,
+  `description` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `companies`
 --
 
 INSERT INTO `companies` (`id`, `name`, `description`) VALUES
-(1, 'Apple', 'Производитель электроники');
+(1, 'Apple', 'Производитель электроники'),
+(2, 'Dyson', 'Производитель бытовой техники');
 
 -- --------------------------------------------------------
 
@@ -114,14 +109,18 @@ CREATE TABLE `currencies` (
   `ru` int NOT NULL,
   `eu` int NOT NULL,
   `br` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `currencies`
 --
 
 INSERT INTO `currencies` (`id`, `ru`, `eu`, `br`) VALUES
-(1, 1000, 30, 30);
+(1, 4250, 30, 20),
+(2, 2000, 50, 30),
+(3, 1500, 40, 25),
+(4, 5000, 50, 25),
+(5, 1050, 20, 25);
 
 -- --------------------------------------------------------
 
@@ -131,32 +130,17 @@ INSERT INTO `currencies` (`id`, `ru`, `eu`, `br`) VALUES
 
 CREATE TABLE `images` (
   `id` int NOT NULL,
-  `url` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `url` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `images`
 --
 
 INSERT INTO `images` (`id`, `url`) VALUES
-(4, '/product/861d0d49-c5c7-4f94-9630-b93fb14b2222.jpg'),
-(5, '/product/ef412bb6-9b0c-4721-bf02-d59c18974c88.png'),
-(6, '/comment/02f73f60-d72a-4c87-a050-678eff2351c3.jpg'),
-(7, '/comment/2cc3f21d-2d48-4eca-9dc5-a461b621a7ef.jpg'),
-(8, '/comment/f3fe9811-b699-47ba-a84c-5c808d8ea18e.jpg'),
-(9, '/comment/b27871fd-ed09-46be-99a0-98a78948f483.jpg'),
-(10, '/comment/5e350db7-135d-4d9d-b631-8af6d6c205b2.jpg'),
-(11, '/comment/dc6656b0-2166-47b8-b715-ce234a100c86.jpg'),
-(12, '/comment/0035502d-187a-485b-9a66-53bfa5cf94c1.jpg'),
-(13, '/comment/3d42477a-4fd6-438a-a6f6-4fc8e7f4f983.jpg'),
-(14, '/comment/4f7dbbba-71e7-44c2-9b05-a07fab27607a.jpg'),
-(15, '/comment/a0bf6233-c3b4-4a46-a1c9-1719f6ccc928.png'),
-(16, '/comment/70a2c2de-74a8-455e-bd98-bd3f59d5e57d.jpg'),
-(17, '/comment/6ddc330b-5354-4bf5-81e6-4e880f866ecc.png'),
-(18, '/comment/89299888-5230-4f54-906c-de7b27f34f22.jpg'),
-(19, '/comment/4327ae61-ef62-4c76-8162-c09edf2083ee.png'),
-(20, '/comment/40b403e3-4479-4dcd-af6b-c397fd77fdc0.jpg'),
-(21, '/comment/45454951-9fb1-4acb-81ba-c988c5b12444.png');
+(1, 'https://example.com/image1.jpg'),
+(2, 'https://example.com/image2.jpg'),
+(3, 'https://example.com/image3.jpg');
 
 -- --------------------------------------------------------
 
@@ -169,7 +153,16 @@ CREATE TABLE `orders` (
   `user_id` int NOT NULL,
   `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `total_price` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Дамп данных таблицы `orders`
+--
+
+INSERT INTO `orders` (`id`, `user_id`, `date`, `total_price`) VALUES
+(1, 1, '2024-08-29 23:41:51', 12000),
+(2, 2, '2024-08-29 23:41:51', 15000),
+(3, 3, '2024-08-29 23:41:51', 10000);
 
 -- --------------------------------------------------------
 
@@ -182,7 +175,16 @@ CREATE TABLE `order_products` (
   `order_id` int NOT NULL,
   `product_id` int NOT NULL,
   `quantity` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Дамп данных таблицы `order_products`
+--
+
+INSERT INTO `order_products` (`id`, `order_id`, `product_id`, `quantity`) VALUES
+(1, 1, 1, 1),
+(2, 1, 2, 1),
+(3, 2, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -192,19 +194,23 @@ CREATE TABLE `order_products` (
 
 CREATE TABLE `products` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
   `promotion_id` int DEFAULT NULL,
   `currency_id` int NOT NULL,
   `company_id` int NOT NULL,
   `category_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `products`
 --
 
 INSERT INTO `products` (`id`, `name`, `promotion_id`, `currency_id`, `company_id`, `category_id`) VALUES
-(1, 'Пюрешка с коклеткой', 1, 1, 1, 1);
+(1, 'Airpods 2 FCO+ (B24)', 1, 1, 1, 1),
+(2, 'Watch Series 9 (45mm)', 2, 2, 1, 2),
+(3, 'Airpods 2 FCO + Watch', NULL, 3, 1, 3),
+(4, 'Адаптер зарядки 20W USB-C FCO', NULL, 4, 1, 4),
+(5, 'Стайлер Dyson HS05 Long Blue', NULL, 5, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -216,15 +222,19 @@ CREATE TABLE `product_characteristics` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
   `characteristic_id` int NOT NULL,
-  `value` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `product_characteristics`
 --
 
 INSERT INTO `product_characteristics` (`id`, `product_id`, `characteristic_id`, `value`) VALUES
-(1, 1, 1, '35');
+(1, 1, 1, 'Мощная'),
+(2, 2, 2, 'Черный'),
+(3, 3, 3, '1.4'),
+(4, 4, 4, '50'),
+(5, 5, 5, '20');
 
 -- --------------------------------------------------------
 
@@ -236,19 +246,18 @@ CREATE TABLE `product_comments` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `comment` text COLLATE utf8mb4_general_ci NOT NULL,
+  `comment` text NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `product_comments`
 --
 
 INSERT INTO `product_comments` (`id`, `product_id`, `user_id`, `comment`, `created_at`) VALUES
-(1, 1, 1, 'jenfjnaofnaonfov', '2024-08-26 21:22:41'),
-(2, 1, 1, 'jenfjnaofnaonfov', '2024-08-26 21:22:41'),
-(3, 1, 1, 'jenfjnaofnaonfov', '2024-08-26 21:22:41'),
-(4, 1, 1, 'jenfjnaofnaonfov', '2024-08-26 21:22:41');
+(1, 1, 1, 'Отличный смартфон, рекомендую!', '2024-08-30 07:00:00'),
+(2, 2, 2, 'Супер ноутбук, идеален для работы.', '2024-08-29 08:00:00'),
+(3, 3, 3, 'Неудобные наушники, вернул обратно.', '2024-08-28 09:00:00');
 
 -- --------------------------------------------------------
 
@@ -260,15 +269,19 @@ CREATE TABLE `product_images` (
   `id` int NOT NULL,
   `product_id` int NOT NULL,
   `image_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `product_images`
 --
 
 INSERT INTO `product_images` (`id`, `product_id`, `image_id`) VALUES
-(4, 1, 4),
-(5, 1, 5);
+(1, 1, 1),
+(2, 1, 2),
+(4, 1, 1),
+(5, 1, 2),
+(3, 2, 3),
+(6, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -278,17 +291,19 @@ INSERT INTO `product_images` (`id`, `product_id`, `image_id`) VALUES
 
 CREATE TABLE `promotions` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
   `value` int NOT NULL,
   `bool` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `promotions`
 --
 
 INSERT INTO `promotions` (`id`, `name`, `value`, `bool`) VALUES
-(1, 'Скидка 8 процентов', 2, 1);
+(1, 'Скидка 10%', 10, 1),
+(2, 'Промо-код ЗИМНИЙ2024', 15, 0),
+(3, 'Акция «Купи один — получи второй бесплатно»', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -298,16 +313,18 @@ INSERT INTO `promotions` (`id`, `name`, `value`, `bool`) VALUES
 
 CREATE TABLE `users` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
   `telegram_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Дамп данных таблицы `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `telegram_id`) VALUES
-(1, 'Коля', 1);
+(1, 'Иван', 123456789),
+(2, 'Мария', 987654321),
+(3, 'Петр', 111223344);
 
 --
 -- Индексы сохранённых таблиц
@@ -420,85 +437,85 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `characteristics`
 --
 ALTER TABLE `characteristics`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `comment_images`
 --
 ALTER TABLE `comment_images`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `currencies`
 --
 ALTER TABLE `currencies`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `order_products`
 --
 ALTER TABLE `order_products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `product_characteristics`
 --
 ALTER TABLE `product_characteristics`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `product_comments`
 --
 ALTER TABLE `product_comments`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `promotions`
 --
 ALTER TABLE `promotions`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

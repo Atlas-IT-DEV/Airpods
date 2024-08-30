@@ -36,6 +36,7 @@ def create_product(product: Products):
 
 
 def update_product(product_id: int, product: Products):
+    existing_product = get_product_by_id(product_id)
     check_for_duplicates(
         get_all=get_all_products,
         check_id=product_id,
