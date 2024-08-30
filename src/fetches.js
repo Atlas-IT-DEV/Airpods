@@ -1,14 +1,13 @@
-export const GetAllUsers = () => {
-  fetch("http://5.180.174.189:8008/users/", {
+const baseUrl = 'http://5.180.174.189:8008/'
+export const GetAllUsers = async () => {
+  const response = await fetch(baseUrl + "users/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
   })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  const result = await response.json()
+  return result
 };
 
 export const GetPromotion = () => {

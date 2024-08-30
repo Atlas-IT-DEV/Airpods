@@ -6,6 +6,7 @@ import TeletypeCarousel from "./../components/teletypeCarousel.jsx";
 import ReviewCarousel from "./../components/reviewCarousel.jsx";
 import AboutOptom from "../components/aboutOptom.jsx";
 import ConnectionManagerButton from "../components/connectionManagerButton.jsx";
+import { GetAllUsers } from "./../fetches.js";
 
 const HeaderNotification = lazy(() =>
   import("../components/HeaderNotification.jsx")
@@ -45,10 +46,21 @@ fetch("https://pop.applepodsblack.ru/api/carts")
   });
 function MainPage() {
   const [notification, setNotification] = useState("");
+
+
+  //пример 
+  const [test, setTest] = useState("asdasdasdasds");
+
+
+  const getTest = async () => {
+    const data = await GetAllUsers();
+    setTest(String(data));
+  };
   useEffect(() => {
     if (window.GlobalShoppingCart.length != 0)
       setNotification(<HeaderNotification />);
-  });
+  }, []);
+
   return (
     <div
       id="main"
@@ -57,6 +69,10 @@ function MainPage() {
       }}
     >
       {notification}
+      <p style={{ color: "red" }}>{test}</p>
+      <button style={{ color: "red" }} onClick={() => getTest()}>
+        aasdasdasd
+      </button>
       <Suspense fallback={<div></div>}>
         <HeaderCarousel />
       </Suspense>
