@@ -157,7 +157,7 @@ class Products(BaseModel):
                             alias="name",
                             examples=["Пюрешка с коклеткой"],
                             description="Name of product")
-    PromotionID: StrictInt = Field(None,
+    PromotionID: Optional[StrictInt] = Field(None,
                                 alias="promotion_id",
                                 examples=[1],
                                 description="PromotionID of product")

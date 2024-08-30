@@ -43,7 +43,7 @@ class CreateSQL:
                             cursor.execute(statement)
                             log.info("Executed SQL statement: %s", statement)
                         except pymysql.MySQLError as e:
-                            log.warning("SQL Error: %s", exc_info=e)
+                            log.warning("SQL Warning: %s")
                             # Логирование неудачных запросов может помочь в отладке
 
                 self.connection.commit()
