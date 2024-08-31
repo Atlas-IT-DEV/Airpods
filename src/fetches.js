@@ -130,8 +130,184 @@ export const getAllProducts = async () => {
   const result = await response.json();
   return result;
 };
- //формула на любой пост гет по айди просто в ссылку вставляяешь после слеша айди того че тебе нало 
-export const createComment = async () => {
+
+export const createUser = async () => {
+  const response = await fetch(baseUrl + "/users/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      name: "",
+      telegram_id: 0,
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createPromotion = async () => {
+  const response = await fetch(baseUrl + "/promotions/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      name: "",
+      value: 0,
+      bool: true,
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createCurrency = async () => {
+  const response = await fetch(baseUrl + "/currencies/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      ru: 0,
+      eu: 0,
+      br: 0,
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createCategory = async () => {
+  const response = await fetch(baseUrl + "/categories/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      name: "",
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createCharacteristic = async () => {
+  const response = await fetch(baseUrl + "/characteristics/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      name: "",
+      type: "",
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createCompany = async () => {
+  const response = await fetch(baseUrl + "/companies/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      name: "0",
+      description: "",
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createProductComment = async () => {
+  const response = await fetch(baseUrl + "/product_comments/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      product_id: 0,
+      user_id: 0,
+      comment: "",
+      created_at: "",
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createOrderProduct = async () => {
+  const response = await fetch(baseUrl + "/orders_products/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      order_id: 0,
+      product_id: 0,
+      quantity: 0,
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createOrder = async () => {
+  const response = await fetch(baseUrl + "/orders/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      user_id: 0,
+      date: "",
+      total_price: 0,
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createProductCharacteristic = async () => {
+  const response = await fetch(baseUrl + "/product_characteristics/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      product_id: 0,
+      characteristic_id: 0,
+      value: "",
+    }),
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const createProduct = async () => {
   const response = await fetch(baseUrl + "/products/", {
     method: "POST",
     headers: {
@@ -140,12 +316,14 @@ export const createComment = async () => {
     },
     body: JSON.stringify({
       id: 0,
-      product_id: 2,
-      user_id: 2,
-      comment: "jenfjnZxaofnZxcsdaonfov",
-      created_at: "2024-08-31 12:18:31.270745",
+      name: "",
+      promotion_id: 0,
+      currency_id: 0,
+      company_id: 0,
+      category_id: 0,
     }),
   });
   const result = await response.json();
   return result;
 };
+//формула на любой пост гет по айди просто в ссылку вставляяешь после слеша айди того че тебе нало
