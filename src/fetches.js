@@ -1,154 +1,132 @@
-const baseUrl = 'http://5.180.174.189:8008/'
-export const GetAllUsers = async () => {
-  const response = await fetch(baseUrl + "users/", {
+const baseUrl = "http://5.180.174.189:8008";
+export const getAllUsers = async () => {
+  const response = await fetch(baseUrl + "/users/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-  const result = await response.json()
-  return result
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const GetPromotion = () => {
-  fetch("http://5.180.174.189:8008/promotions/", {
+export const getAllPromotions = async () => {
+  const response = await fetch(baseUrl + "/promotions/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const GetCurrency = () => {
-  fetch("http://5.180.174.189:8008/currencies/", {
+export const getAllCurrencies = async () => {
+  const response = await fetch(baseUrl + "/currencies/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const GetCategory = () => {
-  fetch("http://5.180.174.189:8008/categories/", {
+export const getAllCategories = async () => {
+  const response = await fetch(baseUrl + "/categories/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const GetCharacteristic = () => {
-  fetch("http://5.180.174.189:8008/characteristics/", {
+export const getAllCharacteristics = async () => {
+  const response = await fetch(baseUrl + "/characteristics/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const GetCompany = () => {
-  fetch("http://5.180.174.189:8008/companies/", {
+export const getAllCompanies = async () => {
+  const response = await fetch(baseUrl + "/companies/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const GetImage = () => {
-  fetch("http://5.180.174.189:8008/images/", {
+export const getAllImages = async () => {
+  const response = await fetch(baseUrl + "/images/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const ProductComment = () => {
-  fetch("http://5.180.174.189:8008/product_comments/", {
+export const getAllProductComments = async () => {
+  const response = await fetch(baseUrl + "/product_comments/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const OrderProduct = () => {
-  fetch("http://5.180.174.189:8008/orders_products/", {
+export const getAllOrderProducts = async () => {
+  const response = await fetch(baseUrl + "/orders_products/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const Order = () => {
-  fetch("http://5.180.174.189:8008/orders/", {
+export const getAllOrders = async () => {
+  const response = await fetch(baseUrl + "/orders/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const ProductCharacteristic = () => {
-  fetch("http://5.180.174.189:8008/product_characteristics/", {
+export const getAllProductCharacteristics = async () => {
+  const response = await fetch(baseUrl + "/product_characteristics/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };
 
-export const Product = () => {
-  fetch("http://5.180.174.189:8008/products/", {
+export const getAllProducts = async () => {
+  const response = await fetch(baseUrl + "/products/", {
     method: "GET",
     headers: {
       accept: "application/json",
     },
-  })
-    .then((response) => response.json())
-    .then((result) => {
-      return result;
-    });
+  });
+  const result = await response.json();
+  return result;
 };

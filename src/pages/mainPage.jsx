@@ -6,7 +6,7 @@ import TeletypeCarousel from "./../components/teletypeCarousel.jsx";
 import ReviewCarousel from "./../components/reviewCarousel.jsx";
 import AboutOptom from "../components/aboutOptom.jsx";
 import ConnectionManagerButton from "../components/connectionManagerButton.jsx";
-import { GetAllUsers } from "./../fetches.js";
+import { getAllUsers } from "./../fetches.js";
 
 const HeaderNotification = lazy(() =>
   import("../components/HeaderNotification.jsx")
@@ -47,14 +47,12 @@ fetch("https://pop.applepodsblack.ru/api/carts")
 function MainPage() {
   const [notification, setNotification] = useState("");
 
-
-  //пример 
+  //пример
   const [test, setTest] = useState("asdasdasdasds");
 
-
   const getTest = async () => {
-    const data = await GetAllUsers();
-    setTest(String(data));
+    const data = await getAllUsers();
+    setTest(console.log(data));
   };
   useEffect(() => {
     if (window.GlobalShoppingCart.length != 0)
