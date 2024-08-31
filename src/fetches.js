@@ -130,3 +130,22 @@ export const getAllProducts = async () => {
   const result = await response.json();
   return result;
 };
+ //формула на любой пост гет по айди просто в ссылку вставляяешь после слеша айди того че тебе нало 
+export const createComment = async () => {
+  const response = await fetch(baseUrl + "/products/", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({
+      id: 0,
+      product_id: 2,
+      user_id: 2,
+      comment: "jenfjnZxaofnZxcsdaonfov",
+      created_at: "2024-08-31 12:18:31.270745",
+    }),
+  });
+  const result = await response.json();
+  return result;
+};

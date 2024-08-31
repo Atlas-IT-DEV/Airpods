@@ -48,12 +48,6 @@ function MainPage() {
   const [notification, setNotification] = useState("");
 
   //пример
-  const [test, setTest] = useState("asdasdasdasds");
-
-  const getTest = async () => {
-    const data = await getAllUsers();
-    setTest(console.log(data));
-  };
   useEffect(() => {
     if (window.GlobalShoppingCart.length != 0)
       setNotification(<HeaderNotification />);
@@ -67,10 +61,6 @@ function MainPage() {
       }}
     >
       {notification}
-      <p style={{ color: "red" }}>{test}</p>
-      <button style={{ color: "red" }} onClick={() => getTest()}>
-        aasdasdasd
-      </button>
       <Suspense fallback={<div></div>}>
         <HeaderCarousel />
       </Suspense>
