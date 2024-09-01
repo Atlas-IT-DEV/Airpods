@@ -326,4 +326,170 @@ export const createProduct = async () => {
   const result = await response.json();
   return result;
 };
+
+export const getUserById = async (id) => {
+  const response = await fetch(baseUrl + `/users/user_id/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getUserByTelegramId = async (id) => {
+  const response = await fetch(baseUrl + `/users/telegram_id/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getPromotionById = async (id) => {
+  const response = await fetch(baseUrl + `/promotions/promotion_id/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getPromotionByName = async (name) => {
+  const response = await fetch(baseUrl + `/promotions/promotion_name/${name}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getCurrencyById = async (id) => {
+  const response = await fetch(baseUrl + `/currencies/currency_id/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getCategoryById = async (id) => {
+  const response = await fetch(baseUrl + `/categories/category_id/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getCharacteristicById = async (id) => {
+  const response = await fetch(
+    baseUrl + `/characteristics/characteristic_id/${id}`,
+    {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+      },
+    }
+  );
+  const result = await response.json();
+  return result;
+};
+
+export const getCompanyById = async (id) => {
+  const response = await fetch(baseUrl + `/companies/company_id/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getProductCommentById = async (id) => {
+  const response = await fetch(
+    baseUrl + `/product_comments/product_comment_id/${id}`,
+    {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+      },
+    }
+  );
+  const result = await response.json();
+  return result;
+};
+
+export const getOrderProductById = async (id) => {
+  const response = await fetch(
+    baseUrl + `/orders_products/order_product_id/${id}`,
+    {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+      },
+    }
+  );
+  const result = await response.json();
+  return result;
+};
+
+export const getOrderById = async (id) => {
+  const response = await fetch(baseUrl + `/orders/order_id/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getOrderByUserId = async (user_id) => {
+  const response = await fetch(baseUrl + `/orders/user_id/${user_id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
+
+export const getProductCharacteristicById = async (id) => {
+  const response = await fetch(
+    baseUrl + `/product_characteristics/product_characteristic_id/${id}`,
+    {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+      },
+    }
+  );
+  const result = await response.json();
+  return result;
+};
+
+export const getProductById = async (id) => {
+  const response = await fetch(baseUrl + `/products/product_id/${id}`, {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  const result = await response.json();
+  return result;
+};
 //формула на любой пост гет по айди просто в ссылку вставляяешь после слеша айди того че тебе нало
