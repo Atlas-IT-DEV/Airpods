@@ -25,21 +25,21 @@ def get_image_product_by_product_id(product_id: int):
 
 
 def create_image_product(image_product: ProductImages):
-    existing_product = get_product_by_id(image_product.ProductID)
-    existing_image = get_image_by_id(image_product.ImageID)
+    get_product_by_id(image_product.ProductID)
+    get_image_by_id(image_product.ImageID)
     image_product_id = image_product_repository.create_image_product(image_product)
     return get_image_product_by_id(image_product_id)
 
 
 def update_image_product(image_product_id: int, image_product: ProductImages):
-    existing_image_product = get_image_product_by_id(image_product_id)
-    existing_product = get_product_by_id(image_product.ProductID)
-    existing_image = get_image_by_id(image_product.ImageID)
+    get_image_product_by_id(image_product_id)
+    get_product_by_id(image_product.ProductID)
+    get_image_by_id(image_product.ImageID)
     image_product_repository.update_image_product(image_product_id, image_product)
     return {"message": "Image product updated successfully"}
 
 
 def delete_image_product(image_product_id: int):
-    existing_image_product = get_image_product_by_id(image_product_id)
+    get_image_product_by_id(image_product_id)
     image_product_repository.delete_image_product(image_product_id)
     return {"message": "Image product deleted successfully"}
