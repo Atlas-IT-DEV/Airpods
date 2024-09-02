@@ -137,11 +137,6 @@ CREATE TABLE IF NOT EXISTS `images` (
 -- Дамп данных таблицы `images`
 --
 
-INSERT IGNORE INTO `images` (`id`, `url`) VALUES
-(1, 'https://example.com/image1.jpg'),
-(2, 'https://example.com/image2.jpg'),
-(3, 'https://example.com/image3.jpg');
-
 -- --------------------------------------------------------
 
 --

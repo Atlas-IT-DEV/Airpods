@@ -516,7 +516,7 @@ async def get_all_products():
         raise ex
 
 
-@app.get("/products/product_id/{product_id}", response_model=Products, tags=["Product"])
+@app.get("/products/product_id/{product_id}", response_model=Dict, tags=["Product"])
 async def get_product_by_id(product_id: int):
     """
     Route for getting product by ProductID.
@@ -526,7 +526,7 @@ async def get_product_by_id(product_id: int):
     :return: response model Products.
     """
     try:
-        return product_services.get_product_by_id(product_id)
+        return product_services.get_product_by_id(product_id, dirs=True)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex

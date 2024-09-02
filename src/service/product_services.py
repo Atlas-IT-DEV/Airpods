@@ -49,11 +49,41 @@ def get_all_products(dirs: bool = False):
         return models
 
 
-def get_product_by_id(product_id: int):
+def get_product_by_id(product_id: int, dirs: bool = False):
+    # Получаем продукт из репозитория по ID
     product = product_repository.get_product_by_id(product_id)
+    # Если продукт не найден, выбрасываем исключение
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Product not found')
-    return Products(**product) if product else None
+    # Обрабатываем currency_id и заменяем его на объект валюты
+    currency_id = product.get("currency_id")
+    if currency_id:
+        currency = get_currency_by_id(currency_id)
+        product["currency"] = currency.model_dump(by_alias=True)  # Преобразуем объект валюты в словарь с алиасами
+        del product["currency_id"]  # Удаляем старый ключ 'currency_id'
+    # Обрабатываем promotion_id и заменяем его на объект акции
+    promotion_id = product.get("promotion_id")
+    if promotion_id:
+        promotion = get_promotion_by_id(promotion_id)
+        product["promotion"] = promotion.model_dump(by_alias=True)  # Преобразуем объект акции в словарь с алиасами
+        del product["promotion_id"]  # Удаляем старый ключ 'promotion_id'
+    # Получаем список изображений по ID продукта и выбираем первое изображение
+    image_ids = get_image_product_by_product_id(product.get("id"))
+    product_first_image_id = image_ids[0].get("image_id") if image_ids else None
+    # Обрабатываем URL для первого изображения
+    if product_first_image_id is not None:
+        try:
+            url = get_image_by_id(product_first_image_id)
+            product["url"] = return_url_object(url)
+        except HTTPException:
+            product["url"] = None
+    else:
+        product["url"] = None
+    # Возвращаем либо модель продукта, либо словарь, в зависимости от значения параметра dirs
+    if dirs:
+        return product  # Возвращаем словарь с преобразованным продуктом
+    else:
+        return Products(**product) if product else None
 
 
 def create_product(product: Products):
