@@ -90,6 +90,20 @@ async def image_download_product(product_id: int):
         raise ex
 
 
+@app.delete("/image_delete/product", response_model=Dict, tags=["ImageService"])
+async def image_delete_product(product_id: int, image_id: int):
+    """
+    Route for download product into basedata.
+
+    :return: response model Dict.
+    """
+    try:
+        return await file_services.delete_product(product_id, image_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
 @app.post("/image_upload/comment", response_model=list[CommentImages], tags=["ImageService"])
 async def image_upload_comment(files: list[UploadFile] = File(...), comment_id: int = Form(...)):
     """
@@ -107,12 +121,26 @@ async def image_upload_comment(files: list[UploadFile] = File(...), comment_id: 
 @app.get("/image_download/comment", response_model=Dict, tags=["ImageService"])
 async def image_download_comment(comment_id: int):
     """
-    Route for download product into basedata.
+    Route for download comment into basedata.
 
     :return: response model Dict.
     """
     try:
         return file_services.download_comment(comment_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.delete("/image_delete/comment", response_model=Dict, tags=["ImageService"])
+async def image_delete_comment(comment_id: int, image_id: int):
+    """
+    Route for download comment into basedata.
+
+    :return: response model Dict.
+    """
+    try:
+        return await file_services.delete_comment(comment_id, image_id)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
@@ -474,7 +502,7 @@ async def delete_image(image_id):
         raise ex
 
 
-@app.get("/products/", response_model=list[Products], tags=["Product"])
+@app.get("/products/", response_model=list[Dict], tags=["Product"])
 async def get_all_products():
     """
     Route for getting all products from basedata.
@@ -482,7 +510,7 @@ async def get_all_products():
     :return: response model List[Products].
     """
     try:
-        return product_services.get_all_products()
+        return product_services.get_all_products(dirs=True)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
@@ -728,7 +756,8 @@ async def get_all_characteristics():
         raise ex
 
 
-@app.get("/characteristics/characteristic_id/{characteristic_id}", response_model=Characteristics, tags=["Characteristic"])
+@app.get("/characteristics/characteristic_id/{characteristic_id}", response_model=Characteristics,
+         tags=["Characteristic"])
 async def get_characteristic_by_id(characteristic_id: int):
     """
     Route for get characteristic by CharacteristicID.
@@ -1099,7 +1128,8 @@ async def get_all_product_characteristics():
         raise ex
 
 
-@app.get("/product_characteristics/product_characteristic_id/{product_characteristic_id}", response_model=ProductCharacteristics,
+@app.get("/product_characteristics/product_characteristic_id/{product_characteristic_id}",
+         response_model=ProductCharacteristics,
          tags=["ProductCharacteristic"])
 async def get_product_characteristic_by_id(product_characteristic_id: int):
     """
@@ -1145,7 +1175,7 @@ async def update_product_characteristic(product_characteristic_id: int, product_
     """
     try:
         return product_characteristic_services.update_product_characteristic(product_characteristic_id,
-                                                                                   product_characteristic)
+                                                                             product_characteristic)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
@@ -1180,14 +1210,13 @@ def run_server():
 
 
 if __name__ == "__main__":
-
     # Создание датабазы и таблиц, если они не существуют
     log.info("Start create/update database")
     from create_sql import CreateSQL
+
     create_sql = CreateSQL()
     create_sql.read_sql()
 
     # Запуск сервера и бота
     log.info("Start run server")
     run_server()
-

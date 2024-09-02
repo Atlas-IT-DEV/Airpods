@@ -32,7 +32,7 @@ def update_image_product(image_product_id: int, image_product: ProductImages):
     db.execute_query(query, params)
 
 
-def delete_order(image_product_id: int):
+def delete_image_product(image_product_id: int):
     query = "DELETE FROM product_images WHERE id=%s"
     db.execute_query(query, (image_product_id,))
 

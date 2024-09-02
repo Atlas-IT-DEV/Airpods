@@ -201,7 +201,6 @@ class Promotions(BaseModel):
         return values
 
 
-
 class ProductsDict(BaseModel):
     """
     Model of products dict
