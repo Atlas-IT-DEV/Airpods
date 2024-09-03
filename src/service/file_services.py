@@ -3,7 +3,7 @@ import uuid
 from src.service import (user_services, image_services, product_services,
                          image_comment_services, product_comment_services, image_product_services)
 from src.service.image_product_services import get_image_product_by_product_id, delete_image_product
-from src.database.models import Users, Images, Products, CommentImages, ProductImages
+from src.database.models import Users, Images, Products, CommentImages, ProductImages, ImageTypeEnum
 from fastapi import HTTPException, status, UploadFile, File
 from fastapi.responses import FileResponse, JSONResponse
 from src.utils.write_file_into_server import write_file_into_server
@@ -16,7 +16,20 @@ config = Config()
 log = setup_logging()
 
 
-async def upload_product(files: list[UploadFile], product_id: int):
+async def upload_product_main(file: UploadFile, product_id: int):
+    # Проверяем существует ли товар
+    product_services.get_product_by_id(product_id)
+    # Записываем каждый файл на сервер
+    unique_filename = await write_file_into_server("product", file)
+    # Создаем информацию в базе данных о пути изображения
+    image = image_services.create_image(Images(url=f"/product/{unique_filename}"))
+    # Записываем в таблицу связи данные об id изображений для продукта
+    image_product_services.create_image_product(ProductImages(product_id=product_id, image_id=image.ID,
+                                                              image_type=ImageTypeEnum.Main))
+    return image_product_services.get_image_product_by_product_id(product_id)
+
+
+async def upload_product_additional(files: list[UploadFile], product_id: int):
     # Проверяем существует ли товар
     product_services.get_product_by_id(product_id)
     for file in files:
@@ -25,7 +38,8 @@ async def upload_product(files: list[UploadFile], product_id: int):
         # Создаем информацию в базе данных о пути изображения
         image = image_services.create_image(Images(url=f"/product/{unique_filename}"))
         # Записываем в таблицу связи данные об id изображений для продукта
-        image_product_services.create_image_product(ProductImages(product_id=product_id, image_id=image.ID))
+        image_product_services.create_image_product(ProductImages(product_id=product_id, image_id=image.ID,
+                                                                  image_type=ImageTypeEnum.Additional))
     return image_product_services.get_image_product_by_product_id(product_id)
 
 

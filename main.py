@@ -63,15 +63,29 @@ app.openapi_tags = [
 ]
 
 
-@app.post("/image_upload/product", response_model=list[ProductImages], tags=["ImageService"])
-async def image_upload_product(files: list[UploadFile] = File(...), product_id: int = Form(...)):
+@app.post("/image_upload/product/main", response_model=list[ProductImages], tags=["ImageService"])
+async def image_upload_product(file: UploadFile = File(...), product_id: int = Form(...)):
     """
-    Route for uploading multiple images for a product.
+    Route for uploading main images for a product.
 
     :return: response model product [Products].
     """
     try:
-        return await file_services.upload_product(files, product_id)
+        return await file_services.upload_product_main(file, product_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.post("/image_upload/product/additional", response_model=list[ProductImages], tags=["ImageService"])
+async def image_upload_product_additional(files: list[UploadFile] = File(...), product_id: int = Form(...)):
+    """
+    Route for uploading additional images for a product.
+
+    :return: response model product [Products].
+    """
+    try:
+        return await file_services.upload_product_additional(files, product_id)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
@@ -1227,23 +1241,24 @@ async def delete_order_product(order_product_id: int):
         raise ex
 
 
-@app.get("/product_comments/", response_model=list[ProductComments], tags=["ProductComment"])
-async def get_all_product_comments():
+@app.get("/product_comments/", response_model=Union[list[Dict], list[ProductComments]], tags=["ProductComment"])
+async def get_all_product_comments(dirs: bool = False):
     """
     Route for getting all product comments from basedata.
 
     :return: response model List[ProductComments].
     """
     try:
-        return product_comment_services.get_all_product_comments()
+        return product_comment_services.get_all_product_comments(dirs)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
 
 
-@app.get("/product_comments/product_comment_id/{product_comment_id}", response_model=ProductComments,
+@app.get("/product_comments/product_comment_id/{product_comment_id}",
+         response_model=Union[Dict, ProductComments],
          tags=["ProductComment"])
-async def get_product_comment_by_id(product_comment_id: int):
+async def get_product_comment_by_id(product_comment_id: int, dirs: bool = False):
     """
     Route for getting product comment by ProductCommentID.
 
@@ -1252,7 +1267,7 @@ async def get_product_comment_by_id(product_comment_id: int):
     :return: response model ProductComments.
     """
     try:
-        return product_comment_services.get_product_comment_by_id(product_comment_id)
+        return product_comment_services.get_product_comment_by_id(product_comment_id, dirs)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex

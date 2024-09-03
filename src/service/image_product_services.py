@@ -4,6 +4,7 @@ from src.service.image_services import get_image_by_id
 from src.database.models import ProductImages
 from fastapi import HTTPException, status
 from src.utils.exam_services import check_for_duplicates, check_if_exists
+from src.database.models import ImageTypeEnum
 
 
 def get_all_image_products():
@@ -33,7 +34,7 @@ def create_image_product(image_product: ProductImages):
         if el.ProductID == image_product.ProductID:
             if el.ImageID == image_product.ImageID:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Image product already exists')
-            if el.ImageType == "main":
+            if el.ImageType == ImageTypeEnum.Main:
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Just one main image')
     image_product_id = image_product_repository.create_image_product(image_product)
     return get_image_product_by_id(image_product_id)
@@ -49,7 +50,7 @@ def update_image_product(image_product_id: int, image_product: ProductImages):
             if el.ProductID == image_product.ProductID:
                 if el.ImageID == image_product.ImageID:
                     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Image product already exists')
-                if el.ImageType == "main":
+                if el.ImageType == ImageTypeEnum.Main:
                     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Just one main image')
     image_product_repository.update_image_product(image_product_id, image_product)
     return {"message": "Image product updated successfully"}
