@@ -9,6 +9,9 @@ from src.service.company_services import get_company_by_id
 from src.repository.image_product_repository import get_image_product_by_product_id
 from src.utils.return_url_object import return_url_object
 from src.service.image_services import get_image_by_id
+from src.service.characteristic_services import get_characteristic_by_id
+from src.repository.product_characteristic_repository import get_product_characteristic_by_id, \
+    get_product_characteristic_by_product_id
 
 
 def get_all_products(dirs: bool = False):
@@ -52,6 +55,7 @@ def get_all_products(dirs: bool = False):
 def get_product_by_id(product_id: int, dirs: bool = False):
     # Получаем продукт из репозитория по ID
     product = product_repository.get_product_by_id(product_id)
+    model = Products(**product) if product else None
     # Если продукт не найден, выбрасываем исключение
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Product not found')
@@ -67,23 +71,37 @@ def get_product_by_id(product_id: int, dirs: bool = False):
         promotion = get_promotion_by_id(promotion_id)
         product["promotion"] = promotion.model_dump(by_alias=True)  # Преобразуем объект акции в словарь с алиасами
         del product["promotion_id"]  # Удаляем старый ключ 'promotion_id'
+    # Дополняем данные о характеристиках продукта
+    product_characteristic = get_product_characteristic_by_product_id(product.get("id"))
+    list_product_characteristic = []
+    if product_characteristic:
+        for characteristic in product_characteristic:
+            characteristic_id = characteristic.get("characteristic_id")
+            characteristic = get_characteristic_by_id(characteristic_id)
+            characteristic = characteristic.model_dump(by_alias=True)
+            list_product_characteristic.append(characteristic)
+        product["characteristics"] = list_product_characteristic
     # Получаем список изображений по ID продукта и выбираем первое изображение
     image_ids = get_image_product_by_product_id(product.get("id"))
-    product_first_image_id = image_ids[0].get("image_id") if image_ids else None
-    # Обрабатываем URL для первого изображения
-    if product_first_image_id is not None:
-        try:
-            url = get_image_by_id(product_first_image_id)
-            product["url"] = return_url_object(url)
-        except HTTPException:
-            product["url"] = None
-    else:
-        product["url"] = None
+    urls = []
+    for image_id in image_ids:
+        image_id = image_id.get("image_id") if image_ids else None
+        # Обрабатываем URL для первого изображения
+        if image_id is not None:
+            try:
+                url = get_image_by_id(image_id)
+                url = return_url_object(url)
+                urls.append(url)
+            except HTTPException:
+                urls.append(None)
+        else:
+            urls.append(None)
+    product["urls"] = urls
     # Возвращаем либо модель продукта, либо словарь, в зависимости от значения параметра dirs
     if dirs:
         return product  # Возвращаем словарь с преобразованным продуктом
     else:
-        return Products(**product) if product else None
+        return model
 
 
 def create_product(product: Products):

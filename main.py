@@ -4,7 +4,7 @@ from src.service import (category_services, characteristic_services, company_ser
                          image_services, product_comment_services, order_product_services,
                          order_services, product_characteristic_services, product_services,
                          file_services, user_services, promotion_services, currency_services)
-from typing import Dict
+from typing import Dict, Union
 from fastapi.openapi.models import Tag
 from src.database.models import (Users, Companies, Orders, Images, Categories, ProductsDict, Characteristics,
                                  OrderProducts, ProductComments, Products, ProductCharacteristics, Promotions,
@@ -502,22 +502,22 @@ async def delete_image(image_id):
         raise ex
 
 
-@app.get("/products/", response_model=list[Dict], tags=["Product"])
-async def get_all_products():
+@app.get("/products/", response_model=Union[list[Dict], list[Products]], tags=["Product"])
+async def get_all_products(dirs: bool = False):
     """
     Route for getting all products from basedata.
 
     :return: response model List[Products].
     """
     try:
-        return product_services.get_all_products(dirs=True)
+        return product_services.get_all_products(dirs)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
 
 
-@app.get("/products/product_id/{product_id}", response_model=Dict, tags=["Product"])
-async def get_product_by_id(product_id: int):
+@app.get("/products/product_id/{product_id}", response_model=Union[Dict, Products], tags=["Product"])
+async def get_product_by_id(product_id: int, dirs: bool = False):
     """
     Route for getting product by ProductID.
 
@@ -526,7 +526,7 @@ async def get_product_by_id(product_id: int):
     :return: response model Products.
     """
     try:
-        return product_services.get_product_by_id(product_id, dirs=True)
+        return product_services.get_product_by_id(product_id, dirs)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex

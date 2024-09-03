@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from main import app
 from setup.debug_info import machine
 from src.utils.custom_logging import setup_logging
+import os
 
 log = setup_logging()
 client = TestClient(app)
@@ -32,8 +33,8 @@ def generate_random_data(data_type, length=8):
 
 
 # Вспомогательная функция для выполнения запросов
-def api_request(method, url, json_data=None, headers=None):
-    response = client.request(method, url, json=json_data, headers=headers)
+def api_request(method, url, json_data=None):
+    response = client.request(method, url, json=json_data)
     return response
 
 

@@ -14,9 +14,9 @@ def get_product_characteristic_by_id(product_characteristic_id: int):
     return db.fetch_one(query, (product_characteristic_id,))
 
 
-def get_product_characteristic_by_user_id(user_id: int):
-    query = "SELECT * FROM product_characteristics WHERE user_id=%s"
-    return db.fetch_all(query, (user_id,))
+def get_product_characteristic_by_product_id(product_id: int):
+    query = "SELECT * FROM product_characteristics WHERE product_id=%s"
+    return db.fetch_all(query, (product_id,))
 
 
 def create_product_characteristic(product_characteristic: ProductCharacteristics):
