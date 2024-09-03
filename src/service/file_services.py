@@ -19,6 +19,17 @@ log = setup_logging()
 async def upload_product_main(file: UploadFile, product_id: int):
     # Проверяем существует ли товар
     product_services.get_product_by_id(product_id)
+    # Проеряем есть ли для этого изображения main картинка
+    images = None
+    try:
+        images = image_product_services.get_image_product_by_product_id(product_id)
+    except Exception as e:
+        log.warning("", exc_info=e)
+    if images is not None:
+        for image in images:
+            if image.ImageType == ImageTypeEnum.Main:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                                    detail="Main image already exists")
     # Записываем каждый файл на сервер
     unique_filename = await write_file_into_server("product", file)
     # Создаем информацию в базе данных о пути изображения
@@ -71,8 +82,12 @@ def download_product(product_id: int):
 async def upload_comment(files: list[UploadFile], comment_id: int):
     if len(files) == 5:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Too many files")
-    # Проверяем существует ли товар
+    # Проверяем существует ли комментарий
     product_comment_services.get_product_comment_by_id(comment_id)
+    # Проверяем сколько загружено картинок на комментарий
+    images = image_comment_services.get_image_comment_by_comment_id(comment_id)
+    if len(images) > 4:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Max 4 image for comment")
     for file in files:
         # Записываем каждый файл на сервер
         unique_filename = await write_file_into_server("comment", file)

@@ -25,21 +25,21 @@ def get_image_comment_by_comment_id(comment_id: int):
 
 
 def create_image_comment(image_comment: CommentImages):
-    existing_comment = get_product_comment_by_id(image_comment.CommentID)
-    existing_image = get_image_by_id(image_comment.ImageID)
+    get_product_comment_by_id(image_comment.CommentID)
+    get_image_by_id(image_comment.ImageID)
     image_comment_id = image_comment_repository.create_image_comment(image_comment)
     return get_image_comment_by_id(image_comment_id)
 
 
 def update_image_comment(image_comment_id: int, image_comment: CommentImages):
-    existing_image_comment = get_image_comment_by_id(image_comment_id)
-    existing_comment = get_image_comment_by_comment_id(image_comment.CommentID)
-    existing_image = get_image_by_id(image_product.ImageID)
+    get_image_comment_by_id(image_comment_id)
+    get_image_comment_by_comment_id(image_comment.CommentID)
+    get_image_by_id(image_product.ImageID)
     image_comment_repository.update_image_comment(image_comment_id, image_comment)
     return {"message": "Image comment updated successfully"}
 
 
 def delete_image_comment(image_comment_id: int):
-    existing_image_comment = get_image_comment_by_id(image_comment_id)
+    get_image_comment_by_id(image_comment_id)
     image_comment_repository.delete_image_comment(image_comment_id)
     return {"message": "Image comment deleted successfully"}

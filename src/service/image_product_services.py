@@ -29,13 +29,6 @@ def get_image_product_by_product_id(product_id: int):
 def create_image_product(image_product: ProductImages):
     get_product_by_id(image_product.ProductID)
     get_image_by_id(image_product.ImageID)
-    elements = get_all_image_products()
-    for el in elements:
-        if el.ProductID == image_product.ProductID:
-            if el.ImageID == image_product.ImageID:
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Image product already exists')
-            if el.ImageType == ImageTypeEnum.Main:
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Just one main image')
     image_product_id = image_product_repository.create_image_product(image_product)
     return get_image_product_by_id(image_product_id)
 
@@ -44,14 +37,6 @@ def update_image_product(image_product_id: int, image_product: ProductImages):
     get_image_product_by_id(image_product_id)
     get_product_by_id(image_product.ProductID)
     get_image_by_id(image_product.ImageID)
-    elements = get_all_image_products()
-    for el in elements:
-        if el.ID != image_product_id:
-            if el.ProductID == image_product.ProductID:
-                if el.ImageID == image_product.ImageID:
-                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Image product already exists')
-                if el.ImageType == ImageTypeEnum.Main:
-                    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Just one main image')
     image_product_repository.update_image_product(image_product_id, image_product)
     return {"message": "Image product updated successfully"}
 

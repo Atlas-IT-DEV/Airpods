@@ -91,20 +91,6 @@ async def image_upload_product_additional(files: list[UploadFile] = File(...), p
         raise ex
 
 
-@app.get("/image_download/product", response_model=Dict, tags=["ImageService"])
-async def image_download_product(product_id: int):
-    """
-    Route for download product into basedata.
-
-    :return: response model Dict.
-    """
-    try:
-        return file_services.download_product(product_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
-
-
 @app.delete("/image_delete/product", response_model=Dict, tags=["ImageService"])
 async def image_delete_product(product_id: int, image_id: int):
     """
@@ -128,20 +114,6 @@ async def image_upload_comment(files: list[UploadFile] = File(...), comment_id: 
     """
     try:
         return await file_services.upload_comment(files, comment_id)
-    except HTTPException as ex:
-        log.exception(f"Error", exc_info=ex)
-        raise ex
-
-
-@app.get("/image_download/comment", response_model=Dict, tags=["ImageService"])
-async def image_download_comment(comment_id: int):
-    """
-    Route for download comment into basedata.
-
-    :return: response model Dict.
-    """
-    try:
-        return file_services.download_comment(comment_id)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
