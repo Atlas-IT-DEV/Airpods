@@ -4,6 +4,7 @@ from src.service import (category_services, characteristic_services, company_ser
                          image_services, product_comment_services, order_product_services,
                          order_services, product_characteristic_services, product_services,
                          file_services, user_services, promotion_services, currency_services)
+from src.service import image_product_services, image_comment_services
 from typing import Dict, Union
 from fastapi.openapi.models import Tag
 from src.database.models import (Users, Companies, Orders, Images, Categories, ProductsDict, Characteristics,
@@ -333,6 +334,198 @@ async def delete_promotion(promotion_id):
     """
     try:
         return promotion_services.delete_promotion(promotion_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/product_images/", response_model=list[ProductImages], tags=["ProductImage"])
+async def get_all_product_images():
+    """
+    Route for get all product images from basedata.
+
+    :return: response model List[ProductImages].
+    """
+    try:
+        return image_product_services.get_all_image_products()
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/product_images/product_image_id/{product_image_id}", response_model=ProductImages, tags=["ProductImage"])
+async def get_product_image_by_id(product_image_id: int):
+    """
+    Route for get pproduct image by ProductImageID.
+
+    :param product_image_id: ID by product image. [int]
+
+    :return: response model ProductImages.
+    """
+    try:
+        return image_product_services.get_image_product_by_id(product_image_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/product_images/product_id/{product_id}", response_model=ProductImages, tags=["ProductImage"])
+async def get_product_image_by_product_id(product_id: int):
+    """
+    Route for get pproduct image by ProductImageID.
+
+    :param product_image_product_id: ID by product image. [int]
+
+    :return: response model ProductImages.
+    """
+    try:
+        return image_product_services.get_image_product_by_product_id(product_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.post("/product_images/", response_model=ProductImages, tags=["ProductImage"])
+async def create_product_image(product_image: ProductImages):
+    """
+    Route for create product image in basedata.
+
+    :param product_image: Model product image. [ProductImages]
+
+    :return: response model ProductImages.
+    """
+    try:
+        return image_product_services.create_image_product(product_image)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.put("/product_images/{product_image_id}", response_model=Dict, tags=["ProductImage"])
+async def update_product_image(product_image_id, product_image: ProductImages):
+    """
+    Route for update product_image in basedata.
+
+    :param product_image_id: ID by product_image. [int]
+
+    :param product_image: Model product image. [ProductImage]
+
+    :return: response model dict.
+    """
+    try:
+        return image_product_services.update_image_product(product_image_id, product_image)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.delete("/product_images/{product_image_id}", response_model=Dict, tags=["ProductImage"])
+async def delete_product_image(product_image_id):
+    """
+    Route for delete product image from basedata.
+
+    :param product_image_id: ID by product image. [int]
+
+    :return: response model dict.
+    """
+    try:
+        return image_product_services.delete_image_product(product_image_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/comment_images/", response_model=list[CommentImages], tags=["CommentImage"])
+async def get_all_comment_images():
+    """
+    Route for get all comment images from basedata.
+
+    :return: response model List[CommentImages].
+    """
+    try:
+        return image_comment_services.get_all_image_comments()
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/comment_images/comment_image_id/{comment_image_id}", response_model=CommentImages, tags=["CommentImage"])
+async def get_comment_image_by_id(comment_image_id: int):
+    """
+    Route for get comment image by CommentImageID.
+
+    :param comment_image_id: ID by comment image. [int]
+
+    :return: response model CommentImages.
+    """
+    try:
+        return image_comment_services.get_image_comment_by_id(comment_image_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/comment_images/comment_id/{comment_id}", response_model=CommentImages, tags=["CommentImage"])
+async def get_comment_image_by_comment_id(comment_id: int):
+    """
+    Route for get comment image by ProductImageID.
+
+    :param product_image_comment_id: ID by comment image. [int]
+
+    :return: response model CommentImages.
+    """
+    try:
+        return image_comment_services.get_image_comment_by_comment_id(comment_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.post("/comment_images/", response_model=CommentImages, tags=["CommentImage"])
+async def create_comment_image(comment_image: CommentImages):
+    """
+    Route for create comment image in basedata.
+
+    :param comment_image: Model comment image. [CommentImages]
+
+    :return: response model ProductImages.
+    """
+    try:
+        return image_comment_services.create_image_comment(comment_image)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.put("/comment_images/{comment_image_id}", response_model=Dict, tags=["CommentImage"])
+async def update_comment_image(comment_image_id, comment_image: CommentImages):
+    """
+    Route for update comment image in basedata.
+
+    :param comment_image_id: ID by comment image. [int]
+
+    :param comment_image: Model comment image. [CommentImage]
+
+    :return: response model dict.
+    """
+    try:
+        return image_comment_services.update_image_comment(comment_image_id, comment_image)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.delete("/comment_images/{comment_image_id}", response_model=Dict, tags=["CommentImage"])
+async def delete_comment_image(comment_image_id):
+    """
+    Route for delete comment image from basedata.
+
+    :param comment_image_id: ID by comment image. [int]
+
+    :return: response model dict.
+    """
+    try:
+        return image_comment_services.delete_image_comment(comment_image_id)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex

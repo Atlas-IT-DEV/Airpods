@@ -23,6 +23,14 @@ class CharacteristicTypeEnum(StrictStr, Enum):
     Json = 'JSON'
 
 
+class ImageTypeEnum(StrictStr, Enum):
+    """
+    Model of product image types
+    """
+    Main = 'main'
+    Additional = 'additional'
+
+
 class Images(BaseModel):
     """
     Model of images
@@ -46,9 +54,13 @@ class ProductImages(BaseModel):
                                  examples=[2],
                                  description="Product ID of product")
     ImageID: StrictInt = Field(...,
-                                alias="image_id",
-                                examples=[2],
-                                description="Image ID of product")
+                               alias="image_id",
+                               examples=[2],
+                               description="Image ID of product")
+    ImageType: ImageTypeEnum = Field(...,
+                                     alias="image_type",
+                                     examples=[ImageTypeEnum.Main],
+                                     description="Image type")
 
 
 class CommentImages(BaseModel):
@@ -62,9 +74,9 @@ class CommentImages(BaseModel):
                                  examples=[2],
                                  description="Comment ID of comment")
     ImageID: StrictInt = Field(...,
-                                alias="image_id",
-                                examples=[2],
-                                description="Image ID of comment")
+                               alias="image_id",
+                               examples=[2],
+                               description="Image ID of comment")
 
 
 class Users(BaseModel):
@@ -158,13 +170,13 @@ class Products(BaseModel):
                             examples=["Пюрешка с коклеткой"],
                             description="Name of product")
     PromotionID: Optional[StrictInt] = Field(None,
-                                alias="promotion_id",
-                                examples=[1],
-                                description="PromotionID of product")
+                                             alias="promotion_id",
+                                             examples=[1],
+                                             description="PromotionID of product")
     CurrencyID: StrictInt = Field(...,
-                                alias="currency_id",
-                                examples=[1],
-                                description="CurrencyID of product")
+                                  alias="currency_id",
+                                  examples=[1],
+                                  description="CurrencyID of product")
     CompanyID: StrictInt = Field(...,
                                  alias="company_id",
                                  examples=[32],
@@ -285,8 +297,8 @@ class ProductComments(BaseModel):
                                  alias="product_id",
                                  examples=[2])
     UserID: StrictInt = Field(...,
-                                 alias="user_id",
-                                 examples=[2])
+                              alias="user_id",
+                              examples=[2])
     Comment: StrictStr = Field(...,
                                alias="comment",
                                examples=["jenfjnaofnaonfov"],
@@ -295,5 +307,3 @@ class ProductComments(BaseModel):
                                           alias="created_at",
                                           examples=[f"{datetime.now()}"],
                                           description="Date of creation")
-
-

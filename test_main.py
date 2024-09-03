@@ -117,7 +117,8 @@ def generate_test_data(entity_type):
         },
         "image_product": {
             "product_id": None,
-            "image_id": None
+            "image_id": None,
+            "image_type": "main"
         },
         "image_comment": {
             "comment_id": None,

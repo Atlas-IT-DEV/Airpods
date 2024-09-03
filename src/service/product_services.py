@@ -19,27 +19,35 @@ def get_all_products(dirs: bool = False):
     models = [Products(**product) for product in products]
     list_products = []
     for product in products:
-        product_ids = []
-        # Заменяем currency_id на объект словаря валюты с алиасами
+        # Заменяем currency_id
         currency_id = product.get("currency_id")
         if currency_id:
             currency = get_currency_by_id(currency_id)
-            product["currency"] = currency.model_dump(by_alias=True)  # Преобразуем объект валюты в словарь с алиасами
-            del product["currency_id"]  # Удаляем старый ключ 'currency_id'
-        # Заменяем promotion_id на объект словаря акции с алиасами
+            product["currency"] = currency.model_dump(by_alias=True)
+            del product["currency_id"]
+        # Заменяем company_id
+        company_id = product.get("company_id")
+        if company_id:
+            company = get_company_by_id(company_id)
+            product["company"] = company.model_dump(
+                by_alias=True)
+            del product["company_id"]
+        # Заменяем promotion_id
         promotion_id = product.get("promotion_id")
         if promotion_id:
             promotion = get_promotion_by_id(promotion_id)
-            product["promotion"] = promotion.model_dump(by_alias=True)  # Преобразуем объект акции в словарь с алиасами
-            del product["promotion_id"]  # Удаляем старый ключ 'promotion_id'
+            product["promotion"] = promotion.model_dump(by_alias=True)
+            del product["promotion_id"]
         # Получаем список изображений по ID продукта
         image_ids = get_image_product_by_product_id(product.get("id"))
+        product_main_image_id = None
         for image_id in image_ids:
-            product_ids.append(image_id.get("image_id"))
-        product_first_image_id = product_ids[0] if product_ids else None
-        if product_first_image_id is not None:
+            image_type = image_id.get("image_type")
+            if image_type == "main":
+                product_main_image_id = image_id.get("image_id")
+        if product_main_image_id is not None:
             try:
-                url = get_image_by_id(product_first_image_id)
+                url = get_image_by_id(product_main_image_id)
                 product["url"] = return_url_object(url)
             except HTTPException:
                 product["url"] = None
@@ -59,26 +67,38 @@ def get_product_by_id(product_id: int, dirs: bool = False):
     # Если продукт не найден, выбрасываем исключение
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Product not found')
-    # Обрабатываем currency_id и заменяем его на объект валюты
+    # Обрабатываем currency_id
     currency_id = product.get("currency_id")
     if currency_id:
         currency = get_currency_by_id(currency_id)
-        product["currency"] = currency.model_dump(by_alias=True)  # Преобразуем объект валюты в словарь с алиасами
-        del product["currency_id"]  # Удаляем старый ключ 'currency_id'
-    # Обрабатываем promotion_id и заменяем его на объект акции
+        product["currency"] = currency.model_dump(by_alias=True)
+        del product["currency_id"]
+    # Заменяем company_id
+    company_id = product.get("company_id")
+    if company_id:
+        company = get_company_by_id(company_id)
+        product["company"] = company.model_dump(
+            by_alias=True)
+        del product["company_id"]
+    # Обрабатываем promotion_id
     promotion_id = product.get("promotion_id")
     if promotion_id:
         promotion = get_promotion_by_id(promotion_id)
-        product["promotion"] = promotion.model_dump(by_alias=True)  # Преобразуем объект акции в словарь с алиасами
-        del product["promotion_id"]  # Удаляем старый ключ 'promotion_id'
+        product["promotion"] = promotion.model_dump(by_alias=True)
+        del product["promotion_id"]
     # Дополняем данные о характеристиках продукта
     product_characteristic = get_product_characteristic_by_product_id(product.get("id"))
     list_product_characteristic = []
     if product_characteristic:
         for characteristic in product_characteristic:
+            characteristic_value = characteristic.get("value")
             characteristic_id = characteristic.get("characteristic_id")
             characteristic = get_characteristic_by_id(characteristic_id)
             characteristic = characteristic.model_dump(by_alias=True)
+            if characteristic_value:
+                characteristic["value"] = characteristic_value
+            else:
+                characteristic["value"] = None
             list_product_characteristic.append(characteristic)
         product["characteristics"] = list_product_characteristic
     # Получаем список изображений по ID продукта и выбираем первое изображение

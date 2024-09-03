@@ -18,21 +18,21 @@ def get_product_comment_by_id(product_comment_id: int):
 
 
 def create_product_comment(product_comment: ProductComments):
-    existing_user = get_user_by_id(product_comment.UserID)
-    existing_product = get_product_by_id(product_comment.ProductID)
+    get_user_by_id(product_comment.UserID)
+    get_product_by_id(product_comment.ProductID)
     product_comment_id = product_comment_repository.create_product_comment(product_comment)
     return get_product_comment_by_id(product_comment_id)
 
 
 def update_product_comment(product_comment_id: int, product_comment: ProductComments):
-    existing_product_comment = get_product_comment_by_id(product_comment_id)
-    existing_user = get_user_by_id(product_comment.UserID)
-    existing_product = get_product_by_id(product_comment.ProductID)
+    get_product_comment_by_id(product_comment_id)
+    get_user_by_id(product_comment.UserID)
+    get_product_by_id(product_comment.ProductID)
     product_comment_repository.update_product_comment(product_comment_id, product_comment)
     return {"message": "Order comment updated successfully"}
 
 
 def delete_product_comment(product_comment_id: int):
-    existing_product_comment = get_product_comment_by_id(product_comment_id)
+    get_product_comment_by_id(product_comment_id)
     product_comment_repository.delete_product_comment(product_comment_id)
     return {"message": "Product comment deleted successfully"}

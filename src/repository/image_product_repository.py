@@ -20,15 +20,15 @@ def get_image_product_by_product_id(product_id: int):
 
 
 def create_image_product(image_product: ProductImages):
-    query = "INSERT INTO product_images (product_id, image_id) VALUES (%s, %s)"
-    params = (image_product.ProductID, image_product.ImageID)
+    query = "INSERT INTO product_images (product_id, image_id, image_type) VALUES (%s, %s, %s)"
+    params = (image_product.ProductID, image_product.ImageID, image_product.ImageType)
     cursor = db.execute_query(query, params)
     return cursor.lastrowid
 
 
 def update_image_product(image_product_id: int, image_product: ProductImages):
-    query = "UPDATE product_images SET product_id=%s, image_id=%s WHERE id=%s"
-    params = (image_product.ProductID, image_product.ImageID, image_product_id)
+    query = "UPDATE product_images SET product_id=%s, image_id=%s, image_type=%s WHERE id=%s"
+    params = (image_product.ProductID, image_product.ImageID, image_product.ImageType, image_product_id)
     db.execute_query(query, params)
 
 
