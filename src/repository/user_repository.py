@@ -1,6 +1,5 @@
-from src.database.my_connector import Database
+from src.database.my_connector import db
 from src.database.models import Users
-db = Database()
 
 
 def get_all_users():

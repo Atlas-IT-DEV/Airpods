@@ -1,6 +1,5 @@
-from src.database.my_connector import Database
+from src.database.my_connector import db
 from src.database.models import Images
-db = Database()
 
 
 def get_all_images():

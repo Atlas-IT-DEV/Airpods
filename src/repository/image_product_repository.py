@@ -1,7 +1,6 @@
-from src.database.my_connector import Database
+from src.database.my_connector import db
 from src.database.models import ProductImages
 from datetime import datetime
-db = Database()
 
 
 def get_all_image_products():
@@ -15,7 +14,7 @@ def get_image_product_by_id(image_product_id: int):
 
 
 def get_image_product_by_product_id(product_id: int):
-    query = "SELECT * FROM product_images WHERE product_id=%s"
+    query = "SELECT * FROM product_images WHERE product_id=%s ORDER BY image_type DESC"
     return db.fetch_all(query, (product_id,))
 
 
@@ -35,10 +34,3 @@ def update_image_product(image_product_id: int, image_product: ProductImages):
 def delete_image_product(image_product_id: int):
     query = "DELETE FROM product_images WHERE id=%s"
     db.execute_query(query, (image_product_id,))
-
-
-
-
-
-
-

@@ -44,3 +44,6 @@ class Database:
         with self.connection.cursor() as cursor:
             cursor.execute(query, params)
             return cursor.fetchall()
+
+
+db = Database()
