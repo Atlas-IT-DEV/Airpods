@@ -78,6 +78,17 @@ CREATE TABLE IF NOT EXISTS `comment_images` (
   `image_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `characteristics`
+--
+
+INSERT IGNORE INTO `comment_images` (`id`, `comment_id`, `image_id`) VALUES
+(1, 1, '1,2,3'),
+(2, 2, '1,2,3'),
+(3, 3, '1,2,3'),
+(4, 4, '1,2,3'),
+(5, 5, '1,2,3');
+
 -- --------------------------------------------------------
 
 --
@@ -96,7 +107,10 @@ CREATE TABLE IF NOT EXISTS `companies` (
 
 INSERT IGNORE INTO `companies` (`id`, `name`, `description`) VALUES
 (1, 'Apple', 'Производитель электроники'),
-(2, 'Dyson', 'Производитель бытовой техники');
+(2, 'Dyson', 'Производитель бытовой техники'),
+(3, 'Nike', 'Производитель кроссовок'),
+(4, 'Nokia', 'Производитель телефонов'),
+(5, 'Panasonic', 'Производитель не знаю чего');
 
 -- --------------------------------------------------------
 
@@ -138,11 +152,11 @@ CREATE TABLE IF NOT EXISTS `images` (
 --
 
 INSERT IGNORE INTO `images` (`id`, `url`) VALUES
-(4, 'aianfnakfnkafnkafkaf'),
-(5, 'dadawdadawda'),
-(6, 'dadawdadawda'),
-(7, 'awdawdawdawd'),
-(8, 'awdawdawdawd');
+(1, 'http://localhost:8008/public/comment/example1.png'),
+(2, 'http://localhost:8008/public/product/example2.png'),
+(3, 'http://localhost:8008/public/comment/example3.png'),
+(4, 'http://localhost:8008/public/product/example4.png'),
+(5, 'http://localhost:8008/public/comment/example5.png');
 
 -- --------------------------------------------------------
 
@@ -164,7 +178,9 @@ CREATE TABLE IF NOT EXISTS `orders` (
 INSERT IGNORE INTO `orders` (`id`, `user_id`, `date`, `total_price`) VALUES
 (1, 1, '2024-08-29 23:41:51', 12000),
 (2, 2, '2024-08-29 23:41:51', 15000),
-(3, 3, '2024-08-29 23:41:51', 10000);
+(3, 3, '2024-08-29 23:41:51', 1100),
+(4, 4, '2024-08-29 23:41:51', 10200),
+(5, 5, '2024-08-29 23:41:51', 10600);
 
 -- --------------------------------------------------------
 
@@ -185,8 +201,10 @@ CREATE TABLE IF NOT EXISTS `order_products` (
 
 INSERT IGNORE INTO `order_products` (`id`, `order_id`, `product_id`, `quantity`) VALUES
 (1, 1, 1, 1),
-(2, 1, 2, 1),
-(3, 2, 3, 2);
+(2, 2, 2, 2),
+(3, 3, 3, 3),
+(4, 4, 4, 4),
+(5, 5, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -200,19 +218,20 @@ CREATE TABLE IF NOT EXISTS `products` (
   `promotion_id` int(11) DEFAULT NULL,
   `currency_id` int(11) NOT NULL,
   `company_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL
+  `category_id` int(11) NOT NULL,
+  `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `products`
 --
 
-INSERT IGNORE INTO `products` (`id`, `name`, `promotion_id`, `currency_id`, `company_id`, `category_id`) VALUES
-(1, 'Airpods 2 FCO+ (B24)', 1, 1, 1, 1),
-(2, 'Watch Series 9 (45mm)', 2, 2, 1, 2),
-(3, 'Airpods 2 FCO + Watch', NULL, 3, 1, 3),
-(4, 'Адаптер зарядки 20W USB-C FCO', NULL, 4, 1, 4),
-(5, 'Стайлер Dyson HS05 Long Blue', NULL, 5, 1, 5);
+INSERT IGNORE INTO `products` (`id`, `name`, `promotion_id`, `currency_id`, `company_id`, `category_id`, `price`) VALUES
+(1, 'Airpods 2 FCO+ (B24)', 1, 1, 1, 1, 1000.00),
+(2, 'Watch Series 9 (45mm)', 2, 2, 1, 2, 1500.00),
+(3, 'Airpods 2 FCO + Watch', NULL, 3, 1, 3, 2000.00),
+(4, 'Адаптер зарядки 20W USB-C FCO', NULL, 4, 1, 4, 2500.00),
+(5, 'Стайлер Dyson HS05 Long Blue', NULL, 5, 1, 5, 500.00);
 
 -- --------------------------------------------------------
 
@@ -236,8 +255,7 @@ INSERT IGNORE INTO `product_characteristics` (`id`, `product_id`, `characteristi
 (2, 2, 2, 'Черный'),
 (3, 3, 3, '1.4'),
 (4, 4, 4, '50'),
-(5, 5, 5, '20'),
-(6, 1, 2, '56');
+(5, 5, 5, '20');
 
 -- --------------------------------------------------------
 
@@ -260,7 +278,9 @@ CREATE TABLE IF NOT EXISTS `product_comments` (
 INSERT IGNORE INTO `product_comments` (`id`, `product_id`, `user_id`, `comment`, `created_at`) VALUES
 (1, 1, 1, 'Отличный смартфон, рекомендую!', '2024-08-30 07:00:00'),
 (2, 2, 2, 'Супер ноутбук, идеален для работы.', '2024-08-29 08:00:00'),
-(3, 3, 3, 'Неудобные наушники, вернул обратно.', '2024-08-28 09:00:00');
+(3, 3, 3, 'Неудобные наушники, вернул обратно.', '2024-08-28 09:00:00'),
+(4, 4, 4, 'Класс, мне понравилось.', '2024-08-28 09:00:00'),
+(5, 5, 5, 'Нашел по низкой цене, теперь доволен :)', '2024-08-28 09:00:00');
 
 -- --------------------------------------------------------
 
@@ -280,12 +300,11 @@ CREATE TABLE IF NOT EXISTS `product_images` (
 --
 
 INSERT IGNORE INTO `product_images` (`id`, `product_id`, `image_id`, `image_type`) VALUES
-(8, 1, 4, 'main'),
-(9, 1, 4, 'main'),
-(10, 1, 7, 'additional'),
-(11, 1, 7, 'additional'),
-(12, 3, 5, 'main'),
-(13, 3, 5, 'main');
+(1, 1, 1, 'main'),
+(2, 2, 2, 'main'),
+(3, 3, 3, 'additional'),
+(4, 4, 4, 'additional'),
+(5, 5, 5, 'main');
 
 -- --------------------------------------------------------
 
@@ -307,7 +326,9 @@ CREATE TABLE IF NOT EXISTS `promotions` (
 INSERT IGNORE INTO `promotions` (`id`, `name`, `value`, `bool`) VALUES
 (1, 'Скидка 10%', 10, 1),
 (2, 'Промо-код ЗИМНИЙ2024', 15, 0),
-(3, 'Акция «Купи один — получи второй бесплатно»', 0, 1);
+(3, 'Акция «Купи один — получи второй бесплатно»', 100, 1),
+(4, 'День рождения', 20, 1),
+(5, 'Юбилией открытия', 50, 1);
 
 -- --------------------------------------------------------
 
@@ -328,7 +349,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT IGNORE INTO `users` (`id`, `name`, `telegram_id`) VALUES
 (1, 'Иван', 123456789),
 (2, 'Мария', 987654321),
-(3, 'Петр', 111223344);
+(3, 'Петр', 111212341),
+(4, 'Егор', 111223324),
+(5, 'Миша', 111231312);
 
 --
 -- Индексы сохранённых таблиц

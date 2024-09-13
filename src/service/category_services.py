@@ -40,6 +40,6 @@ def update_category(category_id: int, category: Categories):
 
 
 def delete_category(category_id: int):
-    existing_category = get_category_by_id(category_id)
+    get_category_by_id(category_id)
     category_repository.delete_category(category_id)
     return {"message": "Category deleted successfully"}

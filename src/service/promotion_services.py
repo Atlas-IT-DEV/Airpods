@@ -47,6 +47,6 @@ def update_promotion(promotion_id: int, promotion: Promotions):
 
 
 def delete_promotion(promotion_id: int):
-    existing_promotion = get_promotion_by_id(promotion_id)
+    get_promotion_by_id(promotion_id)
     promotion_repository.delete_promotion(promotion_id)
     return {"message": "Promotion deleted successfully"}

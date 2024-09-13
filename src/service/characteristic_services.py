@@ -40,6 +40,6 @@ def update_characteristic(characteristic_id: int, characteristic: Characteristic
 
 
 def delete_characteristic(characteristic_id: int):
-    existing_characteristic = get_characteristic_by_id(characteristic_id)
+    get_characteristic_by_id(characteristic_id)
     characteristic_repository.delete_characteristic(characteristic_id)
     return {"message": "Characteristic deleted successfully"}

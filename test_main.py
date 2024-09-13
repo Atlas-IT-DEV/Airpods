@@ -93,6 +93,7 @@ def generate_test_data(entity_type):
             "promotion_id": None,
             "company_id": None,
             "currency_id": None,
+            "price": generate_random_data("number")
         },
         "product_characteristic": {
             "product_id": None,

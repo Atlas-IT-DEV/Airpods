@@ -185,6 +185,10 @@ class Products(BaseModel):
                                   alias="category_id",
                                   examples=[2],
                                   description="Category ID of product")
+    Price: condecimal(max_digits=10, decimal_places=2) = Field(...,
+                                                               alias="price",
+                                                               examples=[10.00],
+                                                               description="Price of product")
 
 
 class Promotions(BaseModel):

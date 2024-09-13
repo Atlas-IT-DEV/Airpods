@@ -40,6 +40,6 @@ def update_company(company_id: int, company: Companies):
 
 
 def delete_company(company_id: int):
-    existing_company = get_company_by_id(company_id)
+    get_company_by_id(company_id)
     company_repository.delete_company(company_id)
     return {"message": "Company deleted successfully"}

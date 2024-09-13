@@ -1,6 +1,6 @@
 from src.repository import order_repository
-from src.service import user_services, product_services, order_product_services
-from src.database.models import Orders, OrderProducts, Products, ProductsDict
+from src.service import user_services, product_services, order_product_services, promotion_services
+from src.database.models import Orders, OrderProducts, Products, ProductsDict, Promotions
 from fastapi import HTTPException, status
 from datetime import datetime
 
@@ -30,13 +30,13 @@ def create_order(order: Orders):
 
 
 def update_order(order_id: int, order: Orders):
-    existing_order = get_order_by_id(order_id)
+    get_order_by_id(order_id)
     order_repository.update_order(order_id, order)
     return {"message": "Order updated successfully"}
 
 
 def delete_order(order_id: int):
-    existing_order = get_order_by_id(order_id)
+    get_order_by_id(order_id)
     order_repository.delete_order(order_id)
     return {"message": "Order deleted successfully"}
 
@@ -46,25 +46,26 @@ def place_an_order(user_id: int, products: list[ProductsDict]):
     # Создаем заказ
     order = create_order(Orders(user_id=user.ID, date=datetime.now(), total_price=1))
     # Добавляем товары в заказ
-    list_added_product = []
+    list_order_products = []
     for product in products:
         product_id = product.ProductID
         quantity = product.Quantity
         current_order_products = order_product_services.create_order_product(OrderProducts(order_id=order.ID,
-                                                                                                 product_id=product_id,
-                                                                                                 quantity=quantity))
-        list_added_product.append(current_order_products.ID)
-    list_order_products = []
+                                                                                           product_id=product_id,
+                                                                                           quantity=quantity))
+        list_order_products.append(current_order_products)
     # Собираем заказы и рассчитываем итоговую стоимость заказа
-    for add in list_added_product:
-        list_order_products.append(order_product_services.get_order_product_by_id(add))
     total_price = 0
     for order_product in list_order_products:
         product = product_services.get_product_by_id(order_product.ProductID)
-        total_price += product.Price * order_product.Quantity
+        promotion = promotion_services.get_promotion_by_id(product.PromotionID)
+        if promotion.BoolCat:
+            total_price += float(product.Price) * order_product.Quantity * (100 - promotion.ValueCat) * 0.01
+        else:
+            total_price += float(product.Price) * order_product.Quantity
     update_order(order_id=order.ID, order=Orders(user_id=user.ID,
-                                                       date=datetime.now(),
-                                                       total_price=total_price))
+                                                 date=datetime.now(),
+                                                 total_price=total_price))
     return list_order_products
 
 

@@ -25,21 +25,21 @@ def get_order_product_by_order_id(order_id: int):
 
 
 def create_order_product(order_product: OrderProducts):
-    existing_product = get_product_by_id(order_product.ProductID)
-    existing_order = get_order_by_id(order_product.OrderID)
+    get_product_by_id(order_product.ProductID)
+    get_order_by_id(order_product.OrderID)
     order_product_id = order_product_repository.create_order_product(order_product)
     return get_order_product_by_id(order_product_id)
 
 
 def update_order_product(order_product_id: int, order_product: OrderProducts):
-    existing_order_product = get_order_product_by_id(order_product_id)
-    existing_product = get_product_by_id(order_product.ProductID)
-    existing_order = get_order_by_id(order_product.OrderID)
+    get_order_product_by_id(order_product_id)
+    get_product_by_id(order_product.ProductID)
+    get_order_by_id(order_product.OrderID)
     order_product_repository.update_order_product(order_product_id, order_product)
     return {"message": "Order product updated successfully"}
 
 
 def delete_order_product(order_product_id: int):
-    existing_order_product = get_order_product_by_id(order_product_id)
+    get_order_product_by_id(order_product_id)
     order_product_repository.delete_order_product(order_product_id)
     return {"message": "Order product deleted successfully"}

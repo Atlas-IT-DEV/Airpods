@@ -21,12 +21,12 @@ def create_currency(currency: Currencies):
 
 
 def update_currency(currency_id: int, currency: Currencies):
-    existing_currency = get_currency_by_id(currency_id)
+    get_currency_by_id(currency_id)
     currency_repository.update_currency(currency_id, currency)
     return {"message": "Currency updated successfully"}
 
 
 def delete_currency(currency_id: int):
-    existing_currency = get_currency_by_id(currency_id)
+    get_currency_by_id(currency_id)
     currency_repository.delete_currency(currency_id)
     return {"message": "Currency deleted successfully"}

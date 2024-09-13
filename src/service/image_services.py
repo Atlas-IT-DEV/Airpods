@@ -40,6 +40,6 @@ def update_image(image_id: int, image: Images):
 
 
 def delete_image(image_id: int):
-    existing_image = get_image_by_id(image_id)
+    get_image_by_id(image_id)
     image_repository.delete_image(image_id)
     return {"message": "Image deleted successfully"}

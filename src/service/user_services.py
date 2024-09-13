@@ -48,7 +48,6 @@ def update_user(user_id: int, user: Users):
 
 
 def delete_user(user_id: int):
-    existing_user = get_user_by_id(user_id)
+    get_user_by_id(user_id)
     user_repository.delete_user(user_id)
     return {"message": "User deleted successfully"}
-
