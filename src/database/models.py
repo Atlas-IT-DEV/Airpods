@@ -48,19 +48,23 @@ class ProductImages(BaseModel):
     Model of product images
     """
     ID: Optional[int] = Field(None,
-                              alias="id")
+                                alias="id")
     ProductID: StrictInt = Field(...,
-                                 alias="product_id",
-                                 examples=[2],
-                                 description="Product ID of product")
+                                alias="product_id",
+                                examples=[2],
+                                description="Product ID of product")
     ImageID: StrictInt = Field(...,
-                               alias="image_id",
-                               examples=[2],
-                               description="Image ID of product")
+                                alias="image_id",
+                                examples=[2],
+                                description="Image ID of product")
     ImageType: ImageTypeEnum = Field(...,
-                                     alias="image_type",
-                                     examples=[ImageTypeEnum.Main],
-                                     description="Image type")
+                                alias="image_type",
+                                examples=[ImageTypeEnum.Main],
+                                description="Image type")
+    Color: Optional[StrictStr] = Field(None,
+                                        alias="color",
+                                        examples=["Красный"],
+                                        description="Color of product")
 
 
 class CommentImages(BaseModel):
@@ -189,6 +193,14 @@ class Products(BaseModel):
                                                                alias="price",
                                                                examples=[10.00],
                                                                description="Price of product")
+    IsActive: StrictStr = Field(...,
+                                alias="is_active",
+                                examples=['Y'],
+                                description="Is active product")
+    Position: StrictInt = Field(...,
+                                alias="position",
+                                examples=[1000],
+                                description="Position of product in category")
 
 
 class Promotions(BaseModel):
@@ -311,3 +323,49 @@ class ProductComments(BaseModel):
                                           alias="created_at",
                                           examples=[f"{datetime.now()}"],
                                           description="Date of creation")
+
+
+# Egor 29.10.2024
+class Storis(BaseModel):
+    """
+    Model of storis
+    """
+    ID: Optional[int] = Field(None,
+                              alias="id")
+    ProductID: Optional[StrictInt] = Field(None,
+                                alias="product_id",
+                                examples=[2],
+                                description="Product ID of product")
+    Name: Optional[StrictStr] = Field(None,
+                                alias="name",
+                                examples=["Название сторис"],
+                                description="Name")
+    ImageUrl: Optional[StrictStr] = Field(None,
+                                alias="image_url",
+                                examples=["Ссылка на изображение для сториса"],
+                                description="Image url")
+    Link: Optional[StrictStr] = Field(None,
+                                alias="link",
+                                examples=["Ссылка"],
+                                description="Link")
+    
+
+class ProductAudio(BaseModel):
+    """
+    Model of product_audio_test
+    """
+    ID: Optional[int] = Field(None,
+                              alias="id")
+    ProductID: Optional[StrictInt] = Field(None,
+                                alias="product_id",
+                                examples=[2],
+                                description="Product ID of product")
+    OriginalUrl: Optional[StrictStr] = Field(None,
+                                alias="original_url",
+                                examples=["Ссылка на файл звукового теста оригинального продукта"],
+                                description="Original url")
+    OurUrl: Optional[StrictStr] = Field(None,
+                                alias="our_url",
+                                examples=["Ссылка на файл звукового теста реплики продукта"],
+                                description="Our url")
+# /Egor 29.10.2024

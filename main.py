@@ -1,24 +1,27 @@
 from fastapi import FastAPI, HTTPException, Depends, Request, File, UploadFile, Body, Header, status, Form
 from src.database.my_connector import Database
-from src.service import (category_services, characteristic_services, company_services,
-                         image_services, product_comment_services, order_product_services,
-                         order_services, product_characteristic_services, product_services,
-                         file_services, user_services, promotion_services, currency_services)
-from src.service import image_product_services, image_comment_services
+from src.services import (category_services, characteristic_services, company_services,
+                          image_services, product_comment_services, order_product_services,
+                          order_services, product_characteristic_services, product_services,
+                          file_services, user_services, promotion_services, currency_services,
+                          storis_services, product_audio_test_services)
+from src.services import image_product_services, image_comment_services
 from typing import Dict, Union
 from fastapi.openapi.models import Tag
 from src.database.models import (Users, Companies, Orders, Images, Categories, ProductsDict, Characteristics,
                                  OrderProducts, ProductComments, Products, ProductCharacteristics, Promotions,
-                                 Currencies, ProductImages, CommentImages)
+                                 Currencies, ProductImages, CommentImages, Storis, ProductAudio)
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from src.utils.custom_logging import setup_logging
+from src.utils.log_debugging import debug_ex, debug_err, debug_info
 from fastapi.staticfiles import StaticFiles
 from config import Config
+from typing import Optional
 
 config = Config()
 log = setup_logging()
-app = FastAPI()
+app = FastAPI(title="Airpods API", version="1.3.2", description="This API server is intended for the AirPods project. For rights, contact the service owner.")
 
 app.mount("/public", StaticFiles(directory="public"), name="public")
 
@@ -44,6 +47,10 @@ OrderProductTag = Tag(name="OrderProduct", description="CRUD operations order pr
 OrderTag = Tag(name="Order", description="CRUD operations order")
 ProductCharacteristicTag = Tag(name="ProductCharacteristic", description="CRUD operations  product characteristic")
 ProductTag = Tag(name="Product", description="CRUD operations product")
+# Egor 29.10.2024
+StorisTag = Tag(name="Storis", description="CRUD operations storis")
+ProductAudioTag = Tag(name="ProductAudio", description="CRUD operations product audio")
+# /Egor 29.10.2024
 
 # Настройка документации с тегами
 app.openapi_tags = [
@@ -59,7 +66,11 @@ app.openapi_tags = [
     OrderProductTag.model_dump(),
     OrderTag.model_dump(),
     ProductCharacteristicTag.model_dump(),
-    ProductTag.model_dump()
+    ProductTag.model_dump(),
+    # Egor 29.10.2024
+    StorisTag.model_dump(),
+    ProductAudioTag.model_dump()
+    # /Egor 29.10.2024
 ]
 
 
@@ -72,6 +83,20 @@ async def image_upload_product(file: UploadFile = File(...), product_id: int = F
     """
     try:
         return await file_services.upload_product_main(file, product_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.put("/image_update/product/main", response_model=None, tags=["ImageService"])
+async def image_update_product(file: UploadFile = File(...), product_id: int = Form(...)):
+    """
+    Route for uploading main images for a product.
+
+    :return: response model product [Products].
+    """
+    try:
+        return await file_services.update_product_main(file, product_id)
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
@@ -355,7 +380,7 @@ async def get_product_image_by_id(product_image_id: int):
         raise ex
 
 
-@app.get("/product_images/product_id/{product_id}", response_model=ProductImages, tags=["ProductImage"])
+@app.get("/product_images/product_id/{product_id}", response_model=list[ProductImages], tags=["ProductImage"])
 async def get_product_image_by_product_id(product_id: int):
     """
     Route for get pproduct image by ProductImageID.
@@ -1375,6 +1400,221 @@ async def delete_product_characteristic(product_characteristic_id: int):
     except HTTPException as ex:
         log.exception(f"Error", exc_info=ex)
         raise ex
+    
+    
+# Egor 29.10.2024
+@app.get("/storis/", response_model=list[Storis], tags=["Storis"])
+async def get_all_storis():
+    """
+    Route for get all storis from basedata.
+
+    :return: response model List[Storis].
+    """
+    try:
+        return storis_services.get_all_storis()
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/storis/storis_id/{storis_id}", response_model=Storis, tags=["Storis"])
+async def get_storis_by_id(storis_id: int):
+    """
+    Route for get storis by ID.
+
+    :param storis_id: ID by storis. [int]
+
+    :return: response model storis.
+    """
+    try:
+        return storis_services.get_storis_by_id(storis_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/storis/product_id/{product_id}", response_model=list[Storis], tags=["Storis"])
+async def get_storis_by_product_id(product_id: int):
+    """
+    Route for get storis by ProductID.
+
+    :param product_id: product_id by storis. [int]
+
+    :return: response model Storis.
+    """
+    try:
+        return storis_services.get_storis_by_product_id(product_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.post("/storis/", response_model=Storis, tags=["Storis"])
+async def create_storis(ProductID: int = Form(...),
+                        Name: Optional[str] = Form(None),
+                        Link: Optional[str] = Form(None),
+                        image: UploadFile = File(...)):
+    """
+    Route for create storis in basedata.
+
+    :param storis: Model storis. [Storis]
+
+    :return: response model Storis.
+    """
+    try:
+        storis_data = Storis(product_id=ProductID, name=Name, link=Link)
+        result = await storis_services.create_storis(storis_data, image)
+        return result
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.put("/storis/{storis_id}", response_model=Dict, tags=["Storis"])
+async def update_storis(StorisID: int = Form(...),
+                        ProductID: int = Form(...),
+                        Name: Optional[str] = Form(None),
+                        Link: Optional[str] = Form(None),
+                        image: UploadFile = File(None)):
+    """
+    Route for update storis in basedata.
+
+    :param storis_id: ID by storis. [int]
+
+    :param storis: Model storis. [Storis]
+
+    :return: response model dict.
+    """
+    try:
+        storis_data = Storis(id=StorisID, product_id=ProductID, name=Name, link=Link)
+        result = await storis_services.update_storis(StorisID, storis_data, image)
+        return result
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.delete("/storis/{storis_id}", response_model=Dict, tags=["Storis"])
+async def delete_storis(storis_id):
+    """
+    Route for delete storis from basedata.
+
+    :param storis_id: ID by storis. [int]
+
+    :return: response model dict.
+    """
+    try:
+        return storis_services.delete_storis(storis_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+    
+    
+@app.get("/product/audio/", response_model=list[ProductAudio], tags=["ProductAudio"])
+async def get_all_product_audio_test():
+    """
+    Route for get all product audio test from basedata.
+
+    :return: response model List[ProductAudio].
+    """
+    try:
+        return product_audio_test_services.get_all_product_audio_test()
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/product/audio/product_audio_id/{product_audio_id}", response_model=ProductAudio, tags=["ProductAudio"])
+async def get_product_audio_test_by_id(product_audio_id: int):
+    """
+    Route for get product audio by ID.
+
+    :param product_audio_id: ID by product audios. [int]
+
+    :return: response model product audio.
+    """
+    try:
+        return product_audio_test_services.get_product_audio_test_by_id(product_audio_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.get("/product/audio/product_id/{product_id}", response_model=list[ProductAudio], tags=["ProductAudio"])
+async def get_product_audio_test_by_product_id(product_id: int):
+    """
+    Route for get product audio by ProductID.
+
+    :param product_id: product_id by product audio. [int]
+
+    :return: response model ProductAudio.
+    """
+    try:
+        return product_audio_test_services.get_product_audio_test_by_product_id(product_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.post("/product/audio/", response_model=ProductAudio, tags=["ProductAudio"])
+async def create_product_audio_test(ProductID: int = Form(...),
+                        OriginalUrl: UploadFile = File(None),
+                        OurUrl: UploadFile = File(None)):
+    """
+    Route for create product audio in basedata.
+
+    :param product audio: Model product audio. [ProductAudio]
+
+    :return: response model ProductAudio.
+    """
+    try:
+        product_audio_test_data = ProductAudio(product_id=ProductID)
+        result = await product_audio_test_services.create_product_audio_test(product_audio_test_data, OriginalUrl, OurUrl)
+        return result
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.put("/product/audio/{product_audio_id}", response_model=Dict, tags=["ProductAudio"])
+async def update_product_audio_test(ProductAudioId: int = Form(...),
+                                    ProductID: int = Form(...),
+                                    OriginalUrl: UploadFile = File(None),
+                                    OurUrl: UploadFile = File(None)):
+    """
+    Route for update product audio in basedata.
+
+    :param product_audio_id: ID by product audio. [int]
+
+    :param product audio: Model product audio. [ProductAudio]
+
+    :return: response model dict.
+    """
+    try:
+        return await product_audio_test_services.update_product_audio_test(ProductAudioId,
+                                                                           ProductID,
+                                                                           OriginalUrl,
+                                                                           OurUrl)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+
+
+@app.delete("/product/audio/{product_audio_id}", response_model=Dict, tags=["ProductAudio"])
+async def delete_product_audio_test(product_audio_id):
+    """
+    Route for delete product audio from basedata.
+
+    :param product_audio_id: ID by storis. [int]
+
+    :return: response model dict.
+    """
+    try:
+        return product_audio_test_services.delete_product_audio_test(product_audio_id)
+    except HTTPException as ex:
+        log.exception(f"Error", exc_info=ex)
+        raise ex
+# /Egor 29.10.2024
 
 
 def run_server():
@@ -1385,18 +1625,26 @@ def run_server():
     with open(uvicorn_log_config, 'r') as f:
         uvicorn_config = yaml.safe_load(f.read())
         logging.config.dictConfig(uvicorn_config)
+    if config.__getattr__("DEBUG") == "TRUE":
+        reload = True
+    elif config.__getattr__("DEBUG") == "FALSE":
+        reload = False
+    else:
+        raise Exception("Not init debug mode in env file")
     uvicorn.run("main:app", host=config.__getattr__("HOST"), port=int(config.__getattr__("SERVER_PORT")),
-                reload=True, log_config=uvicorn_log_config)
+                log_config=uvicorn_log_config, reload=reload)
 
 
 if __name__ == "__main__":
-    # Создание датабазы и таблиц, если они не существуют
-    log.info("Start create/update database")
-    from create_sql import CreateSQL
 
-    create_sql = CreateSQL()
-    create_sql.read_sql()
+    # Создание датабазы и таблиц, если они не существуют и вкючен дебаг мод
+    debug_info("Start create/update database")
 
-    # Запуск сервера и бота
+    if config.__getattr__("DEBUG") == "TRUE":
+        from create_sql import CreateSQL
+        create_sql = CreateSQL()
+        create_sql.read_sql()
+
+    # Запуск сервера
     log.info("Start run server")
     run_server()

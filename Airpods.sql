@@ -46,6 +46,51 @@ INSERT IGNORE INTO `categories` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `storis`
+--
+
+CREATE TABLE `storis` (
+    id INT(11) NOT NULL,
+    product_id int(11),
+    name VARCHAR(255),
+    image_url VARCHAR(255),
+    link VARCHAR(255)
+);
+
+--
+-- Дамп данных таблицы `storis`
+--
+
+INSERT IGNORE INTO `storis` (`id`, `product_id`, `name`, `image_url`, `link`) VALUES
+(1, 1, 'Airpods 2 FCO+ (B24)', 'http://localhost:8008/public/product/example4.png', 'https://www.apple.com/airpods/'),
+(2, 2, 'Watch Series 9 (45mm)', 'http://localhost:8008/public/product/example2.png', 'https://www.apple.com/watch/'),
+(3, 3, 'Airpods 2 FCO + Watch', 'http://localhost:8008/public/product/example3.png', 'https://www.apple.com/airpods/'),
+(4, 4, 'Адаптер зарядки 20W USB-C FCO', 'http://localhost:8008/public/product/example4.png', 'https://www.apple.com/airpods/'),
+(5, 5, 'Стайлер Dyson HS05 Long Blue', 'http://localhost:8008/public/product/example5.png', 'https://www.dyson.com/en-us/h7-long');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `product_audio_test`
+--
+
+CREATE TABLE `product_audio_test` (
+    id INT(11) NOT NULL,
+    product_id int(11),
+    original_url VARCHAR(255),
+    our_url VARCHAR(255)
+);
+
+INSERT IGNORE INTO `product_audio_test` (`id`, `product_id`, `original_url`, `our_url`) VALUES
+(1, 1, 'http://localhost:8008/public/product/example4.mp3', 'http://localhost:8008/public/product/example4.mp3'),
+(2, 2, 'http://localhost:8008/public/product/example2.mp3', 'http://localhost:8008/public/product/example2.mp3'),
+(3, 3, 'http://localhost:8008/public/product/example3.mp3', 'http://localhost:8008/public/product/example3.mp3'),
+(4, 4, 'http://localhost:8008/public/product/example4.mp3', 'http://localhost:8008/public/product/example4.mp3'),
+(5, 5, 'http://localhost:8008/public/product/example5.mp3', 'http://localhost:8008/public/product/example5.mp3');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `characteristics`
 --
 
@@ -219,7 +264,9 @@ CREATE TABLE IF NOT EXISTS `products` (
   `currency_id` int(11) NOT NULL,
   `company_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL
+  `price` decimal(10,2) NOT NULL,
+  `is_active` varchar(255) NOT NULL,
+  `position` int(11) NOT NULL DEFAULT 1000
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -232,6 +279,9 @@ INSERT IGNORE INTO `products` (`id`, `name`, `promotion_id`, `currency_id`, `com
 (3, 'Airpods 2 FCO + Watch', NULL, 3, 1, 3, 2000.00),
 (4, 'Адаптер зарядки 20W USB-C FCO', NULL, 4, 1, 4, 2500.00),
 (5, 'Стайлер Dyson HS05 Long Blue', NULL, 5, 1, 5, 500.00);
+
+
+ALTER TABLE products ADD position int(11) DEFAULT 1000;
 
 -- --------------------------------------------------------
 
@@ -294,6 +344,8 @@ CREATE TABLE IF NOT EXISTS `product_images` (
   `image_id` int(11) NOT NULL,
   `image_type` enum('main','additional') NOT NULL DEFAULT 'main'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE product_images ADD color VARCHAR(255);
 
 --
 -- Дамп данных таблицы `product_images`
@@ -362,6 +414,20 @@ INSERT IGNORE INTO `users` (`id`, `name`, `telegram_id`) VALUES
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `storis`
+--
+ALTER TABLE `storis`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Индексы таблицы `product_audio_test`
+--
+ALTER TABLE `product_audio_test`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Индексы таблицы `characteristics`
@@ -467,6 +533,18 @@ ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT для таблицы `storis`
+--
+ALTER TABLE `storis`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT для таблицы `product_audio_test`
+--
+ALTER TABLE `product_audio_test`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT для таблицы `characteristics`
 --
 ALTER TABLE `characteristics`
@@ -560,6 +638,18 @@ ALTER TABLE `comment_images`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `storis`
+--
+ALTER TABLE `storis`
+  ADD CONSTRAINT `storis_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `product_audio_test`
+--
+ALTER TABLE `product_audio_test`
+  ADD CONSTRAINT `product_audio_test` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `order_products`
