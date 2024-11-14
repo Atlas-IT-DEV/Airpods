@@ -6,11 +6,14 @@ import {
   sortDownIcon,
   sortUpIcon,
 } from "../images/images";
+import { useStores } from "../store/store_context";
+import { observer } from "mobx-react-lite";
 
-const SortBar = () => {
+const SortBar = observer(() => {
   const [count, setCount] = useState(0);
   const [color, setColor] = useState("rgba(92, 92, 92, 1)");
   const [icon, setIcon] = useState(noSortIcon);
+  const { pageStore } = useStores();
 
   const handleClick = () => {
     if (count !== 2) {
@@ -18,12 +21,25 @@ const SortBar = () => {
     } else {
       setCount((count) => (count = 0));
     }
+    pageStore.updateSort(count);
+    console.log(pageStore.sort);
   };
   return (
     <div className="sortBar">
-      <form className="searchBar">
+      <form
+        className="searchBar"
+        onSubmit={(event) => {
+          event.preventDefault();
+          console.log(pageStore.search);
+        }}
+      >
         {searchIcon}
-        <input type="text" placeholder="Поиск" className="searchField" />
+        <input
+          type="text"
+          placeholder="Поиск"
+          className="searchField"
+          onChange={(event) => pageStore.updateSearch(event.target.value)}
+        />
       </form>
       <button
         className="sortPrice"
@@ -50,6 +66,6 @@ const SortBar = () => {
       </button>
     </div>
   );
-};
+});
 
 export default SortBar;

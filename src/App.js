@@ -9,6 +9,8 @@ import CopyPage from "./pages/copyPage";
 import TrackingPage from "./pages/Tracking";
 import { ChakraBaseProvider } from "@chakra-ui/react";
 import { useEffect } from "react";
+import RootStore from "./store/root_store";
+import { RootStoreContext } from "./store/store_context";
 window.GlobalShoppingCart = [];
 window.GlobalProductColors = [];
 const router = createMemoryRouter([
@@ -54,7 +56,7 @@ const router = createMemoryRouter([
   },
 ]);
 function App() {
-  const tg = window.Telegram.WebApp;
+  /* const tg = window.Telegram.WebApp;
   tg.enableClosingConfirmation();
   tg.expand();
   useEffect(() => {
@@ -63,11 +65,13 @@ function App() {
   function big() {
     tg.expand();
   }
-  tg.onEvent("viewportChanged", big);
+  tg.onEvent("viewportChanged", big); */
   return (
-    <ChakraBaseProvider>
-      <RouterProvider router={router} />
-    </ChakraBaseProvider>
+    <RootStoreContext.Provider value={new RootStore()}>
+      <ChakraBaseProvider>
+        <RouterProvider router={router} />
+      </ChakraBaseProvider>
+    </RootStoreContext.Provider>
   );
 }
 export default App;

@@ -1,13 +1,10 @@
 import { useNavigate } from "react-router";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useStores } from "../store/store_context";
 function QuadroBlocks() {
-  const [faqlink, setFaqLink] = useState("#");
   const navigate = useNavigate();
-  const [cart_amount, setAmount] = useState(0);
-  const [sale, setSale] = useState(0);
+  const { pageStore } = useStores();
   const tg = window.Telegram.WebApp;
-  useEffect(() => {
+  /*   useEffect(() => {
     fetch("https://pop.applepodsblack.ru/api/faqs")
       .then((response) => response.json())
       .then(function (commits) {
@@ -16,17 +13,13 @@ function QuadroBlocks() {
 
         setFaqLink(data.data[0].attributes.link);
       });
-  }, []);
-  useEffect(() => {
-    setAmount(window.GlobalShoppingCart.length);
-    setSale(window.GlobalSale);
-  });
+  }, []); */
   return (
     <div className="quadro_blocks_main">
       <div className="quadro_blocks" style={{ paddingLeft: "8px" }}>
         {/* <a href="#" onClick={() => navigate("/tracking")}> */}
         <a href="https://t.me/applepods_black_otzivi">
-          <div className="gray_block" >
+          <div className="gray_block">
             <div className="inner_arrow_text">
               <p>Отзывы</p>
               <svg
@@ -49,7 +42,7 @@ function QuadroBlocks() {
         </a>
         <a
           onClick={() => {
-            tg.openLink(`${faqlink}`, {
+            tg.openLink(`https://telegra.ph/FAQ-Applepods-black-05-15`, {
               try_instant_view: true,
             });
           }}
@@ -109,7 +102,6 @@ function QuadroBlocks() {
         <div
           class="gray_block"
           onClick={() => {
-            window.notification = true;
             navigate("/cart");
           }}
         >
@@ -132,8 +124,8 @@ function QuadroBlocks() {
           </div>
           <div id="cart_block_bottom">
             <div class="shopping_cart_icon"></div>
-            <p id="cart_block_amount">{cart_amount}</p>
-            <p class="sale">-{sale}%</p>
+            <p id="cart_block_amount">{pageStore.cart.length}</p>
+            <p class="sale">-{""}%</p>
           </div>
         </div>
       </div>

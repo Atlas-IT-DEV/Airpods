@@ -7,13 +7,15 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import { Autoplay } from "swiper/modules";
-import { useNavigate, useNavigation } from "react-router";
+import { useNavigate } from "react-router";
+import { useStores } from "../store/store_context";
+import { observer } from "mobx-react-lite";
 
 // import required modules
 import { Navigation } from "swiper/modules";
-import { array } from "yup";
 import CollectBasket from "./collectBasket";
-function ProductCarousel() {
+
+const ProductCarousel = observer(({ product }) => {
   // const swiperIns = useSwiper();
   const [carouselInfo, setCarouselInfo] = useState([
     "название",
@@ -22,170 +24,21 @@ function ProductCarousel() {
   ]);
   // let swiper = null;
   const tg = window.Telegram.WebApp;
-  const navigate = useNavigate()
-  const [variants, setVariants] = useState("");
-  const [info, setInfo] = useState("информация о продукте");
-  // const [swiper, setSwiper] = useState(null);
-  const [carousel, setCarousel] = useState("");
-  const [teletype, setTeletype] = useState("");
+  const navigate = useNavigate();
+  const { pageStore } = useStores();
   const [price, setPrice] = useState(0);
-  const [audio, setAudio] = useState("");
-  const [curColor, setCurColor] = useState("");
-  // function swipe(ind) {
-  //   swiper.slideTo(ind);
-
-  // }
-  const change_underline = (index) => {
-    let new_vars = Array.from(variants);
-    console.log(new_vars);
-    for (let i = 0; i < new_vars.length; i++) {
-      new_vars[i].props.className = "variant";
-    }
-    new_vars[index].props.className = "variant_gold";
-    setVariants(new_vars);
-  };
-
+  const [curColor, setCurColor] = useState("Стандартный");
+  const [count, setCount] = useState(null);
   useEffect(() => {
-    fetch(
-      "https://pop.applepodsblack.ru/api/products?populate=deep&pagination[limit]=100"
-    )
-      .then((response) => response.json())
-      .then(function (commits) {
-        let data = commits.data;
-        let product = "";
-        for (let elem of data) {
-          if (elem.id == window.GlobalProductId) product = elem;
-        }
-        let buffer = [];
-        let urls = [];
+    if (product?.category_id != 3 && product.category_id != 4) {
+      setCurColor(
+        product?.urls.filter((elem) => elem.Color != "").length > 0 &&
+          product?.urls.filter((elem) => elem.Color != "")[0].Color
+      );
+    }
 
-        buffer[0] = product.attributes.name;
-        buffer[1] = product.attributes.rub_price;
-        // urls[0] =
-        //   "https://pop.applepodsblack.ru/" +
-        //   product.attributes.main_photo.data.attributes.url;
-        let colors = [];
-        let colors_urls = [];
-        for (let color of product.attributes.colors.data) {
-          colors_urls.push(
-            "https://pop.applepodsblack.ru/" +
-              color.attributes.photo.data[0].attributes.url
-          );
-          colors.push(color.attributes.name);
-        }
-        let new_photos = [];
-        for (let photo of product?.attributes?.photo.data) {
-          new_photos.push(
-            "https://pop.applepodsblack.ru/" + photo?.attributes?.url
-          );
-        }
-
-        if (colors.length != 0) {
-          window.GlobalProductColor = colors[0];
-        } else {
-          window.GlobalProductColor = "стандартный цвет";
-        }
-        buffer[2] = urls;
-        buffer[3] = product.attributes.eur_price;
-        buffer[4] = product.attributes.byn_price;
-
-        let carousel = [];
-        let vars = [];
-        window.GlobalProductCategory = product.attributes.category;
-        for (let i = 0; i < urls.length; i++) {
-          carousel.push(
-            <SwiperSlide>
-              <img src={urls[i]} className="product_img_carousel"></img>
-            </SwiperSlide>
-          );
-        }
-        for (let i = 0; i < new_photos.length; i++) {
-          carousel.push(
-            <SwiperSlide>
-              <img src={new_photos[i]} className="product_img_carousel"></img>
-            </SwiperSlide>
-          );
-        }
-        for (let i = 0; i < colors_urls.length; i++) {
-          vars.push(
-            <img
-              className="variant"
-              src={colors_urls[i]}
-              onClick={() => {
-                window.GlobalProductColor = colors[i];
-                setCurColor(window.GlobalProductColor);
-                change_underline(i);
-                // swipe(i);
-              }}
-            ></img>
-          );
-        }
-        let teletype_buffer = [];
-        for (let elem of product.attributes.stories.data) {
-          teletype_buffer.push(
-            <SwiperSlide>
-              <div
-                className={
-                  window.innerWidth < 420
-                    ? "teletype_block_small"
-                    : "teletype_block"
-                }
-                onClick={() => {
-                  tg.openLink(`${elem.attributes.link}`, {
-                    try_instant_view: true,
-                  });
-                }}
-              >
-                <img
-                  src={
-                    "https://pop.applepodsblack.ru/" +
-                    elem.attributes.photo.data[0].attributes.url
-                  }
-                  style={{
-                    position: "absolute",
-                    top: "0",
-                    left: "0",
-                    objectFit: "cover",
-                    width: "inherit",
-                    height: "inherit",
-                    zIndex: "-1",
-                    borderRadius: "16px",
-                  }}
-                ></img>
-                <div>
-                  <p>{elem.attributes.name}</p>
-                </div>
-              </div>
-            </SwiperSlide>
-          );
-        }
-        if (product.attributes.category == "headphones") {
-          let audio_buff = [];
-          audio_buff.push(
-            <div className="audio_div">
-              <audio
-                controls
-                src={
-                  "https://pop.applepodsblack.ru/" +
-                  product.attributes.audio.data[0].attributes.url
-                }
-              ></audio>
-            </div>
-          );
-          setAudio(audio_buff);
-        }
-        window.GlobalWatchColor = "";
-        setTeletype(teletype_buffer);
-        setVariants(vars);
-        setCarousel(carousel);
-        console.log(urls.length);
-        setCarouselInfo(buffer);
-        setPrice(buffer[1]);
-        setInfo(product.attributes.info);
-        setCurColor(window.GlobalProductColor);
-      });
-  }, []);
-
+    setPrice(product?.currency?.ru);
+  }, [product]);
   return (
     <div>
       <div>
@@ -198,11 +51,17 @@ function ProductCarousel() {
           navigation={true}
           allowTouchMove={false}
         >
-          {carousel}
+          {product?.urls.map((elem) => {
+            return (
+              <SwiperSlide>
+                <img src={elem.url} className="product_img_carousel" />
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </div>
       <div id="main_product_info">
-        <p id="main_info_product_name">{carouselInfo[0]}</p>
+        <p id="main_info_product_name">{product?.name}</p>
         <div className="select_currency">
           <p>Выберите валюту</p>
         </div>
@@ -212,9 +71,11 @@ function ProductCarousel() {
             <select
               id="currency_choose"
               onChange={(event) => {
-                if (event.target.value == "rub") setPrice(carouselInfo[1]);
-                else if (event.target.value == "eur") setPrice(carouselInfo[3]);
-                else setPrice(carouselInfo[4]);
+                if (event.target.value == "rub")
+                  setPrice(product?.currency?.ru);
+                else if (event.target.value == "eur")
+                  setPrice(product?.currency?.eu);
+                else setPrice(product?.currency?.br);
               }}
             >
               <option value="rub">RUB</option>
@@ -223,14 +84,28 @@ function ProductCarousel() {
             </select>
           </div>
         </div>
-        {window.GlobalProductCategory == "watch" ||
-        window.GlobalProductCategory == "headphones" ||
-        window.GlobalProductCategory == "dyson" ? (
+        {product?.category_id != 3 &&
+        product.category_id != 4 &&
+        product.category_id != 5 ? (
           <div id="choose_color">
             <p>
               Цвет корпуса <p className="current">{curColor}</p>
             </p>
-            <div className="color_variants">{variants}</div>
+            <div className="color_variants">
+              {product?.urls
+                .filter((elem) => elem.Color != "")
+                .map((elem) => {
+                  return (
+                    <img
+                      className="variant"
+                      src={elem.url}
+                      onClick={() => {
+                        setCurColor(elem.Color);
+                      }}
+                    ></img>
+                  );
+                })}
+            </div>
           </div>
         ) : (
           ""
@@ -266,6 +141,7 @@ function ProductCarousel() {
               marginTop: 8,
               marginBottom: 8,
             }}
+            onSubmit={(event) => event.preventDefault()}
           >
             <button
               style={{
@@ -274,11 +150,19 @@ function ProductCarousel() {
                 fontFamily: "SF Pro Display",
                 fontWeight: 600,
               }}
+              onClick={() => {
+                if (count - 1 < 0) {
+                  setCount(0);
+                } else {
+                  setCount(count - 1);
+                }
+              }}
             >
               -
             </button>
             <input
-              type="text"
+              type="number"
+              value={count}
               placeholder="Ввести..."
               style={{
                 width: 80,
@@ -287,6 +171,9 @@ function ProductCarousel() {
                 fontFamily: "SF Pro Text",
                 fontSize: 17,
               }}
+              onChange={(event) => {
+                setCount(Number(event.target.value));
+              }}
             />
             <button
               style={{
@@ -294,6 +181,9 @@ function ProductCarousel() {
                 fontSize: 17,
                 fontFamily: "SF Pro Display",
                 fontWeight: 600,
+              }}
+              onClick={() => {
+                setCount(count + 1);
               }}
             >
               +
@@ -320,13 +210,17 @@ function ProductCarousel() {
                 color: "rgba(28, 28, 30, 1)",
               }}
               onClick={() => {
-                window.GlobalShoppingCart.push(window.GlobalProductId);
-                window.GlobalProductColors.push(
-                  window.GlobalProductColor + " " + window.GlobalWatchColor
-                );
-                console.log("привет");
-
-                navigate("/cart");
+                let copy_cart = Array.from(pageStore.cart);
+                if (count > 0 && count != null) {
+                  copy_cart.push({
+                    id: product?.id,
+                    color: curColor,
+                    name: product?.name,
+                    price: product?.price,
+                    count: count,
+                  });
+                }
+                pageStore.updateCart(copy_cart);
               }}
             >
               Добавить в корзину
@@ -334,7 +228,7 @@ function ProductCarousel() {
           </div>
         </button>
         <div className="divideLine" />
-        <CollectBasket />
+        <CollectBasket id={product?.id} product={product} />
         <div className="divideLine" />
         <div id="stories">
           <p>Полезная информация</p>
@@ -343,23 +237,70 @@ function ProductCarousel() {
             autoplay={{ delay: 5000, disableOnInteraction: false }}
             modules={[Autoplay]}
           >
-            {teletype}
+            {product?.storis.map((elem) => {
+              return (
+                <SwiperSlide>
+                  <div
+                    className={
+                      window.innerWidth < 420
+                        ? "teletype_block_small"
+                        : "teletype_block"
+                    }
+                    onClick={() => {
+                      tg.openLink(`${elem.link}`, {
+                        try_instant_view: true,
+                      });
+                    }}
+                  >
+                    <img
+                      src={elem.image_url}
+                      style={{
+                        position: "absolute",
+                        top: "0",
+                        left: "0",
+                        objectFit: "cover",
+                        width: "inherit",
+                        height: "inherit",
+                        zIndex: "-1",
+                        borderRadius: "16px",
+                      }}
+                    ></img>
+                    {/* <div>
+                      <p>{elem.name}</p>
+                    </div> */}
+                  </div>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
         <div id="info_dropdown">
-          <DropDown content={redact(info)} header={"Описание"}></DropDown>
+          <DropDown
+            content={redact(
+              product?.characteristics
+                ? product?.characteristics.find(
+                    (elem) => elem.name == "Описание"
+                  ).value
+                : "Здесь почему то нет описания (поле characteristics)"
+            )}
+            header={"Описание"}
+          ></DropDown>
         </div>
 
         <div id="audio_ex">
-          {window.GlobalProductCategory == "headphones" ? (
+          {product?.category_id == 1 ? (
             <p id="audio_header">Тест микрофона</p>
-          ) : (
-            ""
-          )}
-          {audio}
+          ) : null}
+          {product?.audio_files.map((elem) => {
+            return (
+              <div className="audio_div">
+                <audio controls src={elem.original_url}></audio>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
   );
-}
+});
 export default ProductCarousel;

@@ -1,17 +1,37 @@
 import "../components/productBasket.css";
 import { binIcon } from "../images/images";
+import { useStores } from "../store/store_context";
+import { observer } from "mobx-react-lite";
 
-const ProductBasket = ({ color = "черный", count = 42, price = 4600 }) => {
+const ProductBasket = ({
+  color = "Черный",
+  count = 42,
+  price = 4600,
+  id,
+  obj,
+}) => {
+  const { pageStore } = useStores();
   return (
     <div className="productBasketContainer">
-      <button style={{ position: "absolute", right: 24 }}> {binIcon}</button>
+      <button
+        style={{ position: "absolute", right: 24 }}
+        onClick={() => {
+          let copy_cart = Array.from(pageStore.cart);
+          console.log(id, color, copy_cart);
+
+          pageStore.updateCart(
+            copy_cart.filter(
+              (elem) => !(elem.id === id && elem.color === color)
+            )
+          );
+        }}
+      >
+        {" "}
+        {binIcon}
+      </button>
+
       <div className="fieldProduct">
         <p className="attributeProduct">Цвет корпуса</p>
-        <p className="attributeProduct">—</p>
-        <p className="valueProduct">{color}</p>
-      </div>
-      <div className="fieldProduct">
-        <p className="attributeProduct">Цвет ремешка</p>
         <p className="attributeProduct">—</p>
         <p className="valueProduct">{color}</p>
       </div>

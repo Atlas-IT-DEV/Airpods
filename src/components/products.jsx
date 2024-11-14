@@ -2,204 +2,49 @@ import { useState } from "react";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import dyson_logo from "./../images/dyson1.svg";
-import goldsets from './../images/goldsale.png'
+import goldsets from "./../images/goldsale.png";
 import SortBar from "./sortBar";
+import { useStores } from "../store/store_context";
+import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 
-function Products() {
-  const [headphones, setHeadphones] = useState("");
-  const [watches, setWatches] = useState("");
-  const [accessories, setAccessories] = useState("");
-  const [dyson, setDyson] = useState("");
-  const [sets, setSets] = useState("");
+const Products = observer(() => {
   const scrollEffect = (targetRef) => {
     targetRef.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   };
+  const [products, setProducts] = useState([]);
   const watchesRef = useRef(null);
   const headphonesRef = useRef(null);
   const accessoriesRef = useRef(null);
   const dysonRef = useRef(null);
   const setsRef = useRef(null);
+  const { pageStore } = useStores();
+  const navigate = useNavigate();
   useEffect(() => {
-    fetch(
-      "https://pop.applepodsblack.ru/api/products?populate=deep&pagination[limit]=100"
-    )
-      .then((response) => response.json())
-      .then(function (commits) {
-        let data = commits.data;
-        let buffer_headphones = [];
-        let buffer_accessories = [];
-        let buffer_watches = [];
-        let buffer_sets = [];
-        let buffer_dyson = [];
-
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].attributes.category == "headphones") {
-            buffer_headphones.push(
-              <div className="card">
-                <div className="card_image">
-                  <img
-                    src={
-                      "https://pop.applepodsblack.ru/" +
-                      data[i].attributes.main_photo.data.attributes.url
-                    }
-                  />
-                </div>
-                <div className="card_info">
-                  <div className="card_price_info">
-                    <p className="card_price">
-                      {data[i].attributes.rub_price} ₽
-                    </p>
-                    <p className="card_description">
-                      {data[i].attributes.name}
-                    </p>
-                  </div>
-                  <Link style={{ width: "100%" }} to={"/product"}>
-                    <button
-                      className="gold_button"
-                      onClick={() => (window.GlobalProductId = data[i].id)}
-                    >
-                      Подробнее
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            );
-          } else if (data[i].attributes.category == "watch") {
-            buffer_watches.push(
-              <div className="card">
-                <div className="card_image">
-                  <img
-                    src={
-                      "https://pop.applepodsblack.ru/" +
-                      data[i].attributes.main_photo.data.attributes.url
-                    }
-                  />
-                </div>
-                <div className="card_info">
-                  <div className="card_price_info">
-                    <p className="card_price">
-                      {data[i].attributes.rub_price} ₽
-                    </p>
-                    <p className="card_description">
-                      {data[i].attributes.name}
-                    </p>
-                  </div>
-                  <Link style={{ width: "100%" }} to={"/product"}>
-                    <button
-                      className="gold_button"
-                      onClick={() => (window.GlobalProductId = data[i].id)}
-                    >
-                      Подробнее
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            );
-          } else if (data[i].attributes.category == "accessories") {
-            buffer_accessories.push(
-              <div className="card">
-                <div className="card_image">
-                  <img
-                    src={
-                      "https://pop.applepodsblack.ru/" +
-                      data[i].attributes.main_photo.data.attributes.url
-                    }
-                  />
-                </div>
-                <div className="card_info">
-                  <div className="card_price_info">
-                    <p className="card_price">
-                      {data[i].attributes.rub_price} ₽
-                    </p>
-                    <p className="card_description">
-                      {data[i].attributes.name}
-                    </p>
-                  </div>
-                  <Link style={{ width: "100%" }} to={"/product"}>
-                    <button
-                      className="gold_button"
-                      onClick={() => (window.GlobalProductId = data[i].id)}
-                    >
-                      Подробнее
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            );
-          } else if (data[i].attributes.category == "dyson") {
-            buffer_dyson.push(
-              <div className="card">
-                <div className="card_image">
-                  <img
-                    src={
-                      "https://pop.applepodsblack.ru/" +
-                      data[i].attributes.main_photo.data.attributes.url
-                    }
-                  />
-                </div>
-                <div className="card_info">
-                  <div className="card_price_info">
-                    <p className="card_price">
-                      {data[i].attributes.rub_price} ₽
-                    </p>
-                    <p className="card_description">
-                      {data[i].attributes.name}
-                    </p>
-                  </div>
-                  <Link style={{ width: "100%" }} to={"/product"}>
-                    <button
-                      className="gold_button"
-                      onClick={() => (window.GlobalProductId = data[i].id)}
-                    >
-                      Подробнее
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            );
-          } else {
-            buffer_sets.push(
-              <div className="card">
-                <div className="card_image">
-                  <img
-                    src={
-                      "https://pop.applepodsblack.ru/" +
-                      data[i].attributes.main_photo.data.attributes.url
-                    }
-                  />
-                </div>
-                <div className="card_info">
-                  <div className="card_price_info">
-                    <p className="card_price">
-                      {data[i].attributes.rub_price} ₽
-                    </p>
-                    <p className="card_description">
-                      {data[i].attributes.name}
-                    </p>
-                  </div>
-                  <Link style={{ width: "100%" }} to={"/product"}>
-                    <button
-                      className="gold_button"
-                      onClick={() => (window.GlobalProductId = data[i].id)}
-                    >
-                      Подробнее
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            );
-          }
-          setWatches(buffer_watches);
-          setAccessories(buffer_accessories);
-          setHeadphones(buffer_headphones);
-          setDyson(buffer_dyson);
-          setSets(buffer_sets);
-        }
-      });
+    pageStore.getProducts();
   }, []);
+  useEffect(() => {
+    let copy_products = Array.from(pageStore.products);
+    copy_products = copy_products.filter((elem) =>
+      elem.name.toLowerCase().includes(pageStore.search.toLowerCase())
+    );
+    if (pageStore.sort != 2) {
+      if (pageStore.sort == 1) {
+        copy_products = copy_products.sort(
+          (a, b) => b.currency.ru - a.currency.ru
+        );
+      } else {
+        copy_products = copy_products.sort(
+          (a, b) => a.currency.ru - b.currency.ru
+        );
+      }
+    }
+    setProducts(copy_products);
+  }, [pageStore.products, pageStore.search, pageStore.sort]);
+
   return (
     <div>
       <div>
@@ -207,7 +52,7 @@ function Products() {
           <p>Наша продукция</p>
         </div>
         <div>
-          <SortBar/>
+          <SortBar />
         </div>
         <div id="our_products">
           <div class="product" onClick={() => scrollEffect(headphonesRef)}>
@@ -350,13 +195,13 @@ function Products() {
           </div>
           <div class="product" onClick={() => scrollEffect(setsRef)}>
             <div class="product_logo">
-              <img src={goldsets}/>
+              <img src={goldsets} />
             </div>
             <p class="product_description_golden">Наборы</p>
           </div>
           <div class="product" onClick={() => scrollEffect(accessoriesRef)}>
             <div class="product_logo">
-            <svg
+              <svg
                 width="33"
                 height="32"
                 viewBox="0 0 33 32"
@@ -483,27 +328,171 @@ function Products() {
         <div className="small_products_header">
           <p ref={headphonesRef}>Наушники</p>
         </div>
-        <div className="grid">{headphones}</div>
+        <div className="grid">
+          {Array.from(products)
+            .filter((elem) => elem.category_id == 1)
+            .map((elem) => {
+              return (
+                <div className="card">
+                  <div className="card_image">
+                    <img src={elem.url} />
+                  </div>
+                  <div className="card_info">
+                    <div className="card_price_info">
+                      <p className="card_price">{elem.currency.ru} ₽</p>
+                      <p className="card_description">{elem.name}</p>
+                    </div>
+                    <button
+                      className="gold_button"
+                      onClick={() =>
+                        navigate("/product", {
+                          state: { product_id: elem.id },
+                        })
+                      }
+                    >
+                      Подробнее
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
 
         <div className="small_products_header">
           <p ref={watchesRef}>Часы</p>
         </div>
-        <div className="grid">{watches}</div>
+        <div className="grid">
+          {Array.from(products)
+            .filter((elem) => elem.category_id == 2)
+            .map((elem) => {
+              return (
+                <div className="card">
+                  <div className="card_image">
+                    <img src={elem.url} />
+                  </div>
+                  <div className="card_info">
+                    <div className="card_price_info">
+                      <p className="card_price">{elem.currency.ru} ₽</p>
+                      <p className="card_description">{elem.name}</p>
+                    </div>
+
+                    <button
+                      className="gold_button"
+                      onClick={() =>
+                        navigate("/product", {
+                          state: { product_id: elem.id },
+                        })
+                      }
+                    >
+                      Подробнее
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
         <div className="small_products_header">
           <p ref={setsRef}>Наборы</p>
         </div>
-        <div className="grid">{sets}</div>
+        <div className="grid">
+          {Array.from(products)
+            .filter((elem) => elem.category_id == 3)
+            .map((elem) => {
+              return (
+                <div className="card">
+                  <div className="card_image">
+                    <img src={elem.url} />
+                  </div>
+                  <div className="card_info">
+                    <div className="card_price_info">
+                      <p className="card_price">{elem.currency.ru} ₽</p>
+                      <p className="card_description">{elem.name}</p>
+                    </div>
+
+                    <button
+                      className="gold_button"
+                      onClick={() =>
+                        navigate("/product", {
+                          state: { product_id: elem.id },
+                        })
+                      }
+                    >
+                      Подробнее
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
         <div className="small_products_header">
           <p ref={accessoriesRef}>Аксессуары</p>
         </div>
-        <div className="grid">{accessories}</div>
+        <div className="grid">
+          {Array.from(products)
+            .filter((elem) => elem.category_id == 4)
+            .map((elem) => {
+              return (
+                <div className="card">
+                  <div className="card_image">
+                    <img src={elem.url} />
+                  </div>
+                  <div className="card_info">
+                    <div className="card_price_info">
+                      <p className="card_price">{elem.currency.ru} ₽</p>
+                      <p className="card_description">{elem.name}</p>
+                    </div>
+
+                    <button
+                      className="gold_button"
+                      onClick={() =>
+                        navigate("/product", {
+                          state: { product_id: elem.id },
+                        })
+                      }
+                    >
+                      Подробнее
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
 
         <div className="small_products_header">
           <p ref={dysonRef}>Dyson</p>
         </div>
-        <div className="grid">{dyson}</div>
+        <div className="grid">
+          {Array.from(products)
+            .filter((elem) => elem.category_id == 5)
+            .map((elem) => {
+              return (
+                <div className="card">
+                  <div className="card_image">
+                    <img src={elem.url} />
+                  </div>
+                  <div className="card_info">
+                    <div className="card_price_info">
+                      <p className="card_price">{elem.currency.ru} ₽</p>
+                      <p className="card_description">{elem.name}</p>
+                    </div>
+
+                    <button
+                      className="gold_button"
+                      onClick={() =>
+                        navigate("/product", {
+                          state: { product_id: elem.id },
+                        })
+                      }
+                    >
+                      Подробнее
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+        </div>
       </div>
     </div>
   );
-}
+});
 export default Products;

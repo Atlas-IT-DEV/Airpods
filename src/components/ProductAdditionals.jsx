@@ -2,19 +2,10 @@ import DropDown from "./dropDown";
 import { useEffect } from "react";
 import { useState } from "react";
 import redact from "../redact";
-function ProductAdditionals() {
-  const [add_autonomy, setAutonomy] = useState("");
-  const [add_mic_quality, setMicQuality] = useState("");
-  const [add_sound_quality, setSoundQuality] = useState("");
-  const [equipment, setEquipment] = useState("");
-  const [functional, setFunctional] = useState("");
-  const [dropInf, setDropInf] = useState([
-    "Качество звука",
-    "Качество микрофона",
-  ]);
-  const [chars, setChars] = useState("");
-  useEffect(() => {
-    fetch(
+import { useStores } from "../store/store_context";
+import { observer } from "mobx-react-lite";
+const ProductAdditionals = observer(({ product }) => {
+  /* fetch(
       "https://pop.applepodsblack.ru/api/products?populate=deep&pagination[limit]=100"
     )
       .then((response) => response.json())
@@ -110,39 +101,207 @@ function ProductAdditionals() {
           }
         }
         setSoundQuality(sound_buffer);
-      });
-  }, []);
+      }); */
   return (
     <div id="addon_info">
       <p>Дополнительная информация</p>
-      {window.GlobalProductCategory == "dyson" || window.GlobalProductCategory == "acessories"? (
-        ""
-      ) : (
+      {product?.category_id == 4 ||
+      product?.category_id == 5 ||
+      product?.category_id == 3 ? null : (
         <div id="stats">
           <div id="stats_inner">
             <div className="stats_row">
-              <div className="stats_points">{add_sound_quality}</div>
-              <p>{dropInf[0]}</p>
+              <div className="stats_points">
+                {[
+                  ...[
+                    ...Array(
+                      Number(
+                        product?.characteristics.find((elem) => elem.id == 7)
+                          .value != "NULL"
+                          ? product?.characteristics.find(
+                              (elem) => elem.id == 7
+                            ).value
+                          : 0
+                      )
+                    ).keys(),
+                  ].map((elem) => {
+                    return (
+                      <div
+                        className="stats_point audio"
+                        style={{
+                          background: `var(--Yellow-gradient, linear-gradient(93deg, #F5EA99 -3.52%, #DB9B45 100%))`,
+                        }}
+                      ></div>
+                    );
+                  }),
+                  ,
+                  ...[
+                    ...Array(
+                      10 -
+                        Number(
+                          product?.characteristics.find((elem) => elem.id == 7)
+                            .value != "NULL"
+                            ? product?.characteristics.find(
+                                (elem) => elem.id == 7
+                              ).value
+                            : 0
+                        )
+                    ).keys(),
+                  ].map((elem) => {
+                    return (
+                      <div
+                        className="stats_point audio"
+                        style={{
+                          backgroundColor: `var(--Gray, #4B4B4B)`,
+                        }}
+                      ></div>
+                    );
+                  }),
+                ]}
+              </div>
+              <p>
+                {product?.category_id == 2 ? "Скорость меню" : "Качество звука"}
+              </p>
             </div>
             <div className="stats_row">
-              <div className="stats_points">{add_mic_quality}</div>
-              <p>{dropInf[1]}</p>
+              <div className="stats_points">
+                {[
+                  ...[
+                    ...Array(
+                      Number(
+                        product?.characteristics.find((elem) => elem.id == 8)
+                          .value != "NULL"
+                          ? product?.characteristics.find(
+                              (elem) => elem.id == 8
+                            ).value
+                          : 0
+                      )
+                    ).keys(),
+                  ].map((elem) => {
+                    return (
+                      <div
+                        className="stats_point audio"
+                        style={{
+                          background: `var(--Yellow-gradient, linear-gradient(93deg, #F5EA99 -3.52%, #DB9B45 100%))`,
+                        }}
+                      ></div>
+                    );
+                  }),
+                  ,
+                  ...[
+                    ...Array(
+                      10 -
+                        Number(
+                          product?.characteristics.find((elem) => elem.id == 8)
+                            .value != "NULL"
+                            ? product?.characteristics.find(
+                                (elem) => elem.id == 8
+                              ).value
+                            : 0
+                        )
+                    ).keys(),
+                  ].map((elem) => {
+                    return (
+                      <div
+                        className="stats_point audio"
+                        style={{
+                          backgroundColor: `var(--Gray, #4B4B4B)`,
+                        }}
+                      ></div>
+                    );
+                  }),
+                ]}
+              </div>
+              <p>
+                {product?.category_id == 2
+                  ? "Качество цветопередачи"
+                  : "Качество микрофона"}
+              </p>
             </div>
             <div className="stats_row">
-              <div className="stats_points">{add_autonomy}</div>
+              <div className="stats_points">
+                {[
+                  ...[
+                    ...Array(
+                      Number(
+                        product?.characteristics.find((elem) => elem.id == 4)
+                          .value != "NULL"
+                          ? product?.characteristics.find(
+                              (elem) => elem.id == 4
+                            ).value
+                          : 0
+                      )
+                    ).keys(),
+                  ].map((elem) => {
+                    return (
+                      <div
+                        className="stats_point audio"
+                        style={{
+                          background: `var(--Yellow-gradient, linear-gradient(93deg, #F5EA99 -3.52%, #DB9B45 100%))`,
+                        }}
+                      ></div>
+                    );
+                  }),
+                  ,
+                  ...[
+                    ...Array(
+                      10 -
+                        Number(
+                          product?.characteristics.find((elem) => elem.id == 4)
+                            .value != "NULL"
+                            ? product?.characteristics.find(
+                                (elem) => elem.id == 4
+                              ).value
+                            : 0
+                        )
+                    ).keys(),
+                  ].map((elem) => {
+                    return (
+                      <div
+                        className="stats_point audio"
+                        style={{
+                          backgroundColor: `var(--Gray, #4B4B4B)
+            `,
+                        }}
+                      ></div>
+                    );
+                  }),
+                ]}
+              </div>
               <p>Автономность</p>
             </div>
           </div>
         </div>
       )}
-      <div id="functionality">
-        <DropDown header="Комплектация" content={redact(equipment)} />
-        <hr style={{ width: "100%", borderColor: "var(--Gray, #4B4B4B)" }}></hr>
-        <DropDown header="Функционал" content={redact(functional)} />
-        <hr style={{ width: "100%", borderColor: "var(--Gray, #4B4B4B)" }}></hr>
-        <DropDown header="Технические характеристики" content={redact(chars)} />
-      </div>
+      {product?.category_id != 4 && (
+        <div id="functionality">
+          <DropDown
+            header="Комплектация"
+            content={redact(
+              product?.characteristics.find((elem) => elem.id == 9).value
+            )}
+          />
+          <hr
+            style={{ width: "100%", borderColor: "var(--Gray, #4B4B4B)" }}
+          ></hr>
+          <DropDown
+            header="Функционал"
+            content={redact(
+              product?.characteristics.find((elem) => elem.id == 10).value
+            )}
+          />
+          <hr
+            style={{ width: "100%", borderColor: "var(--Gray, #4B4B4B)" }}
+          ></hr>
+          <DropDown
+            header="Технические характеристики"
+            content={redact(
+              product?.characteristics.find((elem) => elem.id == 11).value
+            )}
+          />
+        </div>
+      )}
     </div>
   );
-}
+});
 export default ProductAdditionals;
