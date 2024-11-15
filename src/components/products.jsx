@@ -7,6 +7,11 @@ import SortBar from "./sortBar";
 import { useStores } from "../store/store_context";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import { Image } from "@chakra-ui/react";
+
+import cart from "../images/shopping-cart.svg";
+import fav_inact from "../images/fav.svg";
+import fav_act from "../images/fav_act.svg";
 
 const Products = observer(() => {
   const scrollEffect = (targetRef) => {
@@ -342,16 +347,33 @@ const Products = observer(() => {
                       <p className="card_price">{elem.currency.ru} ₽</p>
                       <p className="card_description">{elem.name}</p>
                     </div>
-                    <button
-                      className="gold_button"
-                      onClick={() =>
-                        navigate("/product", {
-                          state: { product_id: elem.id },
-                        })
-                      }
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                        gap: "8px",
+                      }}
                     >
-                      Подробнее
-                    </button>
+                      <button
+                        style={{
+                          background:
+                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
+                          padding: "8px 0",
+                          borderRadius: "8px",
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image src={cart} />
+                      </button>
+                      <button>
+                        <Image src={fav_inact} w={"46px"} height={"46px"} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -376,16 +398,32 @@ const Products = observer(() => {
                       <p className="card_description">{elem.name}</p>
                     </div>
 
-                    <button
-                      className="gold_button"
-                      onClick={() =>
-                        navigate("/product", {
-                          state: { product_id: elem.id },
-                        })
-                      }
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                        gap: "8px",
+                      }}
                     >
-                      Подробнее
-                    </button>
+                      <button
+                        style={{
+                          background:
+                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
+                          padding: "8px 0",
+                          borderRadius: "8px",
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image src={cart} />
+                      </button>
+                      <button>
+                        <Image src={fav_inact} w={"46px"} height={"46px"} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -409,16 +447,32 @@ const Products = observer(() => {
                       <p className="card_description">{elem.name}</p>
                     </div>
 
-                    <button
-                      className="gold_button"
-                      onClick={() =>
-                        navigate("/product", {
-                          state: { product_id: elem.id },
-                        })
-                      }
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                        gap: "8px",
+                      }}
                     >
-                      Подробнее
-                    </button>
+                      <button
+                        style={{
+                          background:
+                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
+                          padding: "8px 0",
+                          borderRadius: "8px",
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image src={cart} />
+                      </button>
+                      <button>
+                        <Image src={fav_inact} w={"46px"} height={"46px"} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -442,16 +496,32 @@ const Products = observer(() => {
                       <p className="card_description">{elem.name}</p>
                     </div>
 
-                    <button
-                      className="gold_button"
-                      onClick={() =>
-                        navigate("/product", {
-                          state: { product_id: elem.id },
-                        })
-                      }
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                        gap: "8px",
+                      }}
                     >
-                      Подробнее
-                    </button>
+                      <button
+                        style={{
+                          background:
+                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
+                          padding: "8px 0",
+                          borderRadius: "8px",
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image src={cart} />
+                      </button>
+                      <button>
+                        <Image src={fav_inact} w={"46px"} height={"46px"} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
@@ -476,16 +546,32 @@ const Products = observer(() => {
                       <p className="card_description">{elem.name}</p>
                     </div>
 
-                    <button
-                      className="gold_button"
-                      onClick={() =>
-                        navigate("/product", {
-                          state: { product_id: elem.id },
-                        })
-                      }
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
+                        gap: "8px",
+                      }}
                     >
-                      Подробнее
-                    </button>
+                      <button
+                        style={{
+                          background:
+                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
+                          padding: "8px 0",
+                          borderRadius: "8px",
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Image src={cart} />
+                      </button>
+                      <button>
+                        <Image src={fav_inact} w={"46px"} height={"46px"} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
