@@ -12,6 +12,7 @@ import { Image } from "@chakra-ui/react";
 import cart from "../images/shopping-cart.svg";
 import fav_inact from "../images/fav.svg";
 import fav_act from "../images/fav_act.svg";
+import ProductCard from "./product_card";
 
 const Products = observer(() => {
   const scrollEffect = (targetRef) => {
@@ -300,34 +301,6 @@ const Products = observer(() => {
           </div>
         </div>
       </div>
-      {/* <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignContent: "center",
-        }}
-      >
-        <div
-          style={{
-            width: "150px",
-            height: "45px",
-            borderColor: "#f5eb99",
-            borderWidth: "1px",
-            borderStyle: "solid",
-            padding: "20px",
-            margin: "20px",
-            alignSelf: "center",
-            display: "flex",
-            borderRadius: "14px",
-          }}
-        >
-          <p
-            id="manager_position"
-          >
-            Dyson
-          </p>
-        </div>
-      </div> */}
 
       <div>
         <div className="small_products_header">
@@ -338,44 +311,12 @@ const Products = observer(() => {
             .filter((elem) => elem.category_id == 1)
             .map((elem) => {
               return (
-                <div className="card">
-                  <div className="card_image">
-                    <img src={elem.url} />
-                  </div>
-                  <div className="card_info">
-                    <div className="card_price_info">
-                      <p className="card_price">{elem.currency.ru} ₽</p>
-                      <p className="card_description">{elem.name}</p>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        gap: "8px",
-                      }}
-                    >
-                      <button
-                        style={{
-                          background:
-                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
-                          padding: "8px 0",
-                          borderRadius: "8px",
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Image src={cart} />
-                      </button>
-                      <button>
-                        <Image src={fav_inact} w={"46px"} height={"46px"} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard
+                  id={elem.id}
+                  url={elem.url}
+                  price={elem.currency.ru}
+                  name={elem.name}
+                />
               );
             })}
         </div>
@@ -388,44 +329,12 @@ const Products = observer(() => {
             .filter((elem) => elem.category_id == 2)
             .map((elem) => {
               return (
-                <div className="card">
-                  <div className="card_image">
-                    <img src={elem.url} />
-                  </div>
-                  <div className="card_info">
-                    <div className="card_price_info">
-                      <p className="card_price">{elem.currency.ru} ₽</p>
-                      <p className="card_description">{elem.name}</p>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        gap: "8px",
-                      }}
-                    >
-                      <button
-                        style={{
-                          background:
-                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
-                          padding: "8px 0",
-                          borderRadius: "8px",
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Image src={cart} />
-                      </button>
-                      <button>
-                        <Image src={fav_inact} w={"46px"} height={"46px"} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard
+                  id={elem.id}
+                  url={elem.url}
+                  price={elem.currency.ru}
+                  name={elem.name}
+                />
               );
             })}
         </div>
@@ -437,44 +346,12 @@ const Products = observer(() => {
             .filter((elem) => elem.category_id == 3)
             .map((elem) => {
               return (
-                <div className="card">
-                  <div className="card_image">
-                    <img src={elem.url} />
-                  </div>
-                  <div className="card_info">
-                    <div className="card_price_info">
-                      <p className="card_price">{elem.currency.ru} ₽</p>
-                      <p className="card_description">{elem.name}</p>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        gap: "8px",
-                      }}
-                    >
-                      <button
-                        style={{
-                          background:
-                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
-                          padding: "8px 0",
-                          borderRadius: "8px",
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Image src={cart} />
-                      </button>
-                      <button>
-                        <Image src={fav_inact} w={"46px"} height={"46px"} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard
+                  id={elem.id}
+                  url={elem.url}
+                  price={elem.currency.ru}
+                  name={elem.name}
+                />
               );
             })}
         </div>
@@ -486,44 +363,12 @@ const Products = observer(() => {
             .filter((elem) => elem.category_id == 4)
             .map((elem) => {
               return (
-                <div className="card">
-                  <div className="card_image">
-                    <img src={elem.url} />
-                  </div>
-                  <div className="card_info">
-                    <div className="card_price_info">
-                      <p className="card_price">{elem.currency.ru} ₽</p>
-                      <p className="card_description">{elem.name}</p>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        gap: "8px",
-                      }}
-                    >
-                      <button
-                        style={{
-                          background:
-                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
-                          padding: "8px 0",
-                          borderRadius: "8px",
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Image src={cart} />
-                      </button>
-                      <button>
-                        <Image src={fav_inact} w={"46px"} height={"46px"} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard
+                  id={elem.id}
+                  url={elem.url}
+                  price={elem.currency.ru}
+                  name={elem.name}
+                />
               );
             })}
         </div>
@@ -536,44 +381,12 @@ const Products = observer(() => {
             .filter((elem) => elem.category_id == 5)
             .map((elem) => {
               return (
-                <div className="card">
-                  <div className="card_image">
-                    <img src={elem.url} />
-                  </div>
-                  <div className="card_info">
-                    <div className="card_price_info">
-                      <p className="card_price">{elem.currency.ru} ₽</p>
-                      <p className="card_description">{elem.name}</p>
-                    </div>
-
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        gap: "8px",
-                      }}
-                    >
-                      <button
-                        style={{
-                          background:
-                            "linear-gradient(93.15deg, #F5EA99 -3.52%, #DB9B45 100%)",
-                          padding: "8px 0",
-                          borderRadius: "8px",
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Image src={cart} />
-                      </button>
-                      <button>
-                        <Image src={fav_inact} w={"46px"} height={"46px"} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard
+                  id={elem.id}
+                  url={elem.url}
+                  price={elem.currency.ru}
+                  name={elem.name}
+                />
               );
             })}
         </div>

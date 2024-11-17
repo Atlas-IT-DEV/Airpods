@@ -6,6 +6,7 @@ import ProductAdditionals from "./../components/ProductAdditionals";
 import { useLocation } from "react-router";
 import { VStack } from "@chakra-ui/react";
 const ProductCarousel = lazy(() => import("../components/productCarousel"));
+
 function ProductPage() {
   const tg = window.Telegram.WebApp;
   const backButton = tg.BackButton;

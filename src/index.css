@@ -1085,6 +1085,7 @@ button[disabled] {
 .card {
   background: transparent;
   width: 100%;
+  cursor: pointer;
 }
 .gold_button {
   display: flex;
