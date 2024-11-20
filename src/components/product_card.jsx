@@ -54,6 +54,7 @@ const ProductCard = observer(({ id, url, price, name }) => {
               justifyContent: "center",
               zIndex: 2,
             }}
+            onClick={() => navigate("/cart")}
           >
             <Image src={cart} />
           </button>

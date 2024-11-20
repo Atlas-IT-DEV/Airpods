@@ -3,252 +3,112 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import delete_cart from "./../images/delete_cart.svg";
 import { binIcon } from "../images/images";
+import { useStores } from "../store/store_context";
+import { observer } from "mobx-react-lite";
+import CartProduct from "../components/cart_product";
 
-function ShoppingCart() {
-  const [cart, setCart] = useState([]);
-  const [sale, setSale] = useState(
-    new Map([
-      [10, 50],
-      [20, 60],
-      [40, 100],
-    ])
-  );
-  const [sale_sum, setSaleSum] = useState(0);
-  const [summary, setSummary] = useState(0);
-  const tg = window.Telegram.WebApp;
-  const id = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
-  const backButton = tg.BackButton;
+const ShoppingCart = observer(() => {
+  const { pageStore } = useStores();
   const navigate = useNavigate();
-  function back_page() {
-    backButton.hide();
-    navigate("/");
-  }
-  backButton.show();
-  backButton.onClick(back_page);
-  let sum_arr = [];
-  let cart_arr = [];
-  function deleteCard(ind, arr) {
-    cart_arr = Array.from(arr);
-    console.log(cart_arr);
-    console.log(arr);
-    cart_arr[ind] = "";
-    console.log(cart_arr);
-    window.GlobalShoppingCart.splice(ind, 1);
-    window.GlobalProductColors.splice(ind, 1);
-    setCart(cart_arr);
-  }
-  function deleteSum(ind, arr, current) {
-    console.log(ind);
-    console.log(current);
-    console.log(arr);
-    current -= arr[ind];
-    return current;
-  }
-  useEffect(() => {
-    fetch("https://pop.applepodsblack.ru/api/discounts")
-      .then((response) => response.json())
-      .then(function (commits) {
-        let data = commits.data;
-        let buffer = new Map();
-        for (let elem of data) {
-          buffer.set(elem.attributes.quantity, elem.attributes.percent);
-        }
-        setSale(buffer);
-      });
-  }, []);
-  useEffect(() => {
-    fetch(
-      "https://pop.applepodsblack.ru/api/products?populate=deep&pagination[limit]=100"
-    )
-      .then((response) => response.json())
-      .then(function (commits) {
-        let data = commits.data;
-        let buffer = new Map();
-        let sum = 0;
-        let store = window.GlobalShoppingCart;
-        let colors = window.GlobalProductColors;
-        let cart_names = [];
-        for (let i = 0; i < window.GlobalShoppingCart.length; i++) {
-          let product = "";
-          window.GlobalAccessoriesCount = 0;
-          for (let elem of data) {
-            console.log(product);
-            if (elem.id == store[i]) product = elem;
-            if (product.attributes?.category == "accessories")
-              window.GlobalAccessoriesCount += 1;
-          }
-          buffer.set(
-            <div className="cart_card">
-              <div style={{ display: "flex" }}>
-                <img
-                  src={
-                    "https://pop.applepodsblack.ru/" +
-                    product.attributes.main_photo.data.attributes.url
-                  }
-                  style={{ objectFit: "cover" }}
-                  className="cart_card_img"
-                />
-                <div className="info_cart_card">
-                  <p className="cart_card_name">
-                    {product.attributes.name} {colors[i]}
-                  </p>
-                  <div className="cart_card_pricings">
-                    <p className="cart_card_price">
-                      {" "}
-                      {product.attributes.rub_price} ₽
-                    </p>
-                    <img
-                      style={{ position: "absolute", top: 8, right: 8 }}
-                      src={delete_cart}
-                      onClick={() => {
-                        deleteCard(i, cart);
-                        setSummary(deleteSum(i, sum_arr, sum));
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="divideLine" />
-              <div style={{ width: "100%" }}>
-                <button style={{ position: "absolute", right: 8 }}>
-                  {" "}
-                  {binIcon}
-                </button>
-                <div className="fieldProduct">
-                  <p className="attributeProduct">Цвет корпуса</p>
-                  <p className="attributeProduct">—</p>
-                  <p className="valueProduct">Черный</p>
-                </div>
-                <div className="fieldProduct">
-                  <p className="attributeProduct">Цвет ремешка</p>
-                  <p className="attributeProduct">—</p>
-                  <p className="valueProduct">Черный</p>
-                </div>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  {" "}
-                  <div className="fieldProduct">
-                    <p className="attributeProduct">Количество</p>
-                    <p className="attributeProduct">—</p>
-                    <p className="valueProduct">40</p>
-                  </div>
-                  <div
-                    className="priceField"
-                    style={{ display: "flex", justifyContent: "flex-end" }}
-                  >
-                    <p className="cart_card_price" style={{ paddingRight: 8 }}>
-                      1000 ₽
-                    </p>
-                  </div>
-                </div>
+  function aggregateItemsByIdAndColor(items) {
+    const result = [];
 
-                <div className="divideLine" style={{ width: "100%" }} />
-              </div>
-            </div>,
-            product.attributes.rub_price
-          );
-          cart_names.push(product.attributes.name);
-        }
+    items.forEach((item) => {
+      // Проверяем, есть ли уже объект с таким же id и color в результате
+      const existingItem = result.find(
+        (resItem) => resItem.id === item.id && resItem.color === item.color
+      );
 
-        window.GlobalCartNames = cart_names;
-        sum_arr = Array.from(buffer.values());
-        for (let elem of sum_arr) sum += elem;
-        cart_arr = Array.from(buffer.keys());
-
-        if (JSON.stringify(cart_arr) != JSON.stringify(cart)) {
-          setCart(cart_arr);
-        }
-        setSummary(sum - sale_sum);
-      });
-    window.GlobalDbId
-      ? fetch(`https://pop.applepodsblack.ru/api/carts/${window.GlobalDbId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: {
-              tgid: id,
-              orders: window.GlobalShoppingCart,
-              colors: window.GlobalProductColors,
-            },
-          }),
-        })
-      : fetch(`https://pop.applepodsblack.ru/api/carts`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: {
-              tgid: id,
-              orders: window.GlobalShoppingCart,
-              colors: window.GlobalProductColors,
-            },
-          }),
-        });
-  }, [cart, summary, sale_sum]);
-  useEffect(() => {
-    let sale_num = 0;
-    for (let elem of Array.from(sale.keys()).sort().reverse()) {
-      if (
-        window.GlobalShoppingCart.length - window.GlobalAccessoriesCount >=
-        elem
-      ) {
-        window.GlobalSale = sale.get(elem);
-        sale_num = Math.ceil(summary * (sale.get(elem) / 100));
-        setSaleSum(sale_num);
-        break;
+      if (existingItem) {
+        // Если объект найден, добавляем к нему count и price
+        existingItem.totalCount += item.count;
+        existingItem.totalPrice += item.count * item.price;
       } else {
-        setSaleSum(0);
-        window.GlobalSale = 0;
+        // Если объекта нет, создаем новый с totalCount и totalPrice
+        result.push({
+          id: item.id,
+          color: item.color,
+          name: item.name,
+          totalCount: item.count,
+          totalPrice: item.count * item.price,
+        });
       }
-    }
-  });
+    });
+
+    return result;
+  }
+  function aggregateItemsById(items) {
+    const result = [];
+
+    items.forEach((item) => {
+      // Проверяем, есть ли уже объект с таким же id и color в результате
+      const existingItem = result.find((resItem) => resItem.id === item.id);
+
+      if (existingItem) {
+        // Если объект найден, добавляем к нему count и price
+        existingItem.totalCount += item.count;
+        existingItem.totalPrice += item.count * item.price;
+      } else {
+        // Если объекта нет, создаем новый с totalCount и totalPrice
+        result.push({
+          id: item.id,
+          name: item.name,
+          totalCount: item.count,
+          totalPrice: item.count * item.price,
+        });
+      }
+    });
+
+    return result;
+  }
   return (
     <div id="shopping_cart">
       <div style={{ backgroundColor: "#1C1C1E" }}>
-        <div id="sale_notification">
-          <p id="gold_sale">
-            Получите скидку {Array.from(sale.entries())[0][1]}%
-          </p>
-          <p id="sale_if">
-            При оформлении от {Array.from(sale.entries())[0][0]}-х позиций
-            товаров вы получаете скидку {Array.from(sale.entries())[0][1]}%!
-          </p>
-        </div>
+        {
+          <div id="sale_notification">
+            <p id="gold_sale">Получите скидку 10%</p>
+            <p id="sale_if">
+              При оформлении от 2-х позиций товаров вы получаете скидку 10%!
+            </p>
+          </div>
+        }
         <div id="cart_header">
           <p>Корзина</p>
           <p
             id="delete"
             onClick={() => {
-              window.GlobalShoppingCart = [];
-              window.GlobalProductColors = [];
-              setCart("");
-              setSummary("");
+              pageStore.updateCart([]);
             }}
           >
             Очистить корзину
           </p>
         </div>
-        <div id="cart_cards">{cart}</div>
+        <div id="cart_cards">
+          {aggregateItemsById(pageStore.cart).map((elem) => {
+            return <CartProduct id={elem.id} />;
+          })}
+        </div>
         <div id="result_sale">
           <p>Скидка</p>
-          <p>-{sale_sum}</p>
+          <p>-10%</p>
         </div>
         <div id="result_price">
           <p>Итого</p>
-          <p>{summary} ₽</p>
+          <p>
+            {aggregateItemsByIdAndColor(pageStore.cart).reduce(
+              (acc, elem) => acc + elem.totalPrice,
+              0
+            )}{" "}
+            ₽
+          </p>
         </div>
       </div>
       <div style={{ padding: "16px" }}>
         <button
           className="gold_button order_butt"
           style={{ width: "100%" }}
-          // disabled={window.GlobalShoppingCart != []}
+          disabled={pageStore.cart.length == 0}
           onClick={() => {
-            window.GlobalSum = summary;
             navigate("/mailtype");
           }}
         >
@@ -257,5 +117,5 @@ function ShoppingCart() {
       </div>
     </div>
   );
-}
+});
 export default ShoppingCart;

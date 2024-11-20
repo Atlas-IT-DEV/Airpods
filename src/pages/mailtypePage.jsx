@@ -6,6 +6,7 @@ import cdek from "./../images/cdek.svg";
 import russian_post from "./../images/russianPost.svg";
 import apple from "./../images/gold_apple.svg";
 import { useState, useEffect } from "react";
+import { useStores } from "../store/store_context";
 
 function MailtypePage() {
   const { width } = useWindowDimensions();
@@ -21,6 +22,7 @@ function MailtypePage() {
     if (width <= 410) setBlock("cdek_small");
     else setBlock("cdek");
   });
+  const { pageStore } = useStores();
 
   return (
     <div id="shopping_cart" style={{ justifyContent: "center" }}>
@@ -49,7 +51,7 @@ function MailtypePage() {
               console.log(border);
               if (border[0] != "border")
                 setBorder(["border", "no_border", "no_border", "no_border"]);
-              window.GlobalPost = "сдэк (СДЭК)";
+              pageStore.updateMailType("сдэк (СДЭК)");
             }}
           >
             <p>СДЭК</p>
@@ -85,7 +87,7 @@ function MailtypePage() {
               console.log(border);
               if (border[1] != "border")
                 setBorder(["no_border", "border", "no_border", "no_border"]);
-              window.GlobalPost = "почта России";
+              pageStore.updateMailType("почта России");
             }}
           >
             <p>Почта России</p>
@@ -123,15 +125,14 @@ function MailtypePage() {
             onClick={() => {
               if (border[2] != "border")
                 setBorder(["no_border", "no_border", "border", "no_border"]);
-              window.GlobalPost = "почта по миру";
+              pageStore.updateMailType("почта по миру");
             }}
           >
-            <p>Почта по миру</p>
+            <p>Самовывоз</p>
             <img src={apple} style={{ width: "90px", height: "30px" }}></img>
           </div>
           <div className="mail_content">
-            Мы работаем по всему миру. Средний чек на стоимость доставки
-            международного формата - 10€.
+            Самовывоз осуществляется с 11 до 17 с ПН до ВС
           </div>
         </div>
         <button

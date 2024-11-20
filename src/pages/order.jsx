@@ -8,11 +8,13 @@ import "swiper/css/free-mode";
 import { Formik, Form, Field } from "formik";
 import { useEffect } from "react";
 import * as yup from "yup";
+import { useStores } from "../store/store_context";
 
 function OformitPage() {
   const { width } = useWindowDimensions();
   const [block, setBlock] = useState("cdek");
   const [number, setNumber] = useState("");
+  const { pageStore } = useStores();
 
   const FormSchema = yup.object().shape({
     last_name: yup.string().required("Обязательное поле"),

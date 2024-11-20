@@ -46,6 +46,42 @@ export const searchIcon = (
     </defs>
   </svg>
 );
+export const bin = (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M4 5H12V14C12 14.5523 11.5523 15 11 15H5C4.44772 15 4 14.5523 4 14V5Z"
+      stroke="#636366"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M14 5L2 5"
+      stroke="#636366"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M11 4V3C11 1.89543 10.1046 1 9 1H7C5.89543 1 5 1.89543 5 3V4"
+      stroke="#636366"
+      stroke-width="2"
+    />
+    <path
+      d="M8 8L8 12"
+      stroke="#636366"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
 
 export const noSortIcon = (
   <svg

@@ -17,14 +17,8 @@ import CollectBasket from "./collectBasket";
 
 const ProductCarousel = observer(({ product }) => {
   // const swiperIns = useSwiper();
-  const [carouselInfo, setCarouselInfo] = useState([
-    "название",
-    "цена",
-    ["url", "url"],
-  ]);
   // let swiper = null;
   const tg = window.Telegram.WebApp;
-  const navigate = useNavigate();
   const { pageStore } = useStores();
   const [price, setPrice] = useState(0);
   const [curColor, setCurColor] = useState("Стандартный");

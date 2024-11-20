@@ -7,6 +7,7 @@ class pageStore {
   comments = [];
   search = "";
   sort = 0;
+  mailType = "";
   constructor() {
     makeAutoObservable(this);
   }
@@ -44,6 +45,9 @@ class pageStore {
   };
   updateCart = (new_cart) => {
     this.cart = new_cart;
+  };
+  updateMailType = (new_mail_type) => {
+    this.mailType = new_mail_type;
   };
   /* registerUser = async (values) => {
     const response = await fetch(baseUrl + "/auth/register", {
