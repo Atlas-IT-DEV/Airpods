@@ -61,6 +61,7 @@ const ShoppingCart = observer(() => {
 
     return result;
   }
+
   return (
     <div id="shopping_cart">
       <div style={{ backgroundColor: "#1C1C1E" }}>

@@ -7,7 +7,7 @@ class pageStore {
   comments = [];
   search = "";
   sort = 0;
-  mailType = "";
+  mailType = "сдэк (СДЭК)";
   constructor() {
     makeAutoObservable(this);
   }

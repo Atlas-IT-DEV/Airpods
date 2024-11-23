@@ -15,7 +15,6 @@ function OformitPage() {
   const [block, setBlock] = useState("cdek");
   const [number, setNumber] = useState("");
   const { pageStore } = useStores();
-
   const FormSchema = yup.object().shape({
     last_name: yup.string().required("Обязательное поле"),
     first_name: yup.string().required("Обязательное поле"),
@@ -199,69 +198,40 @@ function OformitPage() {
                   </FormControl>
                 )}
               </Field>
-              {window.GlobalPost === "сдэк" ? (
-                <p style={{ padding: "0px", marginTop: "15px" }}>
-                  Выберите пункт выдачи Сдек
-                </p>
-              ) : window.GlobalPost === "почта России" ? (
-                <p style={{ padding: "0px", marginTop: "15px" }}>
-                  Введите ваш адрес и индекс
-                </p>
-              ) : (
-                <p style={{ padding: "0px", marginTop: "15px" }}>
-                  Введите полный адрес с индексом, ЗАПОЛНЯТЬ ЛАТИНИЦЕЙ
-                </p>
-              )}
-              {(window.GlobalPost === "почта по миру" ||
-                window.GlobalPost === "почта России") && (
-                <Field name="index">
+
+              <p style={{ padding: "0px", marginTop: "15px" }}>
+                {pageStore.mailType == "сдэк (СДЭК)"
+                  ? "Введите адрес пункта выдачи СДЭК"
+                  : pageStore.mailType == "почта России"
+                  ? "Введите ваш полный адрес с индексом"
+                  : `Для оформления самовывоза, подтвердите ваш заказ у менеджера нажав кнопку «Оформить заказ». Адрес самовывоза вам сообщит менеджер. `}
+              </p>
+              {pageStore.mailType != "самовывоз" ? (
+                <Field name="adress">
                   {({ field, form }) => (
                     <FormControl
                       isRequired
-                      isInvalid={!!form.values.index && !!form.errors.index}
+                      isInvalid={!!form.values.adress && !!form.errors.adress}
                       maxH="350px"
                     >
                       <input
                         {...field}
-                        placeholder="Введите индекс"
+                        placeholder="Введите адрес"
                         className="gray_input"
                         type="text"
-                        id="index"
+                        id="adress"
                         w="100%"
                       />
-                      {form.errors.index && (
+                      {form.errors.adress && (
                         <label style={{ color: "red" }}>
-                          {form.errors.index}
+                          {form.errors.adress}
                         </label>
                       )}
                     </FormControl>
                   )}
                 </Field>
-              )}
+              ) : null}
 
-              <Field name="adress">
-                {({ field, form }) => (
-                  <FormControl
-                    isRequired
-                    isInvalid={!!form.values.adress && !!form.errors.adress}
-                    maxH="350px"
-                  >
-                    <input
-                      {...field}
-                      placeholder="Введите адрес"
-                      className="gray_input"
-                      type="text"
-                      id="adress"
-                      w="100%"
-                    />
-                    {form.errors.adress && (
-                      <label style={{ color: "red" }}>
-                        {form.errors.adress}
-                      </label>
-                    )}
-                  </FormControl>
-                )}
-              </Field>
               <div
                 style={{
                   width: "100%",
