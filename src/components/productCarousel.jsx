@@ -33,6 +33,8 @@ const ProductCarousel = observer(({ product }) => {
 
     setPrice(product?.currency?.ru);
   }, [product]);
+
+  console.log(curColor);
   return (
     <div>
       <div>
@@ -96,6 +98,16 @@ const ProductCarousel = observer(({ product }) => {
                       onClick={() => {
                         setCurColor(elem.Color);
                       }}
+                      style={
+                        elem.Color == curColor
+                          ? {
+                              borderColor: "rgb(245, 234, 153)",
+                              padding: "5px",
+                              borderWidth: "3px",
+                              borderStyle: "solid",
+                            }
+                          : null
+                      }
                     ></img>
                   );
                 })}
@@ -164,6 +176,7 @@ const ProductCarousel = observer(({ product }) => {
                 backgroundColor: "rgba(0, 0, 0, 0)",
                 fontFamily: "SF Pro Text",
                 fontSize: 17,
+                textAlign: "center",
               }}
               onChange={(event) => {
                 setCount(Number(event.target.value));
@@ -184,7 +197,22 @@ const ProductCarousel = observer(({ product }) => {
             </button>
           </form>
         </div>
-        <button style={{ width: "100%" }}>
+        <button
+          style={{ width: "100%" }}
+          onClick={() => {
+            let copy_cart = Array.from(pageStore.cart);
+            if (count > 0 && count != null) {
+              copy_cart.push({
+                id: product?.id,
+                color: curColor,
+                name: product?.name,
+                price: product?.price,
+                count: count,
+              });
+            }
+            pageStore.updateCart(copy_cart);
+          }}
+        >
           <div
             style={{
               // margin: 16,
@@ -202,19 +230,6 @@ const ProductCarousel = observer(({ product }) => {
                 fontFamily: "SF Pro Display",
                 fontWeight: 700,
                 color: "rgba(28, 28, 30, 1)",
-              }}
-              onClick={() => {
-                let copy_cart = Array.from(pageStore.cart);
-                if (count > 0 && count != null) {
-                  copy_cart.push({
-                    id: product?.id,
-                    color: curColor,
-                    name: product?.name,
-                    price: product?.price,
-                    count: count,
-                  });
-                }
-                pageStore.updateCart(copy_cart);
               }}
             >
               Добавить в корзину

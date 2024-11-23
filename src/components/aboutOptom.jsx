@@ -9,12 +9,6 @@ const AboutOptom = () => {
         <p className="main-text">
           Магазин для тех, кому мало одной пары наушников
         </p>
-        <a href="">
-          <div className="button">
-            <p className="button-text">Подробнее</p>
-            {arrowRightIcon}
-          </div>
-        </a>
       </div>
       <div className="boxes">
         <div className="box">
