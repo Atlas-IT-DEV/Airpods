@@ -109,7 +109,7 @@ function MailtypePage() {
             marginBottom: "20px",
             background: "#161617",
             borderRadius: "12px",
-            height: "130px",
+            // height: "130px",
           }}
         >
           <div
@@ -132,7 +132,10 @@ function MailtypePage() {
             <img src={apple} style={{ width: "90px", height: "30px" }}></img>
           </div>
           <div className="mail_content">
-            Самовывоз осуществляется с 11 до 17 с ПН до ВС
+            🚚Самовывоз🚚 <br />
+            <br />
+            г.Москва, Тихорецкий бульвар 1с3 ТЦ «Груша», павильон B-08 с 11:00
+            до 17:00 ( договариваться в этом чате )
           </div>
         </div>
         <button

@@ -4,7 +4,7 @@ import cart from "../images/shopping-cart.svg";
 import fav_inact from "../images/fav.svg";
 import fav_act from "../images/fav_act.svg";
 import { observer } from "mobx-react-lite";
-import { Image } from "@chakra-ui/react";
+import { Image, Text } from "@chakra-ui/react";
 
 const ProductCard = observer(({ id, url, price, name }) => {
   const navigate = useNavigate();
@@ -54,17 +54,24 @@ const ProductCard = observer(({ id, url, price, name }) => {
               justifyContent: "center",
               zIndex: 2,
             }}
-            onClick={() => navigate("/cart")}
+            onClick={() =>
+              navigate("/product", {
+                state: { product_id: id },
+              })
+            }
           >
-            <Image src={cart} />
+            {/* <Image src={cart} /> */}
+            <Text color={"black"} fontSize={"16px"} fontWeight={"700"}>
+              Подробнее
+            </Text>
           </button>
-          <button onClick={() => setFavourite(!favourite)}>
+          {/* <button onClick={() => setFavourite(!favourite)}>
             <Image
               src={favourite ? fav_act : fav_inact}
               w={"46px"}
               height={"46px"}
             />
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

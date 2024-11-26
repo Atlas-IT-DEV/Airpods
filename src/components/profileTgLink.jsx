@@ -64,9 +64,11 @@ function ProfileTgLink() {
             </svg>
           </a>
           <div id="text_tgLink">
-            <a href="https://t.me/applepods_black"></a>
+            <a href="https://t.me/applepods_black_opt"></a>
             <p>
-              <a href="https://t.me/applepods_black">@Applepods_Black</a>
+              <a href="https://t.me/applepods_black_opt">
+                @Applepods_Black_opt
+              </a>
             </p>
             <p>наш Telegram-канал</p>
           </div>

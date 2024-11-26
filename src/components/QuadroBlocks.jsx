@@ -70,7 +70,7 @@ function QuadroBlocks() {
         </a>
       </div>
       <div className="quadro_blocks" style={{ paddingRight: "8px" }}>
-        <a href="https://t.me/archimolotok">
+        <a href="https://t.me/apb_opt">
           <div className="gold_block">
             <p>Связь с менеджером</p>
             <div className="inner_logo_gold_block">

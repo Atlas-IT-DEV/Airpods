@@ -61,16 +61,17 @@ const ShoppingCart = observer(() => {
 
     return result;
   }
+
   return (
     <div id="shopping_cart">
       <div style={{ backgroundColor: "#1C1C1E" }}>
         {
-          <div id="sale_notification">
-            <p id="gold_sale">Получите скидку 10%</p>
-            <p id="sale_if">
-              При оформлении от 2-х позиций товаров вы получаете скидку 10%!
-            </p>
-          </div>
+          // <div id="sale_notification">
+          //   <p id="gold_sale">Получите скидку 10%</p>
+          //   <p id="sale_if">
+          //     При оформлении от 2-х позиций товаров вы получаете скидку 10%!
+          //   </p>
+          // </div>
         }
         <div id="cart_header">
           <p>Корзина</p>
@@ -88,10 +89,10 @@ const ShoppingCart = observer(() => {
             return <CartProduct id={elem.id} />;
           })}
         </div>
-        <div id="result_sale">
+        {/* <div id="result_sale">
           <p>Скидка</p>
           <p>-10%</p>
-        </div>
+        </div> */}
         <div id="result_price">
           <p>Итого</p>
           <p>
