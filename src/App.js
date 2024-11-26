@@ -56,16 +56,9 @@ const router = createMemoryRouter([
   },
 ]);
 function App() {
-  /* const tg = window.Telegram.WebApp;
+  const tg = window.Telegram.WebApp;
   tg.enableClosingConfirmation();
-  tg.expand();
-  useEffect(() => {
-    if (!tg.isExpanded) tg.expand();
-  });
-  function big() {
-    tg.expand();
-  }
-  tg.onEvent("viewportChanged", big); */
+  tg.disableVerticalSwipes();
   return (
     <RootStoreContext.Provider value={new RootStore()}>
       <ChakraBaseProvider>

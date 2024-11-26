@@ -8,6 +8,8 @@ class pageStore {
   search = "";
   sort = 0;
   mailType = "";
+  result = "";
+  user_id = null;
   constructor() {
     makeAutoObservable(this);
   }
@@ -48,6 +50,43 @@ class pageStore {
   };
   updateMailType = (new_mail_type) => {
     this.mailType = new_mail_type;
+  };
+  updateResult = (new_result) => {
+    this.result = new_result;
+  };
+  getUser = async (tg_id, tg_name) => {
+    const response = await fetch(
+      `https://apbstore.ru:8008/users/telegram_id/${tg_id}`,
+      {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+        },
+      }
+    );
+    if (response.status == 404) {
+      const create_response = await fetch(`https://apbstore.ru:8008/users/`, {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          id: 6,
+          name: tg_name,
+          telegram_id: tg_id,
+        }),
+      });
+      if (create_response.ok) {
+        const create_result = await create_response.json();
+        this.user_id = create_result.id;
+      }
+    } else if (response.ok) {
+      const result = await response.json();
+      this.user_id = result.id;
+    } else {
+      console.log(response);
+    }
   };
   /* registerUser = async (values) => {
     const response = await fetch(baseUrl + "/auth/register", {

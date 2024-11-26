@@ -125,7 +125,7 @@ function MailtypePage() {
             onClick={() => {
               if (border[2] != "border")
                 setBorder(["no_border", "no_border", "border", "no_border"]);
-              pageStore.updateMailType("почта по миру");
+              pageStore.updateMailType("самовывоз");
             }}
           >
             <p>Самовывоз</p>

@@ -9,10 +9,10 @@ import { Formik, Form, Field } from "formik";
 import { useEffect } from "react";
 import * as yup from "yup";
 import { useStores } from "../store/store_context";
+import { observer } from "mobx-react-lite";
 
-function OformitPage() {
+const OformitPage = observer(() => {
   const { width } = useWindowDimensions();
-  const [block, setBlock] = useState("cdek");
   const [number, setNumber] = useState("");
   const { pageStore } = useStores();
 
@@ -24,45 +24,80 @@ function OformitPage() {
       .matches(/(\+?[\d-\(][\d-\)\s]{6,}\d$)/, "Неверный номер телефона"),
     adress: yup.string().required("Обязательное поле"),
   });
+  function aggregateItemsByIdAndColor(items) {
+    const result = [];
+
+    items.forEach((item) => {
+      // Проверяем, есть ли уже объект с таким же id и color в результате
+      const existingItem = result.find(
+        (resItem) => resItem.id === item.id && resItem.color === item.color
+      );
+
+      if (existingItem) {
+        // Если объект найден, добавляем к нему count и price
+        existingItem.totalCount += item.count;
+        existingItem.totalPrice += item.count * item.price;
+      } else {
+        // Если объекта нет, создаем новый с totalCount и totalPrice
+        result.push({
+          id: item.id,
+          color: item.color,
+          name: item.name,
+          totalCount: item.count,
+          totalPrice: item.count * item.price,
+        });
+      }
+    });
+
+    return result;
+  }
 
   const handle_submit = (values) => {
-    let last_name = values.last_name;
-    let first_name = values.first_name;
-    let phone = number;
-    let index = values.index;
-    let name = values.adress;
     let result = "";
-    let a = "";
-    for (let i = 0; i < window.GlobalProductColors.length; i++) {
-      a += `название ${window.GlobalCartNames[i]}  цвета ${window.GlobalProductColors[i]} \n`;
-    }
+    let products = "";
     result =
-      window.GlobalPost === "почта России" ||
-      window.GlobalPost === "почта по миру"
+      pageStore.mailType == "почта России" ||
+      pageStore.mailType == "почта по миру"
         ? `Здравствуйте , хочу сделать заказ! 
     Мои данные для заказа:
-    ФИО: ${first_name} ${last_name}
-    ТЕЛЕФОН: ${phone}
-    АДРЕС: ${name}
-    ДОСТАВКА: ${window.GlobalPost}
-    ИНДЕКС: ${index}
-    СУММА: ${window.GlobalSum} ₽
+    ФИО: ${values.first_name} ${values.last_name}
+    ТЕЛЕФОН: ${number}
+    АДРЕС: ${values.adress}
+    ДОСТАВКА: ${pageStore.mailType}
+    ИНДЕКС: ${values.index}
+    СУММА: ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
+      (acc, elem) => acc + elem.totalPrice,
+      0
+    )} ₽
     ТОВАРЫ: 
-    ${a}
+    ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
+      (acc, elem) =>
+        acc +
+        `товар ${elem.name}, цвет: ${elem.color} количество: ${elem.totalCount}шт, итоговая цена: ${elem.totalPrice}\n`,
+      ""
+    )}
 
     Жду от вас обратной связи`
         : `Здравствуйте , хочу сделать заказ! 
     Мои данные для заказа:
-    ФИО: ${first_name} ${last_name}
-    ТЕЛЕФОН: ${phone}
-    АДРЕС: ${name}
-    ДОСТАВКА: ${window.GlobalPost}
-    СУММА: ${window.GlobalSum} ₽
+    ФИО: ${values.first_name} ${values.last_name}
+    ТЕЛЕФОН: ${number}
+    АДРЕС: ${values.adress}
+    ДОСТАВКА: ${pageStore.mailType}
+    СУММА: ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
+      (acc, elem) => acc + elem.totalPrice,
+      0
+    )} ₽
     ТОВАРЫ: 
-    ${a}
+    ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
+      (acc, elem) =>
+        acc +
+        `товар ${elem.name}, цвет: ${elem.color} количество: ${elem.totalCount}шт, итоговая цена: ${elem.totalPrice}\n`,
+      ""
+    )}
 
     Жду от вас обратной связи`;
-    window.GlobalDetails = result;
+    pageStore.updateResult(result);
     console.log(result);
     navigate("/copy");
   };
@@ -78,8 +113,8 @@ function OformitPage() {
   backButton.onClick(back_page);
 
   const initialValues =
-    window.GlobalPost === "почта России" ||
-    window.GlobalPost === "почта по миру"
+    pageStore.mailType === "почта России" ||
+    pageStore.mailType === "почта по миру"
       ? {
           last_name: "",
           first_name: "",
@@ -88,6 +123,14 @@ function OformitPage() {
           index: "",
           adress: "",
         }
+      : pageStore.mailType == "самовывоз"
+      ? {
+          last_name: "",
+          first_name: "",
+          phone: "",
+          pochta: "сдэк (СДЭК)",
+          adress: "Адрес самовывоза артема",
+        }
       : {
           last_name: "",
           first_name: "",
@@ -95,10 +138,6 @@ function OformitPage() {
           pochta: "сдэк (СДЭК)",
           adress: "",
         };
-  useEffect(() => {
-    if (width <= 410) setBlock("cdek_small");
-    else setBlock("cdek");
-  });
 
   return (
     <div id="oformit_main">
@@ -253,6 +292,9 @@ function OformitPage() {
                       type="text"
                       id="adress"
                       w="100%"
+                      disabled={
+                        pageStore.mailType == "самовывоз" ? true : false
+                      }
                     />
                     {form.errors.adress && (
                       <label style={{ color: "red" }}>
@@ -296,5 +338,5 @@ function OformitPage() {
       </div>
     </div>
   );
-}
+});
 export default OformitPage;

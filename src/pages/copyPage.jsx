@@ -1,7 +1,9 @@
 import selectEl from "../components/copy";
 import tutorial from "./../images/tutorial.MP4";
-function CopyPage() {
-  const details = window.GlobalDetails;
+import { useStores } from "../store/store_context";
+import { observer } from "mobx-react-lite";
+const CopyPage = observer(() => {
+  const { pageStore } = useStores();
   return (
     <div id="copy">
       <div>
@@ -17,7 +19,7 @@ function CopyPage() {
       </div>
       <textarea
         id="details"
-        defaultValue={window.GlobalDetails}
+        defaultValue={pageStore.result}
         className="gray_input"
         style={{
           height: "auto",
@@ -49,5 +51,5 @@ function CopyPage() {
       ></video>
     </div>
   );
-}
+});
 export default CopyPage;

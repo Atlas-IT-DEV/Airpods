@@ -20,6 +20,16 @@ const tg = window.Telegram.WebApp;
 const id = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
 const MainPage = observer(() => {
   const { pageStore } = useStores();
+  useEffect(() => {
+    pageStore.getUser(
+      tg?.initDataUnsafe?.user?.id,
+      tg?.initDataUnsafe?.user?.username
+    );
+    console.log(
+      tg?.initDataUnsafe?.user?.id,
+      tg?.initDataUnsafe?.user?.username
+    );
+  }, []);
 
   return (
     <div
