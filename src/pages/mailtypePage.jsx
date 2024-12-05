@@ -23,6 +23,14 @@ function MailtypePage() {
     else setBlock("cdek");
   });
   const { pageStore } = useStores();
+  const tg = window.Telegram.WebApp;
+  const backButton = tg.BackButton;
+  backButton.show();
+  backButton.onClick(back_page);
+  function back_page() {
+    navigate("/cart");
+    backButton.hide();
+  }
 
   return (
     <div id="shopping_cart" style={{ justifyContent: "center" }}>
@@ -135,7 +143,7 @@ function MailtypePage() {
             🚚Самовывоз🚚 <br />
             <br />
             г.Москва, Тихорецкий бульвар 1с3 ТЦ «Груша», павильон B-08 с 11:00
-            до 17:00 ( договариваться в этом чате )
+            до 17:00
           </div>
         </div>
         <button

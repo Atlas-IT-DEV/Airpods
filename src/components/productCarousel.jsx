@@ -26,7 +26,8 @@ const ProductCarousel = observer(({ product }) => {
   useEffect(() => {
     if (product?.category_id != 3 && product.category_id != 4) {
       setCurColor(
-        product?.urls.filter((elem) => elem.Color != "").length > 0 &&
+        product?.urls.filter((elem) => elem.Color != "" && elem.Color != null)
+          .length > 0 &&
           product?.urls.filter((elem) => elem.Color != "")[0].Color
       );
     }

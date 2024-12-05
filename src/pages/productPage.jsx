@@ -205,7 +205,14 @@ function ProductPage() {
         <ProductAdditionals product={product} />
       )}
       <VStack padding={"16px"}>
-        <button style={{ width: "100%" }}>
+        <button
+          style={{ width: "100%" }}
+          onClick={() => {
+            navigate("/cart", {
+              state: { product_id: location.state.product_id },
+            });
+          }}
+        >
           <div
             style={{
               // margin: 16,
@@ -223,9 +230,6 @@ function ProductPage() {
                 fontFamily: "SF Pro Display",
                 fontWeight: 700,
                 color: "rgba(28, 28, 30, 1)",
-              }}
-              onClick={() => {
-                navigate("/cart");
               }}
             >
               В корзину

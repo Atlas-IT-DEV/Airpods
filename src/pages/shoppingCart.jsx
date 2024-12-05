@@ -6,10 +6,20 @@ import { binIcon } from "../images/images";
 import { useStores } from "../store/store_context";
 import { observer } from "mobx-react-lite";
 import CartProduct from "../components/cart_product";
+import { useLocation } from "react-router-dom";
 
 const ShoppingCart = observer(() => {
   const { pageStore } = useStores();
   const navigate = useNavigate();
+  const location = useLocation();
+  const tg = window.Telegram.WebApp;
+  const backButton = tg.BackButton;
+  backButton.show();
+  backButton.onClick(back_page);
+  function back_page() {
+    navigate("/product", { state: { product_id: location.state.product_id } });
+    backButton.hide();
+  }
   function aggregateItemsByIdAndColor(items) {
     const result = [];
 
@@ -108,9 +118,14 @@ const ShoppingCart = observer(() => {
         <button
           className="gold_button order_butt"
           style={{ width: "100%" }}
-          disabled={pageStore.cart.length == 0}
+          disabled={
+            pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) < 5
+          }
           onClick={() => {
             navigate("/mailtype");
+            console.log(
+              pageStore.cart.reduce((acc, elem) => acc + elem.count, 0)
+            );
           }}
         >
           Оформить заказ

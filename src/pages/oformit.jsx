@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 import { SwiperSlide, Swiper } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";

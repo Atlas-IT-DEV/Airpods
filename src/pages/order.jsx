@@ -58,44 +58,43 @@ const OformitPage = observer(() => {
       pageStore.mailType == "почта России" ||
       pageStore.mailType == "почта по миру"
         ? `Здравствуйте , хочу сделать заказ! 
-    Мои данные для заказа:
-    ФИО: ${values.first_name} ${values.last_name}
-    ТЕЛЕФОН: ${number}
-    АДРЕС: ${values.adress}
-    ДОСТАВКА: ${pageStore.mailType}
-    ИНДЕКС: ${values.index}
-    СУММА: ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
-      (acc, elem) => acc + elem.totalPrice,
-      0
-    )} ₽
-    ТОВАРЫ: 
-    ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
-      (acc, elem) =>
-        acc +
-        `товар ${elem.name}, цвет: ${elem.color} количество: ${elem.totalCount}шт, итоговая цена: ${elem.totalPrice}\n`,
-      ""
-    )}
+            Мои данные для заказа:
+            ФИО: ${values.first_name} ${values.last_name}
+            ТЕЛЕФОН: ${number}
+            АДРЕС: ${values.adress}
+            ДОСТАВКА: ${pageStore.mailType}
+            СУММА: ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
+              (acc, elem) => acc + elem.totalPrice,
+              0
+            )} ₽
+            ТОВАРЫ: 
+            ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
+              (acc, elem) =>
+                acc +
+                `товар ${elem.name}, цвет: ${elem.color} количество: ${elem.totalCount}шт, итоговая цена: ${elem.totalPrice}\n`,
+              ""
+            )}
 
-    Жду от вас обратной связи`
+            Жду от вас обратной связи`
         : `Здравствуйте , хочу сделать заказ! 
-    Мои данные для заказа:
-    ФИО: ${values.first_name} ${values.last_name}
-    ТЕЛЕФОН: ${number}
-    АДРЕС: ${values.adress}
-    ДОСТАВКА: ${pageStore.mailType}
-    СУММА: ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
-      (acc, elem) => acc + elem.totalPrice,
-      0
-    )} ₽
-    ТОВАРЫ: 
-    ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
-      (acc, elem) =>
-        acc +
-        `товар ${elem.name}, цвет: ${elem.color} количество: ${elem.totalCount}шт, итоговая цена: ${elem.totalPrice}\n`,
-      ""
-    )}
+            Мои данные для заказа:
+            ФИО: ${values.first_name} ${values.last_name}
+            ТЕЛЕФОН: ${number}
+            АДРЕС: ${values.adress}
+            ДОСТАВКА: ${pageStore.mailType}
+            СУММА: ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
+              (acc, elem) => acc + elem.totalPrice,
+              0
+            )} ₽
+            ТОВАРЫ: 
+            ${aggregateItemsByIdAndColor(pageStore.cart).reduce(
+              (acc, elem) =>
+                acc +
+                `товар ${elem.name}, цвет: ${elem.color} количество: ${elem.totalCount}шт, итоговая цена: ${elem.totalPrice}\n`,
+              ""
+            )}
 
-    Жду от вас обратной связи`;
+            Жду от вас обратной связи`;
     pageStore.updateResult(result);
     console.log(result);
     navigate("/copy");
@@ -105,7 +104,7 @@ const OformitPage = observer(() => {
   const backButton = tg.BackButton;
   const navigate = useNavigate();
   function back_page() {
-    navigate("/cart");
+    navigate("/mailtype");
   }
 
   backButton.show();
@@ -128,7 +127,7 @@ const OformitPage = observer(() => {
           first_name: "",
           phone: "",
           pochta: "сдэк (СДЭК)",
-          adress: "Адрес самовывоза артема",
+          adress: "г.Москва, Тихорецкий бульвар 1с3 ТЦ «Груша», павильон B-08",
         }
       : {
           last_name: "",
