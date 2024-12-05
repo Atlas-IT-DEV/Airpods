@@ -117,7 +117,7 @@ const ShoppingCart = observer(() => {
         </div>
       </div>
       <div style={{ padding: "16px" }}>
-        {pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) > 5 ||
+        {pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) > 4 ||
         pageStore.cart.some((item) => item.category_id == 3) ? null : (
           <Text
             color={"white"}
@@ -128,7 +128,7 @@ const ShoppingCart = observer(() => {
           >
             Минимальное количество единиц товара в заказе для оформления - 5 шт.
             основной категории. Это AirPods, Apple Watch и техника Dyson (можно
-            миксовать, главное что бы минимальный заказ был 5 ед.) Так же, можно
+            миксовать, главное, чтобы минимальный заказ был 5 ед.) Также можно
             оформить один из предложенных наборов в каталоге. <br />{" "}
             ‼️Аксессуары не являются основной категорией товаров‼️
           </Text>
@@ -137,11 +137,10 @@ const ShoppingCart = observer(() => {
           className="gold_button order_butt"
           style={{
             width: "100%",
-            cursor:
-              pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) < 5,
           }}
           disabled={
-            pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) < 5
+            pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) < 5 &&
+            !pageStore.cart.some((item) => item.category_id == 3)
           }
           onClick={() => {
             navigate("/mailtype");
