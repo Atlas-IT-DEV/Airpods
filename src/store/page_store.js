@@ -48,6 +48,9 @@ class pageStore {
   updateCart = (new_cart) => {
     this.cart = new_cart;
   };
+  logCart = () => {
+    console.log("cart", this.cart);
+  };
   updateMailType = (new_mail_type) => {
     this.mailType = new_mail_type;
   };
@@ -153,94 +156,5 @@ class pageStore {
     this.last_name = result.last_name;
     this.email = result.email;
   }; */
-  getAllTrainers = async () => {
-    const response = await fetch("https://holiwell.ru:8000/api/trainers/all", {
-      method: "GET",
-      headers: { accept: "application/json" },
-    });
-    const result = await response.json();
-    this.trainers = result;
-  };
-  getAllListening = async (sort = 0) => {
-    const response = await fetch(
-      "https://holiwell.ru:8000/api/courses/all" +
-        (sort == 0 ? "" : sort == 1 ? "?sort_by=popular" : "?sort_by=new"),
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${this.token}`,
-        },
-      }
-    );
-    const result = await response.json();
-    this.listening = result.filter(
-      (elem) => elem.course_type_slug == "listening"
-    );
-    console.log(this.listening);
-  };
-  getAllMeditate = async (sort = 0) => {
-    const response = await fetch(
-      "https://holiwell.ru:8000/api/courses/all" +
-        (sort == 0 ? "" : sort == 1 ? "?sort_by=popular" : "?sort_by=new"),
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${this.token}`,
-        },
-      }
-    );
-    const result = await response.json();
-    console.log(response);
-    this.meditation = result.filter(
-      (elem) => elem.course_type_slug == "meditation"
-    );
-  };
-  getAllTraining = async (sort = 0) => {
-    const response = await fetch(
-      "https://holiwell.ru:8000/api/courses/all" +
-        (sort == 0 ? "" : sort == 1 ? "?sort_by=popular" : "?sort_by=new"),
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${this.token}`,
-        },
-      }
-    );
-    const result = await response.json();
-    this.training = result.filter(
-      (elem) => elem.course_type_slug == "training"
-    );
-  };
-  likeLesson = async (id) => {
-    const response = await fetch("https://holiwell.ru/api/users/like-lesson", {
-      method: "POST",
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${this.token}`,
-      },
-      body: JSON.stringify({ lesson_id: id }),
-    });
-    const result = await response.json();
-    console.log(response, result);
-    await this.getLiked();
-  };
-  getLiked = async () => {
-    const response = await fetch(
-      "https://holiwell.ru:8000/api/users/my_favorite",
-      {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${this.token}`,
-        },
-      }
-    );
-    const result = await response.json();
-    this.liked = result;
-  };
 }
 export default pageStore;

@@ -209,6 +209,7 @@ const ProductCarousel = observer(({ product }) => {
                 name: product?.name,
                 price: product?.price,
                 count: count,
+                category_id: product?.category_id,
               });
             }
             pageStore.updateCart(copy_cart);

@@ -7,6 +7,7 @@ import { useStores } from "../store/store_context";
 import { observer } from "mobx-react-lite";
 import CartProduct from "../components/cart_product";
 import { useLocation } from "react-router-dom";
+import { Text } from "@chakra-ui/react";
 
 const ShoppingCart = observer(() => {
   const { pageStore } = useStores();
@@ -20,6 +21,7 @@ const ShoppingCart = observer(() => {
     navigate("/product", { state: { product_id: location.state.product_id } });
     backButton.hide();
   }
+
   function aggregateItemsByIdAndColor(items) {
     const result = [];
 
@@ -115,9 +117,29 @@ const ShoppingCart = observer(() => {
         </div>
       </div>
       <div style={{ padding: "16px" }}>
+        {pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) > 5 ||
+        pageStore.cart.some((item) => item.category_id == 3) ? null : (
+          <Text
+            color={"white"}
+            marginBottom={"10px"}
+            padding={"10px"}
+            border={"1px solid #f5ea99"}
+            borderRadius={"10px"}
+          >
+            Минимальное количество единиц товара в заказе для оформления - 5 шт.
+            основной категории. Это AirPods, Apple Watch и техника Dyson (можно
+            миксовать, главное что бы минимальный заказ был 5 ед.) Так же, можно
+            оформить один из предложенных наборов в каталоге. <br />{" "}
+            ‼️Аксессуары не являются основной категорией товаров‼️
+          </Text>
+        )}
         <button
           className="gold_button order_butt"
-          style={{ width: "100%" }}
+          style={{
+            width: "100%",
+            cursor:
+              pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) < 5,
+          }}
           disabled={
             pageStore.cart.reduce((acc, elem) => acc + elem.count, 0) < 5
           }

@@ -59,6 +59,15 @@ function App() {
   const tg = window.Telegram.WebApp;
   tg.enableClosingConfirmation();
   tg.disableVerticalSwipes();
+  tg.enableClosingConfirmation();
+  tg.expand();
+  useEffect(() => {
+    if (!tg.isExpanded) tg.expand();
+  });
+  function big() {
+    tg.expand();
+  }
+  tg.onEvent("viewportChanged", big);
   return (
     <RootStoreContext.Provider value={new RootStore()}>
       <ChakraBaseProvider>
