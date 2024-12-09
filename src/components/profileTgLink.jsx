@@ -1,7 +1,9 @@
+import { Box, Image, Link, Text } from "@chakra-ui/react";
 import default_icon from "./../images/User_icon.png";
+import { redirect } from "react-router";
 const tg = window.Telegram.WebApp;
 function ProfileTgLink() {
-  let first_name = "Владимир";
+  let first_name = "Влаsadasdasdsadдимир";
   let last_name = "Путин";
   let url =
     "https://i.ytimg.com/vi/l5AXpKPABUk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGGUgWShOMA8=&rs=AOn4CLAdqZJrD4dW8p6PxeakjqaV_VM3Sg";
@@ -11,16 +13,16 @@ function ProfileTgLink() {
     url = tg.initDataUnsafe.user.photo_url;
   }
   return (
-    <div id="profile_avatar_tgLink">
-      <div id="inner_avatar_profile">
-        <div id="profile_avatar">
-          <img src={default_icon} />
-          <p>
+    <Box id="profile_avatar_tgLink">
+      <Box id="inner_avatar_profile">
+        <Box width="40%" id="profile_avatar">
+          <Image src={default_icon} />
+          <Text overflowWrap={"anywhere"}>
             {first_name} {last_name}
-          </p>
-        </div>
-        <div id="tgLink">
-          <a href="https://t.me/applepods_black">
+          </Text>
+        </Box>
+        <Link display={"inline-flex"} href="https://t.me/applepods_black" width={"40%"} id="tgLink">
+          <Box flex={1}>
             <svg
               width="33"
               height="32"
@@ -62,21 +64,18 @@ function ProfileTgLink() {
                 </clipPath>
               </defs>
             </svg>
-          </a>
-
-          <a href="https://t.me/applepods_black_opt">
-            <div id="text_tgLink">
-              <p>
-                <a href="https://t.me/applepods_black_opt">
-                  Applepods_Black OPT
-                </a>
-              </p>
-              <p>наш Telegram-канал</p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
+          </Box>
+          <Box display={"flex"} flexDirection={"column"} flex={5} id="text_tgLink">
+            <Text  whiteSpace={"nowrap"} overflow={"hidden"}>
+              <a href="https://t.me/applepods_black_opt">
+                Appleasdasdpoasdasda_Black OPT
+              </a>
+            </Text>
+            <Text>наш Telegram-канал</Text>
+          </Box>
+        </Link>
+      </Box>
+    </Box>
   );
 }
 export default ProfileTgLink;
