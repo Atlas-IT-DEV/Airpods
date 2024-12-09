@@ -23,7 +23,7 @@ function ProfileTgLink() {
         </Box>
         <Link
           display={"inline-flex"}
-          href="https://t.me/applepods_black"
+          href="https://t.me/applepods_black_opt"
           w={"max-content"}
           id="tgLink"
         >
@@ -75,7 +75,6 @@ function ProfileTgLink() {
             flexDirection={"column"}
             flex={5}
             id="text_tgLink"
-            
           >
             <Text width={"max-content"}>
               <a href="https://t.me/applepods_black_opt">Applepods_Black OPT</a>
