@@ -1,0 +1,24 @@
+.button-connect {
+  background: linear-gradient(93.15deg, #f5ea99 -3.52%, #db9b45 100%);
+  margin: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button-connect-text {
+  font-size: 20px;
+  font-weight: 600;
+  font-family: SF Pro Display;
+  background: linear-gradient(302.46deg, #222222 0%, #323232 100%);
+  background-clip: text;
+}
+
+.searchButtonText {
+  color: var(--Yellow-gradient, #f5ea99);
+  font-size: 17px;
+  font-weight: 600;
+  font-family: SF Pro Text;
+}

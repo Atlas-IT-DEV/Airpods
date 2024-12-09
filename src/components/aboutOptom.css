@@ -1,0 +1,47 @@
+.container {
+  border-radius: 16px;
+  border: 1px solid var(--Yellow-gradient, #f5ea99);
+  display: flex;
+  padding: 16px;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 16px 0 16px;
+}
+
+.header-text {
+  font-size: 22px;
+  color: var(--Yellow-gradient, #f5ea99);
+  hyphens: auto;
+  font-family: SF Pro Text;
+  font-weight: 600;
+}
+
+.main-text {
+  font-size: 15px;
+  color: white;
+  margin-top: 12px;
+  font-family: SF Pro Text;
+}
+
+.boxes {
+  display: flex;
+  gap: 10px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.button {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.button-text {
+  color: rgba(142, 142, 147, 1);
+  font-family: SF Pro Text;
+  font-size: 15px;
+}

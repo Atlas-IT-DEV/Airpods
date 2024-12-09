@@ -1,0 +1,40 @@
+.productBasketContainer {
+  border-radius: 16px;
+  border: 2px solid var(--Yellow-gradient, #f5ea99);
+  padding: 8px 16px 8px 16px;
+}
+
+.attributeProduct {
+  color: rgba(124, 124, 124, 1);
+  font-size: 17px;
+  font-family: SF Pro Display;
+}
+.valueProduct {
+  font-size: 17px;
+  color: white;
+  font-weight: 600;
+  font-family: SF Pro Display;
+}
+
+.fieldProduct {
+  display: flex;
+  gap: 8px;
+}
+
+.divideLine {
+  width: 100%;
+  border: 1px solid rgba(92, 92, 92, 1);
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.priceField {
+  display: flex;
+  justify-content: space-between;
+}
+.endPrice {
+  color: var(--Yellow-gradient, #f5ea99);
+  font-size: 17px;
+  font-family: SF Pro Display;
+  font-weight: 700;
+}
