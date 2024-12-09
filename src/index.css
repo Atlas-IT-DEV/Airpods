@@ -546,7 +546,6 @@
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  
 }
 .review {
   display: flex;
@@ -1144,6 +1143,7 @@ button[disabled] {
 #cart_header > #delete {
   color: var(--gray-02-dark, #636366);
   text-align: center;
+  cursor: pointer;
 
   /* Default/Bold/Subheadline */
   font-family: SF Pro Text;

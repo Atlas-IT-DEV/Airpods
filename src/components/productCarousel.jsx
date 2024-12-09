@@ -168,7 +168,7 @@ const ProductCarousel = observer(({ product }) => {
               -
             </button>
             <input
-              type="number"
+              type="tel"
               value={count}
               placeholder="Ввести..."
               style={{

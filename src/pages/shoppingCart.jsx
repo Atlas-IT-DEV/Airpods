@@ -16,11 +16,14 @@ const ShoppingCart = observer(() => {
   const tg = window.Telegram.WebApp;
   const backButton = tg.BackButton;
   backButton.show();
-  backButton.onClick(back_page);
-  function back_page() {
-    navigate("/product", { state: { product_id: location.state.product_id } });
+  backButton.onClick(() => {
+    navigate("/product");
     backButton.hide();
-  }
+  });
+  // function back_page() {
+  //   navigate("/product", { state: { product_id: location.state.product_id } });
+  //
+  // }
 
   function aggregateItemsByIdAndColor(items) {
     const result = [];

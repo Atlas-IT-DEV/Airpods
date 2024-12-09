@@ -3,7 +3,7 @@ import default_icon from "./../images/User_icon.png";
 import { redirect } from "react-router";
 const tg = window.Telegram.WebApp;
 function ProfileTgLink() {
-  let first_name = "Влаsadasdasdsadдимир";
+  let first_name = "Владимир";
   let last_name = "Путин";
   let url =
     "https://i.ytimg.com/vi/l5AXpKPABUk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGGUgWShOMA8=&rs=AOn4CLAdqZJrD4dW8p6PxeakjqaV_VM3Sg";
@@ -15,13 +15,18 @@ function ProfileTgLink() {
   return (
     <Box id="profile_avatar_tgLink">
       <Box id="inner_avatar_profile">
-        <Box width="40%" id="profile_avatar">
+        <Box maxWidth={"160px"} id="profile_avatar">
           <Image src={default_icon} />
           <Text overflowWrap={"anywhere"}>
             {first_name} {last_name}
           </Text>
         </Box>
-        <Link display={"inline-flex"} href="https://t.me/applepods_black" width={"40%"} id="tgLink">
+        <Link
+          display={"inline-flex"}
+          href="https://t.me/applepods_black"
+          w={"max-content"}
+          id="tgLink"
+        >
           <Box flex={1}>
             <svg
               width="33"
@@ -65,11 +70,15 @@ function ProfileTgLink() {
               </defs>
             </svg>
           </Box>
-          <Box display={"flex"} flexDirection={"column"} flex={5} id="text_tgLink">
-            <Text  whiteSpace={"nowrap"} overflow={"hidden"}>
-              <a href="https://t.me/applepods_black_opt">
-                Appleasdasdpoasdasda_Black OPT
-              </a>
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            flex={5}
+            id="text_tgLink"
+            
+          >
+            <Text width={"max-content"}>
+              <a href="https://t.me/applepods_black_opt">Applepods_Black OPT</a>
             </Text>
             <Text>наш Telegram-канал</Text>
           </Box>

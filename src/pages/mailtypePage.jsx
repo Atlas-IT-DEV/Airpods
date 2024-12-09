@@ -29,7 +29,7 @@ function MailtypePage() {
   backButton.onClick(back_page);
   function back_page() {
     navigate("/cart");
-    backButton.hide();
+    // backButton.hide();
   }
 
   return (
