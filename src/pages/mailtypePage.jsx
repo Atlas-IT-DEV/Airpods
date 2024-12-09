@@ -42,7 +42,7 @@ function MailtypePage() {
             marginBottom: "20px",
             background: "#161617",
             borderRadius: "12px",
-            height: "130px",
+            // height: "130px",
           }}
         >
           <div
@@ -78,7 +78,7 @@ function MailtypePage() {
             marginBottom: "20px",
             background: "#161617",
             borderRadius: "12px",
-            height: "130px",
+            // height: "130px",
           }}
         >
           <div

@@ -30,7 +30,7 @@ const CopyPage = observer(() => {
       ></textarea>
 
       <a
-        href="https://t.me/archimolotok"
+        href="https://t.me/apb_opt"
         style={{ width: "100%", marginTop: "16px", marginBottom: "16px" }}
         onClick={selectEl}
       >
