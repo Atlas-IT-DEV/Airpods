@@ -180,7 +180,7 @@ function OformitPage() {
                       ]);
                   }}
                 >
-                  <p>Международная доставкаф</p>
+                  <p>Международная доставка</p>
                 </div>
               </SwiperSlide>
             </Swiper>

@@ -1290,6 +1290,8 @@ button[disabled] {
   padding: 16px;
   min-height: 100vh;
   justify-content: center;
+  overflow-x: scroll;
+  margin-bottom: 140px;
 }
 
 .special-label {
