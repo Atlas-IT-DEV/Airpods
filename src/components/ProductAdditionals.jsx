@@ -212,7 +212,7 @@ const ProductAdditionals = observer(({ product }) => {
                   }),
                 ]}
               </div>
-              <p>
+              <p style={{textAlign:"end"}}>
                 {product?.category_id == 2
                   ? "Качество цветопередачи"
                   : "Качество микрофона"}
