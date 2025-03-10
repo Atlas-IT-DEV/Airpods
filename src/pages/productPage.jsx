@@ -51,21 +51,21 @@ function ProductPage() {
   const location = useLocation();
   const [product, setProduct] = useState({
     id: 16,
-    name: "AirPods Max FCO (Пластик)",
+    name: "Загрузка",
     promotion_id: null,
     category_id: 1,
-    price: "13990.00",
+    price: "-",
     is_active: "Y",
-    position: 1000,
+    position: 0,
     currency: {
       id: 11,
-      ru: 13990,
-      eu: 165,
-      br: 570,
+      ru: 0,
+      eu: 0,
+      br: 0,
     },
     company: {
       id: 1,
-      name: "Apple",
+      name: "Загрузка",
       description: "Производитель электроники",
     },
     characteristics: [
@@ -80,19 +80,19 @@ function ProductPage() {
         name: "Описание",
         type: "VARCHAR",
         value:
-          "Набор \n- AirPods 3 FCO+\n- Любые Watch (Ultra 2 либо Series 9) на выбор ",
+          "Загрузка",
       },
       {
         id: 7,
         name: "Качество звука",
         type: "VARCHAR",
-        value: "7",
+        value: "0",
       },
       {
         id: 8,
         name: "Качество микрофона",
         type: "VARCHAR",
-        value: "7",
+        value: "0",
       },
       {
         id: 9,
@@ -114,69 +114,69 @@ function ProductPage() {
       },
     ],
     urls: [
-      {
-        url: "https://apbstore.ru:8008/public/product/main_large_2024_05_01_15_24_07_40bea002d3.jpg",
-        Color: "",
-      },
-      {
-        url: "https://apbstore.ru:8008/public/product/simple_16_large_2024_05_02_17_23_10_bf27a5ba33.jpg",
-        Color: "",
-      },
-      {
-        url: "https://apbstore.ru:8008/public/product/Красный_COLOR_IMG_0701_c93435960f.PNG",
-        Color: "Красный",
-      },
+      // {
+      //   url: "https://apbstore.ru:8008/public/product/main_large_2024_05_01_15_24_07_40bea002d3.jpg",
+      //   Color: "",
+      // },
+      // {
+      //   url: "https://apbstore.ru:8008/public/product/simple_16_large_2024_05_02_17_23_10_bf27a5ba33.jpg",
+      //   Color: "",
+      // },
+      // {
+      //   url: "https://apbstore.ru:8008/public/product/Красный_COLOR_IMG_0701_c93435960f.PNG",
+      //   Color: "Красный",
+      // },
     ],
     storis: [
-      {
-        id: 110,
-        product_id: 16,
-        name: null,
-        image_url:
-          "https://apbstore.ru:8008/public/storis/large_2024_05_01_19_58_23_a17f4de6a1.jpg",
-        link: "https://www.youtube.com/watch?v=0fT_aY-cg2Y",
-      },
-      {
-        id: 111,
-        product_id: 16,
-        name: null,
-        image_url:
-          "https://apbstore.ru:8008/public/storis/IMG_0969_2539959b88.MP4",
-        link: "https://t.me/apb_shop/52",
-      },
-      {
-        id: 112,
-        product_id: 16,
-        name: null,
-        image_url:
-          "https://apbstore.ru:8008/public/storis/large_2024_05_01_21_01_04_ac53c04997.jpg",
-        link: "https://t.me/apb_shop/85",
-      },
-      {
-        id: 113,
-        product_id: 16,
-        name: null,
-        image_url:
-          "https://apbstore.ru:8008/public/storis/large_2024_05_01_20_34_26_5d2ad884be.jpg",
-        link: "https://apps.apple.com/app/id1661245709",
-      },
-      {
-        id: 114,
-        product_id: 16,
-        name: null,
-        image_url:
-          "https://apbstore.ru:8008/public/storis/large_2024_05_01_20_34_22_893a222764.jpg",
-        link: "http://apkdown.198509.xyz/",
-      },
+      // {
+      //   id: 110,
+      //   product_id: 16,
+      //   name: null,
+      //   image_url:
+      //     "https://apbstore.ru:8008/public/storis/large_2024_05_01_19_58_23_a17f4de6a1.jpg",
+      //   link: "https://www.youtube.com/watch?v=0fT_aY-cg2Y",
+      // },
+      // {
+      //   id: 111,
+      //   product_id: 16,
+      //   name: null,
+      //   image_url:
+      //     "https://apbstore.ru:8008/public/storis/IMG_0969_2539959b88.MP4",
+      //   link: "https://t.me/apb_shop/52",
+      // },
+      // {
+      //   id: 112,
+      //   product_id: 16,
+      //   name: null,
+      //   image_url:
+      //     "https://apbstore.ru:8008/public/storis/large_2024_05_01_21_01_04_ac53c04997.jpg",
+      //   link: "https://t.me/apb_shop/85",
+      // },
+      // {
+      //   id: 113,
+      //   product_id: 16,
+      //   name: null,
+      //   image_url:
+      //     "https://apbstore.ru:8008/public/storis/large_2024_05_01_20_34_26_5d2ad884be.jpg",
+      //   link: "https://apps.apple.com/app/id1661245709",
+      // },
+      // {
+      //   id: 114,
+      //   product_id: 16,
+      //   name: null,
+      //   image_url:
+      //     "https://apbstore.ru:8008/public/storis/large_2024_05_01_20_34_22_893a222764.jpg",
+      //   link: "http://apkdown.198509.xyz/",
+      // },
     ],
     audio_files: [
-      {
-        id: 7,
-        product_id: 16,
-        original_url:
-          "https://apbstore.ru:8008/public/audio/Air_Pods_Max_Final_Mikrofony_b2a9e0088a.m4a",
-        our_url: "https://apbstore.ru:8008/publicNone",
-      },
+      // {
+      //   id: 7,
+      //   product_id: 16,
+      //   original_url:
+      //     "https://apbstore.ru:8008/public/audio/Air_Pods_Max_Final_Mikrofony_b2a9e0088a.m4a",
+      //   our_url: "https://apbstore.ru:8008/publicNone",
+      // },
     ],
   });
   const getProduct = async () => {

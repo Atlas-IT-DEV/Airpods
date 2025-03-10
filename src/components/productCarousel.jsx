@@ -14,6 +14,7 @@ import { observer } from "mobx-react-lite";
 // import required modules
 import { Navigation } from "swiper/modules";
 import CollectBasket from "./collectBasket";
+import { HStack, Text } from "@chakra-ui/react";
 
 const ProductCarousel = observer(({ product }) => {
   // const swiperIns = useSwiper();
@@ -125,7 +126,14 @@ const ProductCarousel = observer(({ product }) => {
             <Swiper slidesPerView={3}>{teletype}</Swiper>
           </div>
         )} */}
-        <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
           <p
             style={{
               color: "rgba(236, 236, 236, 1)",
@@ -183,6 +191,7 @@ const ProductCarousel = observer(({ product }) => {
                 setCount(Number(event.target.value));
               }}
             />
+
             <button
               style={{
                 color: "rgba(92, 92, 92, 1)",
@@ -197,6 +206,9 @@ const ProductCarousel = observer(({ product }) => {
               +
             </button>
           </form>
+          <Text color={"white"}>
+            {count == 0 || count == null ? "" : `${count * product?.price} ₽`}
+          </Text>
         </div>
         <button
           style={{ width: "100%" }}

@@ -88,9 +88,12 @@ function TeletypeCarousel() {
                 : "teletype_block_new"
             }
             onClick={() => {
-              tg.openLink(`${"dasdasd"}`, {
-                try_instant_view: true,
-              });
+              tg.openLink(
+                `${"https://teletype.in/@applepods_black/ftFbBBb-I18"}`,
+                {
+                  try_instant_view: true,
+                }
+              );
             }}
           >
             <div>
@@ -170,9 +173,12 @@ function TeletypeCarousel() {
                 : "teletype_block_new"
             }
             onClick={() => {
-              tg.openLink(`${"dasdasd"}`, {
-                try_instant_view: true,
-              });
+              tg.openLink(
+                `${"https://telegra.ph/REGLAMENT-INTERNET-MAGAZINA-Applepods-black-04-24"}`,
+                {
+                  try_instant_view: true,
+                }
+              );
             }}
           >
             <div>
@@ -234,9 +240,12 @@ function TeletypeCarousel() {
                 : "teletype_block_new"
             }
             onClick={() => {
-              tg.openLink(`${"dasdasd"}`, {
-                try_instant_view: true,
-              });
+              tg.openLink(
+                `${"https://teletype.in/@applepods_black/JXDFf6RU_jL"}`,
+                {
+                  try_instant_view: true,
+                }
+              );
             }}
           >
             <div>

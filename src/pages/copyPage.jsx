@@ -2,6 +2,8 @@ import selectEl from "../components/copy";
 import tutorial from "./../images/tutorial.MP4";
 import { useStores } from "../store/store_context";
 import { observer } from "mobx-react-lite";
+
+import guidePoster from "./../images/guide.jpeg";
 const CopyPage = observer(() => {
   const { pageStore } = useStores();
   return (
@@ -48,6 +50,7 @@ const CopyPage = observer(() => {
         }}
         preload="auto"
         controls={true}
+        poster={guidePoster}
       ></video>
     </div>
   );

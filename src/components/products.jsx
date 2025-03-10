@@ -199,12 +199,12 @@ const Products = observer(() => {
             </div>
             <p class="product_description_golden">Часы</p>
           </div>
-          <div class="product" onClick={() => scrollEffect(setsRef)}>
+          {/* <div class="product" onClick={() => scrollEffect(setsRef)}>
             <div class="product_logo">
               <img src={goldsets} />
             </div>
             <p class="product_description_golden">Наборы</p>
-          </div>
+          </div> */}
           <div class="product" onClick={() => scrollEffect(accessoriesRef)}>
             <div class="product_logo">
               <svg
@@ -338,7 +338,7 @@ const Products = observer(() => {
               );
             })}
         </div>
-        <div className="small_products_header">
+        {/* <div className="small_products_header">
           <p ref={setsRef}>Наборы</p>
         </div>
         <div className="grid">
@@ -354,7 +354,7 @@ const Products = observer(() => {
                 />
               );
             })}
-        </div>
+        </div> */}
         <div className="small_products_header">
           <p ref={accessoriesRef}>Аксессуары</p>
         </div>

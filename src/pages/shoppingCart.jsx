@@ -18,7 +18,7 @@ const ShoppingCart = observer(() => {
   backButton.show();
   backButton.onClick(back_page);
   function back_page() {
-    navigate("/product", { state: { product_id: location.state.product_id } });
+    navigate("/");
     backButton.hide();
   }
 
@@ -128,9 +128,8 @@ const ShoppingCart = observer(() => {
           >
             Минимальное количество единиц товара в заказе для оформления - 5 шт.
             основной категории. Это AirPods, Apple Watch и техника Dyson (можно
-            миксовать, главное, чтобы минимальный заказ был 5 ед.) Также можно
-            оформить один из предложенных наборов в каталоге. <br />{" "}
-            ‼️Аксессуары не являются основной категорией товаров‼️
+            миксовать, главное, чтобы минимальный заказ был 5 ед.).
+            <br /> ‼️Аксессуары не являются основной категорией товаров‼️
           </Text>
         )}
         <button

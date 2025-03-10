@@ -1,8 +1,8 @@
 import default_icon from "./../images/User_icon.png";
 const tg = window.Telegram.WebApp;
 function ProfileTgLink() {
-  let first_name = "Владимир";
-  let last_name = "Путин";
+  let first_name = "No";
+  let last_name = "Name";
   let url =
     "https://i.ytimg.com/vi/l5AXpKPABUk/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGGUgWShOMA8=&rs=AOn4CLAdqZJrD4dW8p6PxeakjqaV_VM3Sg";
   if (tg.initDataUnsafe.user != undefined) {
