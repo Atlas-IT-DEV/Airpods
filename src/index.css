@@ -426,8 +426,7 @@
 #cart_block_bottom {
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  gap: 10px;
   align-items: center;
 }
 #cart_block_bottom > p {
@@ -546,7 +545,6 @@
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  
 }
 .review {
   display: flex;

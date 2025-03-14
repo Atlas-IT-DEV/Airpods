@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { useStores } from "../store/store_context";
+import { Text, VStack } from "@chakra-ui/react";
 function QuadroBlocks() {
   const navigate = useNavigate();
   const { pageStore } = useStores();
@@ -14,6 +15,34 @@ function QuadroBlocks() {
         setFaqLink(data.data[0].attributes.link);
       });
   }, []); */
+
+  function aggregateItemsByIdAndColor(items) {
+    const result = [];
+
+    items.forEach((item) => {
+      // Проверяем, есть ли уже объект с таким же id и color в результате
+      const existingItem = result.find(
+        (resItem) => resItem.id === item.id && resItem.color === item.color
+      );
+
+      if (existingItem) {
+        // Если объект найден, добавляем к нему count и price
+        existingItem.totalCount += item.count;
+        existingItem.totalPrice += item.count * item.price;
+      } else {
+        // Если объекта нет, создаем новый с totalCount и totalPrice
+        result.push({
+          id: item.id,
+          color: item.color,
+          name: item.name,
+          totalCount: item.count,
+          totalPrice: item.count * item.price,
+        });
+      }
+    });
+
+    return result;
+  }
   return (
     <div className="quadro_blocks_main">
       <div className="quadro_blocks" style={{ paddingLeft: "8px" }}>
@@ -124,8 +153,21 @@ function QuadroBlocks() {
           </div>
           <div id="cart_block_bottom">
             <div class="shopping_cart_icon"></div>
-            <p id="cart_block_amount">{pageStore.cart.length}</p>
-            <p class="sale">-{""}%</p>
+            {/* <p id="cart_block_amount">{pageStore.cart.length}</p>
+            <p>helllo</p> */}
+            <VStack align={"flex-start"} gap={0} spacing={0}>
+              {/* <Text color={"white"} fontFamily="SF Pro Text" fontSize={"15px"}>
+                {pageStore.cart.map((item) => console.log(item))}
+                шт.
+              </Text> */}
+              <Text color={"white"} fontFamily="SF Pro Text" fontSize={"15px"}>
+                {aggregateItemsByIdAndColor(pageStore.cart).reduce(
+                  (acc, elem) => acc + elem.totalPrice,
+                  0
+                )}{" "}
+                ₽
+              </Text>
+            </VStack>
           </div>
         </div>
       </div>
